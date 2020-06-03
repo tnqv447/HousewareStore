@@ -27,7 +27,7 @@
     </div>
 </section>
 <div class="container">
-        @await Html.PartialAsync("_OrderItems")
+        @await Html.PartialAsync("_OrderItems", @Model)
 </div>
 <div class="container">
     <a asp-action="Index">Back to list</a>

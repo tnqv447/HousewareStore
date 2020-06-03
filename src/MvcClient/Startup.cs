@@ -42,6 +42,7 @@ namespace MvcClient
             services.AddHttpClient<IHttpClient, CustomHttpClient>();
             services.AddScoped<IItemService, ItemService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IIdentityService<Buyer>, IdentityService>();
 
             IdentityModelEventSource.ShowPII = true;

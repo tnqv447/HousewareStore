@@ -1,6 +1,6 @@
 @model Item
 
-<form asp-controller="Cart" asp-action="AddToCart">
+<form asp-controller="Cart" asp-action="AddToCart" method="POST">
 
     <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" />
     @if(User.Identity.IsAuthenticated){

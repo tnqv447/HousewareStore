@@ -59,12 +59,12 @@ namespace MvcClient.Services
 
             foreach (var item in cart.CartItems)
             {
-                order.Items.Add(new OrderItem
+                order.OrderItems.Add(new OrderItem
                 {
                     ItemId = int.Parse(item.ItemId),
                     ItemName = item.ItemName,
                     UnitPrice = item.UnitPrice,
-                    PictureUri = item.PictureUrl,
+                    PictureUrl = item.PictureUrl,
                     Units = item.Quantity
                 });
                 order.Total += item.Quantity * item.UnitPrice;

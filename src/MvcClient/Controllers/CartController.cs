@@ -31,7 +31,14 @@ namespace MvcClient.Controllers
             {
                 return RedirectToAction("Create", "Order");
             }
+            else if(action == "[ Clear ]"){
+                var buyer = _identitySvc.Get(User);
 
+                await _cartSvc.ClearCart(buyer);
+
+                return RedirectToAction("Index","Cart");
+            }
+                
             try
             {
                 var user = _identitySvc.Get(HttpContext.User);
@@ -70,6 +77,16 @@ namespace MvcClient.Controllers
             await _cartSvc.AddItemToCart(buyer, cartItem);
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> ClearCart(){
+
+            var buyer = _identitySvc.Get(User);
+
+            await _cartSvc.ClearCart(buyer);
+
+            return RedirectToAction("Index","Cart");
         }
 
         private void HandleBrokenCircuitException()

@@ -10,7 +10,7 @@
         var item = Model.OrderItems[i];
         <tr>
             <td>
-                <img class="esh-basket-image" src="@item.PictureUri"/>
+                <img class="esh-basket-image" src="@item.PictureUrl"/>
                 <input type="hidden" value="@item.PictureUrl" name=@("items[" + i + "].PictureUri") />
             </td>
             <td>

@@ -56,7 +56,7 @@ namespace ItemApi.Data
                     new Item {
                     //Id = 2,
                     Name = "Bộ 5 nồi sứ cao cấp",
-                    UnitPrice = 250000,
+                    UnitPrice = 250000.0M,
                     Description = "Sứ chất lượng kao.",
                     PictureUrl = "",
                     ItemStatus = ItemStatus.Approved,
@@ -66,7 +66,7 @@ namespace ItemApi.Data
                     new Item {
                     //Id = 0,
                     Name = "Muỗng basic",
-                    UnitPrice = 20000,
+                    UnitPrice = 20000.0M,
                     Description = "Không muỗng mà muốn ăn thì chỉ có ăn dơ ăn bốc.",
                     PictureUrl = "",
                     ItemStatus = ItemStatus.Approved,
@@ -76,7 +76,7 @@ namespace ItemApi.Data
                     new Item {
                     //Id = 1,
                     Name = "Đũa basic",
-                    UnitPrice = 15000,
+                    UnitPrice = 15000.0M,
                     Description = "Không đũa mà cũng muốn ăn thì cũng chỉ có ăn dơ ăn bốc.",
                     PictureUrl = "",
                     ItemStatus = ItemStatus.Approved,
