@@ -1,0 +1,11 @@
+@model CartComponentViewModel
+
+<a class="esh-basketstatus @Model.Disabled" asp-action="Index" asp-controller="Cart">
+    <div class="esh-cartstatus-image">
+        @* <img src="~/images/cart.png"/> *@
+        <p>Cart</p>
+    </div>
+    <div class="esh-basketstatus-badge">
+        @Model.ItemsInCart
+    </div>
+</a>
