@@ -57,8 +57,8 @@ namespace OrderApi.Controllers
 
             await _orderRepo.AddAsync(order);
             orderDTO = _mapper.Map<Order, OrderDTO>(order);
-            
-            return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, orderDTO);
+
+            return CreatedAtAction(nameof(GetOrder), new { id = order.OrderId }, orderDTO);
         }
 
         [HttpDelete("{id}")]

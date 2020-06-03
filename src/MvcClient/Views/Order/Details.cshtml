@@ -1,0 +1,34 @@
+@model Order
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="esh-orders_new-section">
+    <h4 class="esh-orders_new-title">Order</h4>
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.OrderId)</th>
+                <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
+                <th>@Html.DisplayNameFor(model => model.Total)</th>
+                <th>@Html.DisplayNameFor(model => model.Status)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.OrderId)</td>
+                <td>@Html.DisplayFor(model => model.OrderDate)</td>
+                <td>@Html.DisplayFor(model => model.Total)</td>
+                <td>@Html.DisplayFor(model => model.Status)</td>
+            </tr>
+        </tbody>    
+    </table>
+    </div>
+</section>
+<div class="container">
+        @await Html.PartialAsync("_OrderItems")
+</div>
+<div class="container">
+    <a asp-action="Index">Back to list</a>
+</div>

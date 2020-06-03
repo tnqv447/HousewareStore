@@ -6,7 +6,7 @@ namespace MvcClient.Models
     public class Order
     {
         public int OrderId { get; set; }
-        public string CustomerId { get; set; }
+        public string BuyerId { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -22,7 +22,7 @@ namespace MvcClient.Models
         public string CardSecurityNumber { get; set; }
         public int CardType { get; set; }
         public string StripeToken { get; set; }
-        public IList<OrderItem> Items { get; set; } = new List<OrderItem>();
+        public IList<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 
     public enum OrderStatus

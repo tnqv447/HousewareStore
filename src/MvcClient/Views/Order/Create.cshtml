@@ -1,0 +1,39 @@
+@model Order
+
+@{
+    ViewData["Title"] = "New Order";
+}
+
+<form asp-action="Create" asp-controller="Order" method="POST">
+    <section class="esh-orders_new-section">
+        <h4 class="esh-orders_new-title">Shipping address</h4>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="@Model.FirstName" class="esh-orders_new-title">First Name</label>
+                    <input asp-for="@Model.FirstName" class="form-control form-input" type="text" placeholder="FirstName" />
+                    <span asp-validation-for="@Model.FirstName" class="alert-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="@Model.LastName" class="esh-orders_new-title">Last Name</label>
+                    <input asp-for="@Model.LastName" class="form-control form-input" type="text" placeholder="LastName" />
+                    <span asp-validation-for="@Model.LastName" class="alert-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="@Model.Address" class="esh-orders_new-title">Address</label>
+                    <input asp-for="@Model.Address" class="form-control form-input" type="text" placeholder="Address" />
+                    <span asp-validation-for="@Model.Address" class="alert-danger"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    @await Html.PartialAsync("_OrderItems")
+
+    <input type="submit" value="[ Place Order ]" />
+</form>
+

@@ -1,0 +1,55 @@
+@model Order
+
+<section class="esh-orders_new-section">
+    <article class="esh-orders_new-titles row">
+        <section class="esh-orders_new-title col-xs-12">Order details</section>
+    </article>
+    <table style="width: 90%;">
+    @for (int i = 0; i < Model.OrderItems.Count; i++)
+    {
+        var item = Model.OrderItems[i];
+        <tr>
+            <td>
+                <img class="esh-basket-image" src="@item.PictureUri"/>
+                <input type="hidden" value="@item.PictureUrl" name=@("items[" + i + "].PictureUri") />
+            </td>
+            <td>
+                @item.ItemName
+                <input type="hidden" value="@item.ItemName" name=@("items[" + i + "].ProductName") />
+            </td>
+            <td>
+                $ @item.UnitPrice
+                <input type="hidden" value="@item.UnitPrice" name=@("items[" + i + "].UnitPrice") />
+            </td>
+            <td>
+                @item.Units
+                <input type="hidden" value="@item.Units" name=@("items[" + i + "].Units") />
+            </td>
+            <td>
+                $ @Math.Round(@item.Units * @item.UnitPrice,2)
+                <input type="hidden" value="@item.ItemId" name=@("items[" + i + "].ProductId") />
+            </td>
+        </tr>
+    }
+        <tr>
+            <td colspan="3"></td>
+            <td colspan="2">
+                <section class="esh-orders_new-section esh-orders_new-section--right">
+                    <article class="esh-orders_new-titles row">
+                        <section class="esh-orders_new-title col-xs-9"></section>
+                        <section class="esh-orders_new-title col-xs-2">Total</section>
+                    </article>
+
+                    <article class="esh-orders_new-items row">
+                        <section class="esh-orders_new-item col-xs-9"></section>
+                        <section class="esh-orders_new-item esh-orders_new-item--mark col-xs-2">
+                            $ @Model.Total
+                            <input type="hidden" value="@Model.Total" name="Total"/>
+                        </section>
+                    </article>
+                </section>
+            </td>
+        </tr>
+    </table>
+</section>
+
