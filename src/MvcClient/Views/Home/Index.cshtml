@@ -1,0 +1,50 @@
+﻿@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Catalog";
+    var selectList = new SelectList(Model.Categories);
+}
+
+@* <section class="esh-catalog-hero">
+    <div class="container">
+        <img class="esh-catalog-title" src="~/images/main_banner_text1.png" />
+    </div>
+</section> *@
+
+<section class="esh-catalog-filters">
+    <div class="container">
+        <form asp-action="Index" method="GET">
+            <p>
+                <select asp-for="ItemCategory" asp-items="@selectList">
+                    <option value="">Tất cả</option>
+                </select>
+                Title: <input asp-for="SearchString" type="text"/>
+                <input type="submit" value="Filter"/>
+            </p>
+        </form>
+    </div>
+</section>
+
+<div class="container">
+    <span>@Model.Items.Count()</span>
+@if (Model.Items.Count() > 0)
+
+{
+    
+    <div class="esh-catalog-items row">
+    @foreach (var item in Model.Items)
+        {
+        <div class="esh-catalog-item col-md-4">
+            <partial name="_product" model="item" />
+        </div>
+    }
+    </div>
+
+    }
+    else
+    {
+    <div class="esh-catalog-items row">
+        Không tìm thấy kết quả phù hợp
+    </div>
+}
+</div>

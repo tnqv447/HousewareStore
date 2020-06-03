@@ -1,0 +1,57 @@
+@model Item
+@using Microsoft.AspNetCore.Authorization
+@using MvcClient.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Movie</h4>
+    <hr/>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Category)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Category)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.UnitPrice)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.UnitPrice)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Description)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Description)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ItemStatus)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.ItemStatus)</dd>
+    </dl>
+</div>
+
+<div>
+@if((await AuthorizationService.AuthorizeAsync(User, Model, ItemOperations.Approve)).Succeeded)
+{
+    <form asp-action="Approve" contro method="POST" style="display: inline;">
+        <input type="hidden" asp-for="@Model.Id"/>
+        <button type="submit" class="btn btn-xs btn-success">Approve</button>
+    </form>
+}
+@if((await AuthorizationService.AuthorizeAsync(User, Model, ItemOperations.Reject)).Succeeded)
+{
+    <form asp-action="Reject" method="POST" style="display: inline;">
+        <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+        <input type="hidden" asp-for="@Model.Id"/>
+    </form>
+}
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to list</a>
+</div>

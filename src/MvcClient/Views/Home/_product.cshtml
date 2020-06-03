@@ -1,0 +1,21 @@
+@model Item
+
+<form asp-controller="Cart" asp-action="AddToCart">
+
+    <img class="esh-catalog-thumbnail" src="@Model.PictureUrl" />
+    @if(User.Identity.IsAuthenticated){
+        <input class="esh-catalog-button" type="submit" value="[ ADD TO CART ]" />
+    }
+
+
+    <div class="esh-catalog-name">
+        <span>@Model.Name</span>
+    </div>
+    <div class="esh-catalog-price">
+        <span>@Model.UnitPrice.ToString("N2")</span>
+    </div>
+    <input type="hidden" asp-for="@Model.Id" name="id" />
+    <input type="hidden" asp-for="@Model.Name"/>
+    <input type="hidden" asp-for="@Model.UnitPrice"/>
+    <input type="hidden" asp-for="@Model.PictureUrl"/>
+</form>
