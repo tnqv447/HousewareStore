@@ -1,39 +1,58 @@
 @model RegisterViewModel
 <div class="panel-body">
     <fieldset>
-    
-                                <div class="form-group">
-                                    <label asp-for="@Model.UserProfile.Name"></label>
-                                    <input class="form-control" placeholder="Name" asp-for="@Model.UserProfile.Name">
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="@Model.UserProfile.GivenName"></label>
-                                    <input class="form-control" placeholder="Given Name" asp-for="@Model.UserProfile.GivenName">
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="@Model.UserProfile.FamilyName"></label>
-                                    <input class="form-control" placeholder="Family Name" asp-for="@Model.UserProfile.FamilyName">
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="@Model.UserProfile.PhoneNumber"></label>
-                                    <input class="form-control" placeholder="Phone Number" asp-for="@Model.UserProfile.PhoneNumber">
-                                </div>
-                                
-                                @* @await Html.PartialAsync("_ProfileAddressPartial", Model.Address) *@
-                                <partial name="_ProfileAddressPartial.cshtml" for="@Model" asp-for="@Model"/>
-                                
-                                
-                                <div class="form-group">
-                                    <label asp-for="@Model.UserProfile.Email"></label>
-                                    <input class="form-control" placeholder="Email" asp-for="@Model.UserProfile.Email">
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="@Model.UserProfile.PictureUrl"></label>
-                                    <input class="form-control" placeholder="Picture" asp-for="@Model.UserProfile.PictureUrl">
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="@Model.UserProfile.Website"></label>
-                                    <input class="form-control" placeholder="Website" asp-for="@Model.UserProfile.Website">
-                                </div>
+        <div class="row">
+            <div class="col-md-4">
+                <label asp-for="@Model.UserProfile.Name"></label>
+                <div class="form-group">
+                    <input class="form-control"  placeholder="Name" asp-for="@Model.UserProfile.Name"> 
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="@Model.UserProfile.GivenName"></label>               
+                <div class="form-group" >
+                    <input class="form-control"  placeholder="Given Name" asp-for="@Model.UserProfile.GivenName">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="@Model.UserProfile.FamilyName"></label>               
+                <div class="form-group">
+                    <input class="form-control" placeholder="Family Name" asp-for="@Model.UserProfile.FamilyName"> 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="@Model.UserProfile.PhoneNumber"></label>               
+                <div class="form-group">
+                    <input class="form-control"  placeholder="Phone Number" asp-for="@Model.UserProfile.PhoneNumber">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="@Model.UserProfile.Email"></label>               
+                <div class="form-group">
+                    <input class="form-control" placeholder="Email" asp-for="@Model.UserProfile.Email">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label asp-for="@Model.UserProfile.PictureUrl"></label>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Picture" asp-for="@Model.UserProfile.PictureUrl">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="@Model.UserProfile.Website"></label>
+                <div class="form-group">
+                    <input class="form-control" placeholder="Website" asp-for="@Model.UserProfile.Website">
+                </div>
+            </div>
+            
+            
+        </div>
+        @* @await Html.PartialAsync("_ProfileAddressPartial", Model.Address) *@
     </fieldset>
+    
 </div>
+        

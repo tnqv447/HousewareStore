@@ -38,7 +38,12 @@ namespace MvcClient.Controllers
 
                 return RedirectToAction("Index","Cart");
             }
-                
+            else if(action == "[ Update ]")
+            {
+                Cart upCart = new Cart();
+                await _cartSvc.UpdateCart(upCart);
+                return RedirectToAction("Index","Cart");
+            }
             try
             {
                 var user = _identitySvc.Get(HttpContext.User);

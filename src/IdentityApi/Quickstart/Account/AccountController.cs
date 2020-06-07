@@ -70,7 +70,7 @@ namespace IdentityServer4.Quickstart.UI
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterInputModel model, string button)
+        public async Task<IActionResult> Register(RegisterInputModel model, string button, string returnUrl)
         {
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
@@ -93,20 +93,20 @@ namespace IdentityServer4.Quickstart.UI
                     return RedirectToAction("Login");
                 }
             }
-
             //begin register
             if (ModelState.IsValid)
             {
+                
                 var result = true;
                 if (model.Password.Equals(model.ConfirmPassword))
                 {
-                    Console.WriteLine("\ngg\n\n");
+                    
+                    Console.WriteLine("\ngg\n");
                     Console.WriteLine(model.Username);
                     Console.WriteLine(model.Password);
-                    Console.WriteLine(model.ReturnUrl);
+                    Console.WriteLine(returnUrl);
                     Console.WriteLine(model.RememberMe);
-                    Console.WriteLine(model.UserProfile.GivenName);
-                    Console.WriteLine();
+                    Console.WriteLine(model.UserProfile.Name);
                     //var temp = this.CreateClaims(model.UserProfile);
 
                     result = this.CreateUser(model.Username, model.Password, model.Role, this.CreateClaims(model.UserProfile));
@@ -123,7 +123,7 @@ namespace IdentityServer4.Quickstart.UI
                         Username = model.Username,
                         Password = model.Password,
                         RememberLogin = model.RememberMe,
-                        ReturnUrl = model.ReturnUrl
+                        ReturnUrl = returnUrl
                     };
                     return await this.Login(loginModel, "login");
                 }
@@ -133,9 +133,9 @@ namespace IdentityServer4.Quickstart.UI
                     ModelState.AddModelError(string.Empty, AccountOptions.RegisterErrorMessage);
                 }
             }
-
             //show errors
             var vm = await BuildRegisterViewModelAsync(model);
+            
             return View(vm);
         }
 
@@ -248,7 +248,7 @@ namespace IdentityServer4.Quickstart.UI
                 else
                 {
                     // since we don't have a valid context, then we just go back to the home page
-                    return Redirect("~/");
+                    return Redirect("localhost:5002");
                 }
             }
 

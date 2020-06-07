@@ -50,12 +50,18 @@ namespace IdentityServer4.Quickstart.UI
 
         public string Website { get; set; }
         public Address Address { get; set; }
-
-        // public UserProfileInputModel()
-        // {
-        //     Address = new Address();
-        // }
-
+        
+        public UserProfileInputModel(){}
+        public UserProfileInputModel(string Name, string GivenName, string FamilyName, string PhoneNumber, string Email, string PictureUrl, Address address)
+        {
+            this.Name = Name;
+            this.GivenName = GivenName;
+            this.FamilyName = FamilyName;
+            this.PhoneNumber = PhoneNumber;
+            this.Email = Email;
+            this.PictureUrl = PictureUrl;
+            this.Address = address;
+        }
     }
 
     public class Address
@@ -74,5 +80,17 @@ namespace IdentityServer4.Quickstart.UI
         [JsonProperty("postal_code")]
         [Display(Name = "Postal code")]
         public string PostalCode { get; set; }
+        public Address()
+        {
+            
+        }
+        public Address(string StreetAddress,string Locality, string City, string Country, string PostalCode)
+        {
+            this.StreetAddress = StreetAddress;
+            this.Locality = Locality;
+            this.City = City;
+            this.Country = Country;
+            this.PostalCode = PostalCode;            
+        }
     }
 }

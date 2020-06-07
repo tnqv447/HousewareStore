@@ -32,8 +32,8 @@ namespace CartApi.Controllers
             Console.WriteLine(temp.ItemId);
             Console.WriteLine(temp.ItemName);
             Console.WriteLine(temp.UnitPrice);
-
-            return await _cartRepo.UpdateAsync(cart.Id, cart);
+            
+            return await _cartRepo.UpdateAsync(cart.Id, cart); 
         }
 
         [HttpDelete("{id}")]
