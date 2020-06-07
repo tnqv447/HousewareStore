@@ -28,10 +28,10 @@ namespace CartApi.Controllers
         {
             var temp = cart.CartItems.Last();
 
-            Console.WriteLine(temp.Id);
-            Console.WriteLine(temp.ItemId);
-            Console.WriteLine(temp.ItemName);
-            Console.WriteLine(temp.UnitPrice);
+            // Console.WriteLine(temp.Id);
+            // Console.WriteLine(temp.ItemId);
+            // Console.WriteLine(temp.ItemName);
+            // Console.WriteLine(temp.UnitPrice);
             
             return await _cartRepo.UpdateAsync(cart.Id, cart); 
         }

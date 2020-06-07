@@ -1,11 +1,12 @@
 @using MvcClient.Services
 @inject IIdentityService<Buyer> identityService
-<ul class="navbar-nav"> 
 @if (User.Identity.IsAuthenticated)
 {
     <li class="nav-item dropdown">
+        @* <a href="#"><i class="fa fa-user"></i> Login</a> *@
         <a  class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink"
             data-toggle="dropdown" aria-haspopup="true" arai-expanded="false">
+            
             Hello @User.Identity.Name
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -17,8 +18,8 @@
 } 
 else 
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-action="Privacy" asp-controller="Home">Login</a>
-    </li>
+    <div class="header__top__right__auth">
+        <a class="nav-link text-dark" asp-action="Privacy" asp-controller="Home"><i class="fa fa-user"
+        ></i>Login</a>
+    </div>
 }
-</ul>
