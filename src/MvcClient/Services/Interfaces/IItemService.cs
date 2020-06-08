@@ -9,6 +9,7 @@ namespace MvcClient.Services
     public interface IItemService
     {
         Task<IndexViewModel> GetCatalog(string category, string searchString1);
+        Task<CreateItemViewModel> GetCreateItem();
         Task<IList<Category>> GetCategories();
         Task<Item> GetItem(int id);
         Task CreateItem(Item item);

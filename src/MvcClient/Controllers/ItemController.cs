@@ -50,9 +50,10 @@ namespace MvcClient.Controllers
             return View(item);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var viewModel = await _itemService.GetCreateItem();
+            return View(viewModel);
         }
 
         [HttpPost]

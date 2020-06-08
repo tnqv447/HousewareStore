@@ -60,7 +60,12 @@ namespace ItemApi.Controllers
         }
 
         [AllowAnonymous]
+<<<<<<< HEAD
         [HttpGet("categories")]
+=======
+        [HttpGet("{categories}")]
+
+>>>>>>> 4421451575769d21215e8e051d5cf71789298413
         public async Task<ActionResult<List<CategoryDTO>>> GetCategories()
         {
             var categories = await _categoryRepos.GetAll();
@@ -71,7 +76,6 @@ namespace ItemApi.Controllers
             }
             return result;
         }
-
 
         [HttpPost]
         public async Task<ActionResult<Item>> Create(ItemDTO ItemDTO)
@@ -125,6 +129,17 @@ namespace ItemApi.Controllers
             await _itemRepos.Delete(Item);
 
             return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("create")]
+        public async Task<CreateItemDTO> GetCreateItem()
+        {
+            var CreateItemDTO = new CreateItemDTO()
+            {
+                Categories = await _categoryRepos.GetAllCategories(),
+            };
+            return CreateItemDTO;
         }
 
     }

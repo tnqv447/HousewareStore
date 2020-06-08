@@ -50,5 +50,10 @@ namespace ItemApi.Data.Repos
                 .Distinct().ToListAsync();
         }
 
+        public async Task<IEnumerable<Category>> GetAllCategories()
+        {
+            return await _context.Categories.ToListAsync();
+        }
+
     }
 }
