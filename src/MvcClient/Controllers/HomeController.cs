@@ -54,7 +54,30 @@ namespace MvcClient.Controllers
         {
             return View();
         }
+        [AllowAnonymous]
+        public async Task<IActionResult> Shop(string itemCategory, string searchString)
+        {
+            var catalog = await _service.GetCatalog(itemCategory, searchString);
+            var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
+                User.IsInRole(Constants.ManagersRole);
 
+            if (!isAdminOrManager)
+            {
+                //var userId = _identityService.Get (User).Id;
+                catalog.Items = catalog.Items
+                    .Where(m => m.ItemStatus == ItemStatus.Approved)
+                    .ToList();
+            }
+
+            ChangeUriPlaceholder(catalog.Items);
+
+            return View(catalog);
+        }
+        [AllowAnonymous]
+        public IActionResult Contact()
+        {
+            return View();
+        }
         // public IActionResult Logout()
         // {
         //     return SignOut("Cookies", "oidc");
