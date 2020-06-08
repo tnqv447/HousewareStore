@@ -92,7 +92,7 @@ namespace MvcClient
                     {
                         OnRemoteFailure = context =>
                         {
-                            context.Response.Redirect("");
+                            context.Response.Redirect("Home/Index");
                             context.HandleResponse();
 
                             return Task.FromResult(0);

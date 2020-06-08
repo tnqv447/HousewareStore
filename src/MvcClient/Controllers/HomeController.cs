@@ -52,7 +52,9 @@ namespace MvcClient.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            return RedirectToAction("Index");
+            //Response.Redirect("Index");
+            //return View();
         }
         [AllowAnonymous]
         public async Task<IActionResult> Shop(string itemCategory, string searchString)

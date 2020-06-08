@@ -96,11 +96,11 @@ namespace IdentityServer4.Quickstart.UI
             //begin register
             if (ModelState.IsValid)
             {
-                
+
                 var result = true;
                 if (model.Password.Equals(model.ConfirmPassword))
                 {
-                    
+
                     Console.WriteLine("\ngg\n");
                     Console.WriteLine(model.Username);
                     Console.WriteLine(model.Password);
@@ -135,7 +135,7 @@ namespace IdentityServer4.Quickstart.UI
             }
             //show errors
             var vm = await BuildRegisterViewModelAsync(model);
-            
+
             return View(vm);
         }
 
@@ -248,7 +248,7 @@ namespace IdentityServer4.Quickstart.UI
                 else
                 {
                     // since we don't have a valid context, then we just go back to the home page
-                    return Redirect("localhost:5002");
+                    return Redirect("http://localhost:5002");
                 }
             }
 
@@ -280,7 +280,7 @@ namespace IdentityServer4.Quickstart.UI
                     }
                     else if (string.IsNullOrEmpty(model.ReturnUrl))
                     {
-                        return Redirect("~/");
+                        return Redirect("http://localhost:5002");
                     }
                     else
                     {
