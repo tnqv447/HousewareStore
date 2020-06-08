@@ -7,7 +7,7 @@ using ItemApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
+using System.Collections.Generic;
 namespace ItemApi.Controllers
 {
     [Authorize]
@@ -61,16 +61,16 @@ namespace ItemApi.Controllers
 
         [AllowAnonymous]
         [HttpGet("{categories}")]
-        public async Task<IActionResult<IList<CategoryDTO>>> GetCategories()
-        {
-            var categories = await _categoryRepos.GetAll();
-            var result = new IList<CategoryDTO>();
-            foreach (var cate in categories)
-            {
-                result.Add(_mapper.Map<CategoryDTO>(cate));
-            }
-            return result;
-        }
+        // public async Task<IActionResult<IList<CategoryDTO>>> GetCategories()
+        // {
+        //     var categories = await _categoryRepos.GetAll();
+        //     var result = new IList<CategoryDTO>();
+        //     foreach (var cate in categories)
+        //     {
+        //         result.Add(_mapper.Map<CategoryDTO>(cate));
+        //     }
+        //     return result;
+        // }
 
 
         [HttpPost]
