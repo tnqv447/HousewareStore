@@ -34,10 +34,11 @@ namespace MvcClient.Services
         }
 
         public async Task<IList<Category>> GetCategories()
+
         {
             var uri = _baseUrl + $"/categories";
 
-            return await _httpClient.GetAsync<IList<Category>>(uri);
+            return await _httpClient.GetAsync<List<Category>>(uri);
         }
 
         public async Task<Item> GetItem(int id)
