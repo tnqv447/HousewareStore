@@ -25,6 +25,13 @@ namespace MvcClient.Services
             return await _httpClient.GetAsync<IndexViewModel>(uri);
         }
 
+        public async Task<CreateItemViewModel> GetCreateItem()
+        {
+            var uri = _baseUrl + $"/create";
+
+            return await _httpClient.GetAsync<CreateItemViewModel>(uri);
+        }
+
         public async Task<Item> GetItem(int id)
         {
             var uri = _baseUrl + $"/{id}";

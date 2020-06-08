@@ -17,8 +17,8 @@ namespace OrderApi.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.ApplyConfiguration(new OrderConfig());
-            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            // builder.ApplyConfiguration(new OrderConfig());
+            // builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

@@ -113,5 +113,17 @@ namespace ItemApi.Controllers
             return NoContent();
         }
 
+        [AllowAnonymous]
+        [HttpGet("create")]
+        public async Task<CreateItemDTO> GetCreateItem()
+        {
+            var CreateItemDTO = new CreateItemDTO()
+            {
+                Categories = await _categoryRepos.GetAllCategories(),
+                Item = null
+            };
+            return CreateItemDTO;
+        }
+
     }
 }
