@@ -5,6 +5,7 @@ using MvcClient.Models;
 using MvcClient.Services;
 using MvcClient.ViewModels;
 using Polly.CircuitBreaker;
+using System.Collections.Generic;
 
 namespace MvcClient.ViewComponents
 {
@@ -24,7 +25,7 @@ namespace MvcClient.ViewComponents
             try
             {
                 var cart = await _cartSvc.GetCart(user);
-                vm.ItemsInCart = cart.CartItems.Count();
+                vm.ItemsInCart = this.CartItemsCount(cart.CartItems);
                 vm.TotalCost = cart.Total();
             }
             catch (BrokenCircuitException)
@@ -33,6 +34,16 @@ namespace MvcClient.ViewComponents
             }
 
             return View(vm);
+        }
+
+        private int CartItemsCount(List<CartItem> items)
+        {
+            int count = 0;
+            foreach (var item in items)
+            {
+                count += item.Quantity;
+            }
+            return count;
         }
     }
 }

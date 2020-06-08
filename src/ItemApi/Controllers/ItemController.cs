@@ -7,7 +7,7 @@ using ItemApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
+using System.Collections.Generic;
 namespace ItemApi.Controllers
 {
     [Authorize]
@@ -57,6 +57,19 @@ namespace ItemApi.Controllers
             }
 
             return _mapper.Map<ItemDTO>(Item);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("categories")]
+        public async Task<ActionResult<List<CategoryDTO>>> GetCategories()
+        {
+            var categories = await _categoryRepos.GetAll();
+            var result = new List<CategoryDTO>();
+            foreach (var cate in categories)
+            {
+                result.Add(_mapper.Map<CategoryDTO>(cate));
+            }
+            return result;
         }
 
         [HttpPost]
@@ -111,6 +124,17 @@ namespace ItemApi.Controllers
             await _itemRepos.Delete(Item);
 
             return NoContent();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("create")]
+        public async Task<CreateItemDTO> GetCreateItem()
+        {
+            var CreateItemDTO = new CreateItemDTO()
+            {
+                Categories = await _categoryRepos.GetAllCategories(),
+            };
+            return CreateItemDTO;
         }
 
     }

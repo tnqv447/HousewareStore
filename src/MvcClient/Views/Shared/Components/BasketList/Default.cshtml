@@ -26,7 +26,7 @@
                         <input style="width: 6rem;" min="1" asp-for="@item.Quantity"/>
                     </td>
                     <td style="text-align: right;">$ @Math.Round(item.UnitPrice * item.Quantity, 2).ToString("N2")</td>
-                    <td style="text-align: right;" ttype="button" value="[X]"></td>
+                    <td style="text-align: right;" type="button" value="[X]"></td>
                 </tr>
                 @if (item.OldUnitPrice != 0)
                 {
