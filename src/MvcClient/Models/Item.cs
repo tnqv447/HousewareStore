@@ -18,7 +18,6 @@ namespace MvcClient.Models
         [MaxLength(100)]
         public string Description { get; set; }
 
-        [Required]
         [MaxLength(30)]
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
         public string Category { get; set; }

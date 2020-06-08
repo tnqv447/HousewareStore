@@ -134,7 +134,6 @@ namespace ItemApi.Controllers
             var CreateItemDTO = new CreateItemDTO()
             {
                 Categories = await _categoryRepos.GetAllCategories(),
-                Item = null
             };
             return CreateItemDTO;
         }
