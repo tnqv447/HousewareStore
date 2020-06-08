@@ -49,7 +49,7 @@ namespace MvcClient.Controllers {
         public IActionResult Privacy () {
             return View ();
         }
-
+        
         // public IActionResult Logout()
         // {
         //     return SignOut("Cookies", "oidc");

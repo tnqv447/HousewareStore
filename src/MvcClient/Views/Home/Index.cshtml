@@ -1,7 +1,7 @@
 ﻿@model IndexViewModel
 
 @{
-    ViewData["Title"] = "Catalog";
+    ViewData["Title"] = "Ogani";
     var selectList = new SelectList(Model.Categories);
 }
 
@@ -11,7 +11,7 @@
     </div>
 </section> *@
 
-<section class="esh-catalog-filters">
+@* <section class="esh-catalog-filters">
     <div class="container">
         <form asp-action="Index" method="GET">
             <p>
@@ -23,10 +23,131 @@
             </p>
         </form>
     </div>
-</section>
+</section> *@
+<section class="hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="hero__categories">
+                        <div class="hero__categories__all">
+                            <i class="fa fa-bars"></i>
+                            <span>All departments</span>
+                        </div>
+                        <ul>
+                            <li><a href="#">Pots & Pans</a></li>
+                            <li><a href="#">Kitchen Utensils</a></li>
+                            <li><a href="#">Bowls, Cups, Forks</a></li>
+                            <li><a href="#">Cups, Jars, Bottles</a></li>
+                            <li><a href="#">Living Room Furniture</a></li>
+                            <li><a href="#">Toiletries</a></li>
+                            <li><a href="#">Fastfood</a></li>
+                            <li><a href="#">Other utensils</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="hero__search">
+                        <div class="hero__search__form">
+                            <form asp-action="Index" method="GET">
+                            <div >
+                                <select class="hero__search__categories"  asp-for="ItemCategory"  asp-items="@selectList">
+                                    <option value="">All categories </option><span class="arrow_carrot-down"></span>
+                                </select>
+                                
+                            </div>                   
+                                
+                                
+                                <input type="text" asp-for="SearchString"  placeholder="What do yo u need?">
 
+                                <button type="submit" value="Filter" class="site-btn">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="hero__search__phone">
+                            <div class="hero__search__phone__icon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="hero__search__phone__text">
+                                <h5>+65 11.188.888</h5>
+                                <span>support 24/7 time</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding-top:10px" class="hero__item set-bg" data-setbg="img/hero/banner_2.jpg">
+                        <div class="hero__text">
+                            <span>House Ware</span>
+                            <h2>BIG SALE <br />50% OFF</h2>
+                            <p>Free Pickup and Delivery Available</p>
+                            <a href="#" class="primary-btn">SHOP NOW</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<section class="categories">
+    <div class="container">
+        <div class="row">
+            <div class="categories__slider owl-carousel">
+                @foreach(var item in Model.Categories){
+                    <div class="col-lg-3">
+                        <div class="categories__item set-bg" data-setbg="img/categories/cat-1.jpg">
+                            <h5><a href="#">@item</a></h5>
+                        </div>
+                    </div>
+                }
+                
+            </div>
+        </div>
+    </div>
+</section>
+<section class="featured spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-title">
+                    <h2>Featured Product</h2>
+                </div>
+                <div class="featured__controls">
+                    <ul>
+                        <li class="active" data-filter="*">All</li>
+                        @foreach(var item in @Model.Categories){
+                            <li data-filter=".@item">@item</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row featured__filter">
+            @foreach (var item in @Model.Items)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mix @item.Category fresh-meat">
+                    <div class="featured__item">
+                        <div class="featured__item__pic set-bg" data-setbg="img/product/items/@item.PictureUrl">
+                            <ul class="featured__item__pic__hover">
+                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <input type="hidden" asp-for="@item.Id" name="id" />
+                                @if(User.Identity.IsAuthenticated){
+                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                    @* <input class="esh-catalog-button" type="submit" value="[ ADD TO CART ]" /> *@
+                                }
+                            </ul>
+                        </div>
+                        <div class="featured__item__text">
+                            <h6><a href="#">@item.Name</a></h6>
+                            <h5>@item.UnitPrice.ToString("N2")</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+            
+        </div>
+    </div>
+</section>
 <div class="container">
-    <span>@Model.Items.Count()</span>
 @if (Model.Items.Count() > 0)
 
 {

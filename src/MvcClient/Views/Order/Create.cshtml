@@ -32,7 +32,8 @@
         </div>
     </section>
     
-    @await Html.PartialAsync("_OrderItems")
+    @* @await Html.PartialAsync("_OrderItems") *@
+    <partial name="_OrderItems.cshtml" for="@Model" asp-for="@Model"/>
 
     <input type="submit" value="[ Place Order ]" />
 </form>

@@ -5,5 +5,6 @@ namespace CartApi.Models
 {
     public interface ICartRepository : IRepository<Cart>
     {
+        
     }
 }

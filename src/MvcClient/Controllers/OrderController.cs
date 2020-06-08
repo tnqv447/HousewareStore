@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MvcClient.Models;
 using MvcClient.Services;
-
+using System;
 namespace MvcClient.Controllers
 {
     public class OrderController : Controller
@@ -49,11 +49,13 @@ namespace MvcClient.Controllers
             {
                 return View(frmOrder);
             }
-
+            
             var user = _identitySvc.Get(User);
             var order = frmOrder;
+            Console.WriteLine(frmOrder.OrderId);
             order.BuyerId = user.Id;
-
+            Console.WriteLine(frmOrder.OrderItems.Count);
+            Console.WriteLine(order.OrderId);
             // var chargeSvc = new ChargeService();
             // var charge = chargeSvc.Create(new ChargeCreateOptions
             // {
@@ -69,8 +71,9 @@ namespace MvcClient.Controllers
             if (succeeded)
             {
                 int orderId = await _orderSvc.CreateOrder(order);
+                Console.WriteLine(orderId);
                 await _cartSvc.ClearCart(user);
-                return RedirectToAction("Complete", new { id = order.OrderId });
+                return RedirectToAction("Complete", new { id = orderId});
             }
 
             ViewData["message"] = "Payment cannot be processed, try again";
