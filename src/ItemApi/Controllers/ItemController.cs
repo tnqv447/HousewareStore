@@ -60,7 +60,7 @@ namespace ItemApi.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("{categories}")]
+        [HttpGet("categories")]
         public async Task<ActionResult<List<CategoryDTO>>> GetCategories()
         {
             var categories = await _categoryRepos.GetAll();
