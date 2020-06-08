@@ -34,7 +34,13 @@ namespace MvcClient.Controllers
         {
             var user = _identitySvc.Get(User);
             var cart = await _cartSvc.GetCart(user);
+            Console.WriteLine("cart null: " + cart != null ? "false" : "true");
+            Console.WriteLine("cart count: " + cart != null ? cart.CartItems.Count : 0);
+
             var order = _cartSvc.MapCartToOrder(cart);
+            Console.WriteLine("order null: " + order != null ? "false" : "true");
+            Console.WriteLine("order count: " + order != null ? order.OrderItems.Count : 0);
+
             order.FirstName = user.FirstName;
             order.LastName = user.LastName;
             order.Address = user.Address.ToString();
@@ -49,13 +55,14 @@ namespace MvcClient.Controllers
             {
                 return View(frmOrder);
             }
-            
+            Console.WriteLine("form null: " + frmOrder == null ? "true" : "false");
+            Console.WriteLine("form cus name: " + frmOrder.FirstName);
+            Console.WriteLine("form total: " + frmOrder.Total);
             var user = _identitySvc.Get(User);
             var order = frmOrder;
-            Console.WriteLine(frmOrder.OrderId);
+            Console.WriteLine("order id: " + order.OrderId);
             order.BuyerId = user.Id;
-            Console.WriteLine(frmOrder.OrderItems.Count);
-            Console.WriteLine(order.OrderId);
+            Console.WriteLine("orderitem count: " + frmOrder.OrderItems.Count);
             // var chargeSvc = new ChargeService();
             // var charge = chargeSvc.Create(new ChargeCreateOptions
             // {
@@ -73,7 +80,7 @@ namespace MvcClient.Controllers
                 int orderId = await _orderSvc.CreateOrder(order);
                 Console.WriteLine(orderId);
                 await _cartSvc.ClearCart(user);
-                return RedirectToAction("Complete", new { id = orderId});
+                return RedirectToAction("Complete", new { id = orderId });
             }
 
             ViewData["message"] = "Payment cannot be processed, try again";

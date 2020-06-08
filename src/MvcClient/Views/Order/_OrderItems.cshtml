@@ -11,23 +11,23 @@
         <tr>
             <td>
                 <img class="esh-basket-image" src="@item.PictureUrl"/>
-                <input type="hidden" value="@item.PictureUrl" name=@("items[" + i + "].PictureUri") />
+                <input type="hidden" value="@item.PictureUrl" name=@("Model.OrderItems[" + i + "].PictureUrl") />
             </td>
             <td>
                 @item.ItemName
-                <input type="hidden" value="@item.ItemName" name=@("items[" + i + "].ProductName") />
+                <input type="hidden" value="@item.ItemName" name=@("Model.OrderItems[" + i + "].ItemName") />
             </td>
             <td>
                 $ @item.UnitPrice
-                <input type="hidden" value="@item.UnitPrice" name=@("items[" + i + "].UnitPrice") />
+                <input type="hidden" value="@item.UnitPrice" name=@("Model.OrderItems[" + i + "].UnitPrice") />
             </td>
             <td>
                 @item.Units
-                <input type="hidden" value="@item.Units" name=@("items[" + i + "].Units") />
+                <input type="hidden" value="@item.Units" name=@("Model.OrderItems[" + i + "].Units") />
             </td>
             <td>
                 $ @Math.Round(@item.Units * @item.UnitPrice,2)
-                <input type="hidden" value="@item.ItemId" name=@("items[" + i + "].ProductId") />
+                <input type="hidden" value="@item.ItemId" name=@("Model.OrderItems[" + i + "].ItemId") />
             </td>
         </tr>
     }
