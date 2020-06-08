@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using MvcClient.ViewModels;
 
@@ -8,6 +9,7 @@ namespace MvcClient.Services
     public interface IItemService
     {
         Task<IndexViewModel> GetCatalog(string category, string searchString1);
+        Task<IList<Category>> GetCategories();
         Task<Item> GetItem(int id);
         Task CreateItem(Item item);
         Task UpdateItem(int id, Item item);

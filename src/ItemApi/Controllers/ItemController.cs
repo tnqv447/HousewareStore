@@ -59,6 +59,20 @@ namespace ItemApi.Controllers
             return _mapper.Map<ItemDTO>(Item);
         }
 
+        [AllowAnonymous]
+        [HttpGet("{categories}")]
+        public async Task<IActionResult<IList<CategoryDTO>>> GetCategories()
+        {
+            var categories = await _categoryRepos.GetAll();
+            var result = new IList<CategoryDTO>();
+            foreach (var cate in categories)
+            {
+                result.Add(_mapper.Map<CategoryDTO>(cate));
+            }
+            return result;
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<Item>> Create(ItemDTO ItemDTO)
         {
