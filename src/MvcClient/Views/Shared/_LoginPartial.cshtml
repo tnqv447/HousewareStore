@@ -2,17 +2,35 @@
 @inject IIdentityService<Buyer> identityService
 @if (User.Identity.IsAuthenticated)
 {
-    <li class="nav-item dropdown">
-        @* <a href="#"><i class="fa fa-user"></i> Login</a> *@
-        <a  class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+    <li> 
+        <a href="#">Hello @User.Identity.Name</a>                   
+
+        @* <a  class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdownMenuLink"
             data-toggle="dropdown" aria-haspopup="true" arai-expanded="false">
             
-            Hello @User.Identity.Name
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a asp-action="Index" asp-controller="Order" class="dropdown-item">Orders</a>
-            <a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a>
-        </div>
+        </a> *@
+        @if(User.IsInRole("Sales") || User.IsInRole("Managers") || User.IsInRole("Administrators"))
+        {
+            <ul class="header__menu__dropdown"> 
+                <li>
+                    <a  asp-action="Index" asp-controller="Item" class="dropdown-item">Items
+                    </a>
+                </li>
+                <li><a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a></li>
+
+            </ul>
+        }
+        else{
+            <ul class="header__menu__dropdown">
+                <li><a asp-action="Index" asp-controller="Order" class="dropdown-item">Orders</a></li>
+                <li><a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a></li>
+            </ul>
+        }
+        
+        @* <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            
+            
+        </div> *@
     </li>
     @await Component.InvokeAsync("Basket", new { user = identityService.Get(User) })
 } 

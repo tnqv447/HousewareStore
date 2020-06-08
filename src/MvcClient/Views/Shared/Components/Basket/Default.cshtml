@@ -1,14 +1,14 @@
 @model CartComponentViewModel
 
-<a class="esh-basketstatus @Model.Disabled" asp-action="Index" asp-controller="Cart">
-    <li><a href="#"><i class="fa fa-shopping-bag"></i> 
-    @*  <span>3</span> *@
-    </li>
+<li>
+    <a asp-action="Index" asp-controller="Cart"><i class="fa fa-shopping-bag"></i>
+        @Model.ItemsInCart 
+    </a>
     <div class="header__cart__price">
         @* <img src="~/images/cart.png"/> *@
-        item: <span>$150.00</span>
+        Total: <span></span>
     </div>
-    <div class="esh-basketstatus-badge">
-        @Model.ItemsInCart
-    </div>
-</a>
+</li>
+@* <a class="esh-basketstatus @Model.Disabled" asp-action="Index" asp-controller="Cart">
+    
+</a> *@

@@ -87,7 +87,7 @@
                         <a href="./index.html"><img src="img/logo.png" alt=""></a>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-9">
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a asp-action="Index" asp-controller="Home">Home</a></li>
@@ -102,19 +102,13 @@
                             </li>
                             <li><a href="./blog.html">Blog</a></li>
                             <li><a href="./contact.html">Contact</a></li>
+                            <partial name="_LoginPartial"/>
+                            @* <partial name="_Admin"/> *@
+
                         </ul>
                     </nav>
                 </div>
-                <div class="col-lg-3">
-                    <div class="header__cart">
-                        <ul>
-                            <partial name="_LoginPartial"/>
-                            <partial name="_Admin"/>
-                            
-                        </ul>
-                        
-                    </div>
-                </div>
+
             </div>
             <div class="humberger__open">
                 <i class="fa fa-bars"></i>
@@ -194,7 +188,7 @@
     </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    @* <script src="~/js/site.js" asp-append-version="true"></script> *@
     <script src="~/js/jquery-3.3.1.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/jquery.nice-select.min.js"></script>
@@ -202,7 +196,7 @@
     <script src="~/js/jquery.slicknav.js"></script>
     <script src="~/js/mixitup.min.js"></script>
     <script src="~/js/owl.carousel.min.js"></script>
-    <script src="~/js/main.js"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
