@@ -110,7 +110,25 @@ ol {
 /*---------------------
   Helper CSS
 -----------------------*/
+.stick{
+	position: fixed;
 
+	background-color: rgba(59, 192, 50, 0.658);
+	/* color: #ffffff; */
+	top:0; left:0;
+	height: 70px;
+	width:100%;
+	z-index:2;
+}
+.sitck .header__menu{
+	padding: 10px 0;
+}
+.stick .header__menu  ul li.active a{
+	color: #ffffff;
+}
+.stick .header__menu ul li a:hover{
+	color:#ffffff;
+}
 .section-title {
 	margin-bottom: 50px;
 	text-align: center;

@@ -94,24 +94,15 @@
                         <ul>
                             @{
                                 
-                                var stringUrl = Context.Request;
+                                @* var stringUrl = Context.Request; *@
         
                             }
-                            <p>@stringUrl</p>
+                            
                             <li class="active"><a asp-action="Index" asp-controller="Home">Home</a></li>
                             <li><a asp-action="Shop" asp-controller="Home">Shop</a></li>
-                            @* <li><a href="#">Pages</a>
-                                <ul class="header__menu__dropdown">
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li> *@
-                            @* <li><a href="./blog.html">Blog</a></li> *@
                             <li><a asp-action="Contact" asp-controller="Home">Contact</a></li>
                             <partial name="_LoginPartial"/>
-                            @* <partial name="_Admin"/> *@
+                            
 
                         </ul>
                     </nav>

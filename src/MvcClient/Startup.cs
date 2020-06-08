@@ -46,7 +46,10 @@ namespace MvcClient
             services.AddScoped<IIdentityService<Buyer>, IdentityService>();
 
             IdentityModelEventSource.ShowPII = true;
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(
+                
+            ).AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             ConfigAuthentication(services);
 

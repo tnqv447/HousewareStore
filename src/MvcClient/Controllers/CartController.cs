@@ -65,9 +65,9 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> AddToCart(Item item)
         {
 
-
-            // Console.WriteLine(item.Name);
-            // Console.WriteLine(item.UnitPrice);
+        
+            Console.WriteLine(item.Name);
+            Console.WriteLine(item.UnitPrice);
             var cartItem = new CartItem
             {
                 Id = Guid.NewGuid().ToString(),
@@ -84,7 +84,10 @@ namespace MvcClient.Controllers
 
             await _cartSvc.AddItemToCart(buyer, cartItem);
 
-            return RedirectToAction("Index", "Home");
+            var listCart = await _cartSvc.GetCart(buyer); 
+            
+            
+            return new JsonResult(listCart);
         }
 
         [HttpDelete]

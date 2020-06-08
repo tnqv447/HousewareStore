@@ -14,10 +14,16 @@
     /*------------------
         Preloader
     --------------------*/
+    $(window).scroll(function(){
+        var sticky = $('.header'),
+            scroll = $(window).scrollTop();
+
+        if (scroll >= 100) sticky.addClass('stick');
+        else sticky.removeClass('stick');
+    });
     $(window).on('load', function () {
         $(".loader").fadeOut();
         $("#preloder").delay(200).fadeOut("slow");
-
         /*------------------
             Gallery filter
         --------------------*/
@@ -220,5 +226,5 @@
         }
         $button.parent().find('input').val(newVal);
     });
-
+    
 })(jQuery);

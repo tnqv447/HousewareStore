@@ -1,16 +1,16 @@
 @model CartComponentViewModel
-
-<li>
-    <a asp-action="Index" asp-controller="Cart"><i class="fa fa-shopping-bag"></i>
-        @Model.ItemsInCart 
+<li >
+    <a  asp-action="Index" style="cursor:pointer" asp-controller="Cart"><i class="fa fa-shopping-bag"></i>
+        <span id="loadCart">@Model.ItemsInCart</span> 
     </a>
 </li>
-<li>
+<li >
     <div class="header__cart__price">
         @* <img src="~/images/cart.png"/> *@
-        Total: $@Model.TotalCost.ToString("N1")<span></span>
+        Total: <span id="loadTotal">$@Model.TotalCost.ToString("N1")</span>
     </div>
 </li>
+
 @* <a class="esh-basketstatus @Model.Disabled" asp-action="Index" asp-controller="Cart">
     
 </a> *@

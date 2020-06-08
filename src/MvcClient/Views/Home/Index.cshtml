@@ -130,22 +130,66 @@
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <input type="hidden" asp-for="@Model.Items[i].Id" name="id" />
+                                <input type="hidden" value="@Model.Items[i].CategoryId" id="item_category_id_@Model.Items[i].Id">
+                                <input type="hidden" value="@Model.Items[i].PictureUrl" id="item_picture_uri_@Model.Items[i].Id"/>
+                                <input type="hidden" value="@Model.Items[i].UnitPrice" id="item_price_@Model.Items[i].Id"/>
                                 @if(User.Identity.IsAuthenticated){
-                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                    <li><a style="cursor:pointer" class="add_to_cart" id="@Model.Items[i].Id"><i class="fa fa-shopping-cart"></i></a></li>
                                     @* <input class="esh-catalog-button" type="submit" value="[ ADD TO CART ]" /> *@
                                 }
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">@Model.Items[i].Name</a></h6>
-                            <h5>@Model.Items[i].UnitPrice.ToString("N2")</h5>
+                            <h6 id="item_name_@Model.Items[i].Id">@Model.Items[i].Name</h6>
+                            <h5 >@Model.Items[i].UnitPrice.ToString("N2")</h5>
                         </div>
                     </div>
                 </div>
             }
             
-            
+            @section Scripts{
+                <script>
+                    (function ($) {
+                        $(document).on('click','.add_to_cart',function(){
+                            var item_id = $(this).attr('id');
+                            var item_name = $('#item_name_'+item_id).text();
+                            var item_price = $('#item_price_'+item_id).val();
+                            var item_category_id = $('#item_category_id_'+item_id).val();
+                            var item_picture_url = $('#item_picture_uri_'+item_id).val();
+                            
+                            var item = new Object()
+                            item.Id = parseInt(item_id);
+                            item.Name = item_name;
+                            item.UnitPrice = parseFloat(item_price),
+                            item.CategoryId = parseInt(item_category_id);
+                            item.PictureUrl = item_picture_url;
+                            
+                            $.ajax({
+                                type: 'POST',
+                                
+                                
+                                data: item ,
+                                url: '@Url.Action("AddToCart","Cart")',
+                                success:function(data){
+                                    var total_quantities = 0;
+                                    var total_price = 0;
+                                    for( i = 0;i < data.cartItems.length;i++){
+                                        total_quantities += data.cartItems[i].quantity;
+                                        total_price += data.cartItems[i].unitPrice;   
+                                        
+                                    }
+                                    $("#loadCart").text(total_quantities);
+                                    $("#loadTotal").text("$ " + $.number(total_price,2));    
+                                
+                                },
+                                error: function(xhr){
+                                    alert("error");
+                                }
+                            })
+                        })
+                        })(jQuery);
+                </script>
+            }
         </div>
     </div>
 </section>
