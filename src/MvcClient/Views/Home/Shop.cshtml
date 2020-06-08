@@ -1,0 +1,61 @@
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Ogani Shop";
+    var selectList = new SelectList(Model.Categories);
+}
+<section class="hero hero-normal">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="hero__categories">
+                        <div class="hero__categories__all">
+                            <i class="fa fa-bars"></i>
+                            <span>All departments</span>
+                        </div>
+                        <ul>
+                            <li><a href="#">Pots & Pans</a></li>
+                            <li><a href="#">Kitchen Utensils</a></li>
+                            <li><a href="#">Bowls, Cups, Forks</a></li>
+                            <li><a href="#">Cups, Jars, Bottles</a></li>
+                            <li><a href="#">Living Room Furniture</a></li>
+                            <li><a href="#">Toiletries</a></li>
+                            <li><a href="#">Fastfood</a></li>
+                            <li><a href="#">Other utensils</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="hero__search">
+                        <div class="hero__search__form">
+                            <form asp-action="Index" method="GET">
+                            <div >
+                                <select class="hero__search__categories"  asp-for="ItemCategory"  asp-items="@selectList">
+                                    <option value="">All categories </option><span class="arrow_carrot-down"></span>
+                                </select>
+                                
+                            </div>                   
+                                
+                                
+                                <input type="text" asp-for="SearchString"  placeholder="What do yo u need?">
+
+                                <button type="submit" value="Filter" class="site-btn">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="hero__search__phone">
+                            <div class="hero__search__phone__icon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="hero__search__phone__text">
+                                <h5>+65 11.188.888</h5>
+                                <span>support 24/7 time</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+</section>

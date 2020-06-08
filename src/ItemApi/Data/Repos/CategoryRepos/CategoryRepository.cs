@@ -42,5 +42,13 @@ namespace ItemApi.Data.Repos
                 .Distinct().ToListAsync();
         }
 
+        public async Task<IEnumerable<int>> GetAllCategoryIds()
+        {
+            return await _context.Categories
+                .OrderBy(m => m.CategoryId)
+                .Select(m => m.CategoryId)
+                .Distinct().ToListAsync();
+        }
+
     }
 }

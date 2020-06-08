@@ -8,6 +8,8 @@ namespace MvcClient.ViewModels
         public string SearchString { get; set; }
         public string ItemCategory { get; set; }
         public IEnumerable<string> Categories { get; set; }
-        public IList<Item> Items { get; set; }        
+
+        public IEnumerable<int> CategoriesId { get; set; }
+        public IList<Item> Items { get; set; }
     }
 }

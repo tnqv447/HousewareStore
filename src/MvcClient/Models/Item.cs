@@ -22,7 +22,7 @@ namespace MvcClient.Models
         [MaxLength(30)]
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
         public string Category { get; set; }
-
+        public int CategoryId { get; set; }
         public string PictureUrl { get; set; }
         public string OwnerId { get; set; }
         public ItemStatus ItemStatus { get; set; }

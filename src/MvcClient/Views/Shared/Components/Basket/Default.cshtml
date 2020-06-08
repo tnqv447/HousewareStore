@@ -4,9 +4,11 @@
     <a asp-action="Index" asp-controller="Cart"><i class="fa fa-shopping-bag"></i>
         @Model.ItemsInCart 
     </a>
+</li>
+<li>
     <div class="header__cart__price">
         @* <img src="~/images/cart.png"/> *@
-        Total: <span></span>
+        Total: $@Model.TotalCost.ToString("N1")<span></span>
     </div>
 </li>
 @* <a class="esh-basketstatus @Model.Disabled" asp-action="Index" asp-controller="Cart">

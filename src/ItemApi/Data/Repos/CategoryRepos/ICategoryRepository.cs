@@ -10,6 +10,7 @@ namespace ItemApi.Data.Repos
     {
         int GetCategoryIdByName(string categoryName);
         Task<IEnumerable<string>> GetAllCategoryNames();
+        Task<IEnumerable<int>> GetAllCategoryIds();
 
     }
 }
