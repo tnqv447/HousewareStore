@@ -112,23 +112,25 @@
                 <div class="featured__controls">
                     <ul>
                         <li class="active" data-filter="*">All</li>
-                        @foreach(var item in @Model.Categories){
-                            <li data-filter=".@item">@item</li>
+                        @for(var i=0;i < @Model.Categories.Count();i++){
+                            <li data-filter=".category_@Model.CategoriesId.ElementAt(i)">@Model.Categories.ElementAt(i)</li>
                         }
                     </ul>
                 </div>
             </div>
         </div>
         <div class="row featured__filter">
-            @foreach (var item in @Model.Items)
+            @for(var i=0;i < @Model.Items.Count(); i++ )
             {
-                <div class="col-lg-3 col-md-4 col-sm-6 mix @item.Category fresh-meat">
+                var temp = @Model.Items[i].CategoryId;
+                var fillter = "category_" + temp ;
+                <div class="col-lg-3 col-md-4 col-sm-6 mix @fillter">
                     <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="img/product/items/@item.PictureUrl">
+                        <div class="featured__item__pic set-bg" data-setbg="img/product/items/@Model.Items[i].PictureUrl">
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <input type="hidden" asp-for="@item.Id" name="id" />
+                                <input type="hidden" asp-for="@Model.Items[i].Id" name="id" />
                                 @if(User.Identity.IsAuthenticated){
                                     <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     @* <input class="esh-catalog-button" type="submit" value="[ ADD TO CART ]" /> *@
@@ -136,8 +138,8 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">@item.Name</a></h6>
-                            <h5>@item.UnitPrice.ToString("N2")</h5>
+                            <h6><a href="#">@Model.Items[i].Name</a></h6>
+                            <h5>@Model.Items[i].UnitPrice.ToString("N2")</h5>
                         </div>
                     </div>
                 </div>
@@ -147,7 +149,7 @@
         </div>
     </div>
 </section>
-<div class="container">
+@* <div class="container">
 @if (Model.Items.Count() > 0)
 
 {
@@ -168,4 +170,4 @@
         Không tìm thấy kết quả phù hợp
     </div>
 }
-</div>
+</div> *@

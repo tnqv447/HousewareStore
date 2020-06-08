@@ -7,6 +7,7 @@ namespace ItemApi.DTOs
         public string SearchString { get; set; }
         public string ItemCategory { get; set; }
         public IEnumerable<string> Categories { get; set; }
+        public IEnumerable<int> CategoriesId { get; set; }
         public IEnumerable<ItemDTO> Items { get; set; }
     }
 }
