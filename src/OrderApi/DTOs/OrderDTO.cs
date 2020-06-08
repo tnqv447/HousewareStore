@@ -6,7 +6,7 @@ namespace OrderApi.DTOs
 {
     public class OrderDTO
     {
-        public int Id { get; set; }
+        public int OrderId { get; set; }
         public string BuyerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

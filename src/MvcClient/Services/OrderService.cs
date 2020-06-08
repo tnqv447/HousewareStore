@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MvcClient.Infrastructure;
 using MvcClient.Models;
-
+using System;
 namespace MvcClient.Services
 {
     public class OrderService : IOrderService
@@ -29,7 +29,7 @@ namespace MvcClient.Services
         public async Task<Order> GetOrder(int id)
         {
             var uri = _serviceBaseUrl + $"/{id}";
-
+            Console.WriteLine(uri);
             return await _httpClient.GetAsync<Order>(uri);
         }
 

@@ -62,6 +62,7 @@ namespace MvcClient.Controllers
             var order = frmOrder;
             Console.WriteLine("order id: " + order.OrderId);
             order.BuyerId = user.Id;
+            
             Console.WriteLine("orderitem count: " + frmOrder.OrderItems.Count);
             // var chargeSvc = new ChargeService();
             // var charge = chargeSvc.Create(new ChargeCreateOptions
