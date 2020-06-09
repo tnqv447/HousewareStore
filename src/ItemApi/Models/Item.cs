@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ItemApi.DTOs;
 
 namespace ItemApi.Models
 {
@@ -16,20 +17,33 @@ namespace ItemApi.Models
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-
+        public Item() { }
+        public Item(ItemDTO item)
+        {
+            Id = item.Id;
+            Name = item.Name;
+            UnitPrice = item.UnitPrice;
+            PictureUrl = item.PictureUrl;
+            Description = item.Description;
+            OwnerId = item.OwnerId;
+            ItemStatus = item.ItemStatus;
+            DbStatus = item.DbStatus;
+            CategoryId = item.CategoryId;
+        }
     }
 
-    public enum ItemStatus
-    {
-        Submitted = 0,
-        Approved = 1,
-        Rejected = 2,
-    }
+}
 
-    public enum DbStatus
-    {
-        Active = 0,
-        Disabled = 1,
-        All = 2
-    }
+public enum ItemStatus
+{
+    Submitted = 0,
+    Approved = 1,
+    Rejected = 2,
+}
+
+public enum DbStatus
+{
+    Active = 0,
+    Disabled = 1,
+    All = 2
 }

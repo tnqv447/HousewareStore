@@ -90,14 +90,14 @@ namespace ItemApi.Controllers
                 return BadRequest();
             }
 
-            var Item = await _itemRepos.GetBy(id);
-
+            // var Item = await _itemRepos.GetBy(id);
+            Item Item = new Item(ItemDTO);
             if (Item == null)
             {
                 return NotFound();
             }
 
-            _mapper.Map<Item>(ItemDTO);
+            // _mapper.Map<Item>(ItemDTO);
 
             try
             {
