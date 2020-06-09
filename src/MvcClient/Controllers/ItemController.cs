@@ -52,7 +52,9 @@ namespace MvcClient.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var viewModel = await _itemService.GetCreateItem();
+            ItemCategoryViewModel viewModel = new ItemCategoryViewModel();
+            viewModel.Item = null;
+            viewModel.Categories = await _itemService.GetCategories();
             return View(viewModel);
         }
 
@@ -82,8 +84,10 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var item = await _itemService.GetItem(id);
-
-            return View(item);
+            ItemCategoryViewModel viewModel = new ItemCategoryViewModel();
+            viewModel.Item = item;
+            viewModel.Categories = await _itemService.GetCategories();
+            return View(viewModel);
         }
 
         [HttpPost]

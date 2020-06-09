@@ -38,6 +38,7 @@ namespace ItemApi.Data.Repos
             {
                 Items = Items.Where(m => m.Name.Contains(searchString));
             }
+<<<<<<< HEAD
             if(!string.IsNullOrEmpty(sortOrder))
             {
                 switch (sortOrder)
@@ -58,6 +59,9 @@ namespace ItemApi.Data.Repos
             }
             return await Items
                 .Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync();
+=======
+            return await MappingToItemDTO(Items);
+>>>>>>> 2065de25e9aae98f39adc274249eeaa7326a4ab0
         }
 
         public bool ItemExists(int id)
@@ -83,6 +87,21 @@ namespace ItemApi.Data.Repos
                 item.DbStatus = dbStatus;
                 await this.Update(item);
             }
+        }
+
+        public async Task<IEnumerable<ItemDTO>> MappingToItemDTO(IQueryable<Item> items)
+        {
+            var ItemsDto = from i in _context.Items
+                           join c in _context.Categories on i.CategoryId equals c.CategoryId
+                           select new ItemDTO(i, c.CategoryName);
+            return await ItemsDto.ToListAsync();
+        }
+        public async Task<ItemDTO> MappingToItemDTO(Item item)
+        {
+            var Category = await _categoryRepos.GetBy(item.CategoryId);
+            string CategoryName = Category.CategoryName;
+            var ItemsDto = new ItemDTO(item, CategoryName);
+            return ItemsDto;
         }
 
     }
