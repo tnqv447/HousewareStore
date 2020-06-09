@@ -113,10 +113,10 @@ ol {
 .stick{
 	position: fixed;
 
-	background-color: rgba(59, 192, 50, 0.658);
+	background-color: rgba(59, 192, 50, 0.753);
 	/* color: #ffffff; */
 	top:0; left:0;
-	height: 70px;
+	height: 50px;
 	width:100%;
 	z-index:2;
 }
@@ -128,6 +128,12 @@ ol {
 }
 .stick .header__menu ul li a:hover{
 	color:#ffffff;
+}
+.stick .header__logo{
+	padding: 5px 0;
+}
+.stick .header__menu{
+	padding: 10px 0;
 }
 .section-title {
 	margin-bottom: 50px;
@@ -151,7 +157,13 @@ ol {
 	content: "";
 	margin: 0 auto;
 }
-
+.product__pagination .disabled{
+	display: none;
+}
+.product__pagination .active {
+	background-color: #7fad39;
+	color:#ffffff !important;
+}
 .set-bg {
 	background-repeat: no-repeat;
 	background-size: cover;

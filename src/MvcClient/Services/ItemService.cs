@@ -19,13 +19,14 @@ namespace MvcClient.Services
             _baseUrl = appSettings.Value.ItemUrl;
         }
 
-        public async Task<IndexViewModel> GetCatalog(string category, string searchString)
+        public async Task<IndexViewModel> GetCatalog(string category, string searchString, string sortOrder)
         {
-            var uri = _baseUrl + $"/catalog?searchString={searchString}&category={category}";
+            var uri = _baseUrl + $"/catalog?searchString={searchString}&category={category}&sortOrder={sortOrder}";
 
             return await _httpClient.GetAsync<IndexViewModel>(uri);
         }
-
+        
+        
         public async Task<CreateItemViewModel> GetCreateItem()
         {
             var uri = _baseUrl + $"/create";

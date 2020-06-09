@@ -20,90 +20,87 @@
     <div id="preloder">
         <div class="loader"></div>
     </div>
-    @* <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MvcClient</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial"/>
-                    <ul class="navbar-nav flex-grow-1"> 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-action="Index" asp-controller="Home">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-action="Privacy" asp-controller="Home">Privacy</a>
-                        </li>
-                        <partial name="_Admin"/>
+    <!-- Humberger Begin -->
+    <div class="humberger__menu__overlay"></div>
+    <div class="humberger__menu__wrapper">
+        <div class="humberger__menu__logo">
+            <a href="#"><img src="img/logo.png" alt=""></a>
+        </div>
+        <div class="humberger__menu__cart">
+            <ul>
+                <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+            </ul>
+            <div class="header__cart__price">item: <span>$150.00</span></div>
+        </div>
+        <div class="humberger__menu__widget">
+            <div class="header__top__right__language">
+                <img src="img/language.png" alt="">
+                <div>English</div>
+                <span class="arrow_carrot-down"></span>
+                <ul>
+                    <li><a href="#">Spanis</a></li>
+                    <li><a href="#">English</a></li>
+                </ul>
+            </div>
+            <div class="header__top__right__auth">
+                <a href="#"><i class="fa fa-user"></i> Login</a>
+            </div>
+        </div>
+        <nav class="humberger__menu__nav mobile-menu">
+            <ul>
+                <li class="active"><a href="./index.html">Home</a></li>
+                <li><a href="./shop-grid.html">Shop</a></li>
+                <li><a href="#">Pages</a>
+                    <ul class="header__menu__dropdown">
+                        <li><a href="./shop-details.html">Shop Details</a></li>
+                        <li><a href="./shoping-cart.html">Shoping Cart</a></li>
+                        <li><a href="./checkout.html">Check Out</a></li>
+                        <li><a href="./blog-details.html">Blog Details</a></li>
                     </ul>
-                </div>
-            </div>
+                </li>
+                <li><a href="./blog.html">Blog</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+            </ul>
         </nav>
-    </header> *@
+        <div id="mobile-menu-wrap"></div>
+        <div class="header__top__right__social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-linkedin"></i></a>
+            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+        </div>
+        <div class="humberger__menu__contact">
+            <ul>
+                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                <li>Free Shipping for all Order of $99</li>
+            </ul>
+        </div>
+    </div>
     <header class="header">
-        @* <div class="header__top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="header__top__left">
-                            <ul>
-                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                                <li>Free Shipping for all Order of $99</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="header__top__right">
-                            <div class="header__top__right__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
-                            </div>
-                            <div class="header__top__right__language">
-                                <img src="img/language.png" alt="">
-                                <div>English</div>
-                                <span class="arrow_carrot-down"></span>
-                                <ul>
-                                    <li><a href="#">Spanis</a></li>
-                                    <li><a href="#">English</a></li>
-                                </ul>
-                            </div>
-                            <div class="header__top__right__auth">
-                                <partial name="_LoginPartial"/>
-                                <partial name="_Admin"/>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> *@
         <div class="container">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-lg-3">
                     <div class="header__logo">
                         <a href="./index.html"><img src="img/logo.png" alt=""></a>
                     </div>
                 </div>
-                <div class="col-lg-10">
+                <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-                            @{
-                                
-                                @* var stringUrl = Context.Request; *@
-        
-                            }
+                            <li id="url_Home" class="active"><a asp-action="Index" asp-controller="Home">Home</a></li>
+                            <li id="url_Shop"><a asp-action="Index" asp-controller="Shop">Shop</a></li>
+                            <li id="url_Contact"><a asp-action="Contact" asp-controller="Home">Contact</a></li>
                             
-                            <li class="active"><a asp-action="Index" asp-controller="Home">Home</a></li>
-                            <li><a asp-action="Shop" asp-controller="Home">Shop</a></li>
-                            <li><a asp-action="Contact" asp-controller="Home">Contact</a></li>
-                            <partial name="_LoginPartial"/>
                             
 
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3">
+                    <nav class="header__menu">
+                        <ul>
+                            <partial name="_LoginPartial"/>
                         </ul>
                     </nav>
                 </div>
@@ -180,14 +177,10 @@
             </div>
         </div>
     </footer>
-    @* <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - MvcClient - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer> *@
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @* <script src="~/js/site.js" asp-append-version="true"></script> *@
+
     <script src="~/js/jquery-3.3.1.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/jquery.nice-select.min.js"></script>
@@ -198,6 +191,52 @@
     <script src="~/js/mixitup.min.js"></script>
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/main.js" asp-append-version="true"></script>
+    @section Scripts{
+    <script>
+        (function ($) {
+            $(document).on('click','.add_to_cart',function(){
+                var item_id = $(this).attr('id');
+                var item_name = $('#item_name_'+item_id).text();
+                var item_price = $('#item_price_'+item_id).val();
+                var item_category_id = $('#item_category_id_'+item_id).val();
+                var item_picture_url = $('#item_picture_uri_'+item_id).val();
+                
+                var item = new Object()
+                item.Id = parseInt(item_id);
+                item.Name = item_name;
+                item.UnitPrice = parseFloat(item_price),
+                item.CategoryId = parseInt(item_category_id);
+                item.PictureUrl = item_picture_url;
+                
+                $.ajax({
+                    type: 'POST',
+                    
+                    
+                    data: item ,
+                    url: '@Url.Action("AddToCart","Cart")',
+                    success:function(data){
+                        var total_quantities = 0;
+                        var total_price = 0;
+                        for( i = 0;i < data.cartItems.length;i++){
+                            total_quantities += data.cartItems[i].quantity;
+                            total_price += data.cartItems[i].unitPrice;   
+                            
+                        }
+                        $("#loadCart").text(total_quantities);
+                        $("#loadTotal").text("$ " + $.number(total_price,2));    
+                    
+                    },
+                    error: function(xhr){
+                        alert("error");
+                    }
+                })
+            })
+            })(jQuery);
+    </script>
+    
+    }
+    
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

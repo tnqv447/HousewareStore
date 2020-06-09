@@ -13,7 +13,7 @@ namespace MvcClient.Models
 
         [DataType(DataType.Currency)]
         [Range(1, 1000000)]
-        public decimal UnitPrice { get; set; }
+        public double UnitPrice { get; set; }
 
         [MaxLength(100)]
         public string Description { get; set; }

@@ -14,6 +14,29 @@
     /*------------------
         Preloader
     --------------------*/
+    
+        var current = location.pathname;
+        
+    $('nav ul li a').each(function(){
+        var $this = $(this);
+        var link = $this.attr('href').indexOf(current);
+        var href = $(this).closest('li').attr('id');
+        if(window.location.pathname == "/")
+        {
+            
+        }
+        else{
+            if(link!== -1){
+                $("#"+ href).addClass('active');
+            }
+            else{
+                $("#" + href ).removeClass('active');
+            }
+        }
+        // if the current path is like this link, make it active
+        
+    });
+
     $(window).scroll(function(){
         var sticky = $('.header'),
             scroll = $(window).scrollTop();

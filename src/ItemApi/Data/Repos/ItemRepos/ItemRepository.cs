@@ -5,7 +5,7 @@ using AutoMapper;
 using ItemApi.DTOs;
 using ItemApi.Models;
 using Microsoft.EntityFrameworkCore;
-
+using System;
 namespace ItemApi.Data.Repos
 {
     public class ItemRepository : Repository<Item>, IItemRepository
@@ -21,11 +21,14 @@ namespace ItemApi.Data.Repos
             _categoryRepos = categoryRepos;
         }
 
-        public async Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null, DbStatus dbStatus = DbStatus.Active)
+        public async Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null,string sortOrder=" ", DbStatus dbStatus = DbStatus.Active)
         {
 
             var Items = dbStatus == DbStatus.All ? _context.Items : _context.Items.Where(m => m.DbStatus.Equals(dbStatus));
-
+            
+            if(string.IsNullOrEmpty(sortOrder)){
+                sortOrder = " ";
+            }
             if (!string.IsNullOrEmpty(category))
             {
                 var categoryId = _categoryRepos.GetCategoryIdByName(category);
@@ -35,7 +38,24 @@ namespace ItemApi.Data.Repos
             {
                 Items = Items.Where(m => m.Name.Contains(searchString));
             }
-
+            if(!string.IsNullOrEmpty(sortOrder))
+            {
+                switch (sortOrder)
+                {
+                    case "name_desc":
+                        Items =Items.OrderByDescending(m => m.Name);
+                        break;
+                    case "price":
+                        Items = Items.OrderBy(m => m.UnitPrice);
+                        break;
+                    case "price_desc":
+                        Items =Items.OrderByDescending(m => m.UnitPrice);
+                        break;
+                    default:
+                        Items = Items.OrderBy(m => m.Name);
+                        break;
+                }
+            }
             return await Items
                 .Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync();
         }

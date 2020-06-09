@@ -9,7 +9,7 @@ namespace MvcClient.Models
         public string Id { get; set; }
         public List<CartItem> CartItems { get; set; } = new List<CartItem>();
 
-        public decimal Total()
+        public double Total()
         {
             return Math.Round(CartItems.Sum(x => x.UnitPrice * x.Quantity), 2);
         }

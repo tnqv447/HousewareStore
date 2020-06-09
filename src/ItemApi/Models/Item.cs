@@ -7,7 +7,7 @@ namespace ItemApi.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal UnitPrice { get; set; }
+        public double UnitPrice { get; set; }
         public string OwnerId { get; set; }
         public string PictureUrl { get; set; }
         public string Description { get; set; }

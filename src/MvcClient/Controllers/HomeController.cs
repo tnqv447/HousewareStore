@@ -31,9 +31,10 @@ namespace MvcClient.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string itemCategory, string searchString)
+        public async Task<IActionResult> Index()
         {
-            var catalog = await _service.GetCatalog(itemCategory, searchString);
+
+            var catalog = await _service.GetCatalog("", "","");
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
 
@@ -49,7 +50,11 @@ namespace MvcClient.Controllers
 
             return View(catalog);
         }
-
+        [AllowAnonymous]
+        public IActionResult SearchCategory(string itemCategory, string searchString){    
+            // var uri = new Uri.Action("Index","Shop");
+            return RedirectToAction("Index","Shop", new{itemCategory = itemCategory, searchString= searchString});
+        }
         public IActionResult Privacy()
         {
             return RedirectToAction("Index");
@@ -57,25 +62,8 @@ namespace MvcClient.Controllers
             //return View();
         }
         [AllowAnonymous]
-        public async Task<IActionResult> Shop(string itemCategory, string searchString)
-        {
-            var catalog = await _service.GetCatalog(itemCategory, searchString);
-            var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
-                User.IsInRole(Constants.ManagersRole);
-
-            if (!isAdminOrManager)
-            {
-                //var userId = _identityService.Get (User).Id;
-                catalog.Items = catalog.Items
-                    .Where(m => m.ItemStatus == ItemStatus.Approved)
-                    .ToList();
-            }
-
-            ChangeUriPlaceholder(catalog.Items);
-
-            return View(catalog);
-        }
-        [AllowAnonymous]
+        
+        
         public IActionResult Contact()
         {
             return View();

@@ -1,0 +1,423 @@
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Ogani Shop";
+    var selectList = new SelectList(Model.Categories);
+}
+<section class="hero hero-normal">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="hero__categories">
+                        <div class="hero__categories__all">
+                            <i class="fa fa-bars"></i>
+                            <span>All departments</span>
+                        </div>
+                        <ul>
+                            <li><a href="#">Pots & Pans</a></li>
+                            <li><a href="#">Kitchen Utensils</a></li>
+                            <li><a href="#">Bowls, Cups, Forks</a></li>
+                            <li><a href="#">Cups, Jars, Bottles</a></li>
+                            <li><a href="#">Living Room Furniture</a></li>
+                            <li><a href="#">Toiletries</a></li>
+                            <li><a href="#">Fastfood</a></li>
+                            <li><a href="#">Other utensils</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="hero__search">
+                        <div class="hero__search__form">
+                            <form asp-action="Index" method="GET">
+                            <div >
+                                <select class="hero__search__categories"  asp-for="ItemCategory"  asp-items="@selectList">
+                                    <option value="">All categories </option><span class="arrow_carrot-down"></span>
+                                </select>
+                                
+                            </div>                   
+                                
+                                
+                                <input type="text" asp-for="SearchString"  placeholder="What do yo u need?">
+
+                                <button type="submit" value="Filter" class="site-btn">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="hero__search__phone">
+                            <div class="hero__search__phone__icon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="hero__search__phone__text">
+                                <h5>+65 11.188.888</h5>
+                                <span>support 24/7 time</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+</section>
+<section class="breadcrumb-section set-bg" data-setbg="img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Organi Shop</h2>
+                    <div class="breadcrumb__option">
+                        <a asp-action="Index" asp-controller="Home">Home</a>
+                        <span>Shop</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h4>Department</h4>
+                        <ul>
+                            @foreach(var item in Model.Categories){
+                                <li><a href="#">@item</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="sidebar__item">
+                        <h4>Price</h4>
+                        <div class="price-range-wrap">
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                data-min="10" data-max="540">
+                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                            </div>
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <input type="text" id="minamount">
+                                    <input type="text" id="maxamount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar__item">
+                        <div class="latest-product__text">
+                            <h4>Latest Products</h4>
+                            <div class="latest-product__slider owl-carousel">
+                                <div class="latest-prdouct__slider__item">
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-1.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-2.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-3.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="latest-prdouct__slider__item">
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-1.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-2.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="img/latest-product/lp-3.jpg" alt="">
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>Crab Pool Security</h6>
+                                            <span>$30.00</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                <div class="filter__item">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-5">
+                            <div class="filter__sort">
+                                <span>Sort By</span>
+                                <select class="select_sort_value">
+                                    <option value="" selected>Name</option>
+                                    <option value="name_desc">Name Descending</option>
+                                    <option value="price">Price</option>
+                                    <option value="price_desc">Price Descending</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+                            <div class="filter__found">
+                                <h6><span>@Model.Items.Count</span> Products found</h6>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-3">
+                            <div class="filter__option">
+                                <span class="icon_grid-2x2"></span>
+                                <span class="icon_ul"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="loadProductPage">
+                    @foreach(var item in Model.ItemsPaging){
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="img/product/@item.PictureUrl">
+                                    <ul class="product__item__pic__hover">
+                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        @if(User.Identity.IsAuthenticated){
+                                            <li><a style="cursor:pointer" class="add_to_cart" id="@item.Id"><i class="fa fa-shopping-cart"></i></a></li>
+                            
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a href="#">@item.Name</a></h6>
+                                    <h5>@item.UnitPrice</h5>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                @{
+                    var prevDisabled = !Model.ItemsPaging.HasPrevious ? "disabled" : "";
+                    var nextDisabled = !Model.ItemsPaging.HasNext ? "disabled" : "";
+                }   
+                
+                </div>
+                <div class="product__pagination">
+                    <a class="@prevDisabled" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex - 1)"><i class="fa fa-long-arrow-left"></i></a>
+                    @for(var i = 0;i<Model.ItemsPaging.TotalPages;i++){
+                        var pageActive = Model.ItemsPaging.PageIndex == (i+1) ?"active":"";
+                        <a style="cursor:pointer" id="page_@(i+1)" class="number_page @pageActive" >@(i+1)</a>
+                    }
+                    <a class="@nextDisabled" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex + 1)"><i class="fa fa-long-arrow-right"></i></a>
+                </div>
+                <div class="product__discount">
+                    <div class="section-title product__discount__title">
+                        <h2>Sale Off</h2>
+                    </div>
+                    <div class="row">
+                        <div class="product__discount__slider owl-carousel">
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                        data-setbg="img/product/discount/pd-1.jpg">
+                                        <div class="product__discount__percent">-20%</div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span>Dried Fruit</span>
+                                        <h5><a href="#">Raisin’n’nuts</a></h5>
+                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                        data-setbg="img/product/discount/pd-2.jpg">
+                                        <div class="product__discount__percent">-20%</div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span>Vegetables</span>
+                                        <h5><a href="#">Vegetables’package</a></h5>
+                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                        data-setbg="img/product/discount/pd-3.jpg">
+                                        <div class="product__discount__percent">-20%</div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span>Dried Fruit</span>
+                                        <h5><a href="#">Mixed Fruitss</a></h5>
+                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                        data-setbg="img/product/discount/pd-4.jpg">
+                                        <div class="product__discount__percent">-20%</div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span>Dried Fruit</span>
+                                        <h5><a href="#">Raisin’n’nuts</a></h5>
+                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                        data-setbg="img/product/discount/pd-5.jpg">
+                                        <div class="product__discount__percent">-20%</div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span>Dried Fruit</span>
+                                        <h5><a href="#">Raisin’n’nuts</a></h5>
+                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                        data-setbg="img/product/discount/pd-6.jpg">
+                                        <div class="product__discount__percent">-20%</div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span>Dried Fruit</span>
+                                        <h5><a href="#">Raisin’n’nuts</a></h5>
+                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script>
+        (function ($) {
+            function loadItem(sortValue,pageNumber){
+                $.ajax({
+                    type: 'GET',
+                    data: {sortOrder:sortValue, pageNumber: pageNumber} ,
+                    url: '@Url.Action("ItemPaging","Shop")',
+                    success:function(data){
+                        
+                        html = ''
+                        for(i = 0;i < data.itemsPaging.length;i++){
+                            html += '<div class="col-lg-4 col-md-6 col-sm-6">';
+                            html += '   <div class="product__item">';
+                            html += '       <div class="product__item__pic set-bg" data-setbg="img/product/'+data.itemsPaging[i].pictureUrl+'">';
+                            html += '           <ul class="product__item__pic__hover">';
+                            html += '               <li><a href="#"><i class="fa fa-heart"></i></a></li>';
+                            html += '                   <li><a href="#"><i class="fa fa-heart"></i></a></li>';
+                            html += '                   <li><a href="#"><i class="fa fa-retweet"></i></a></li>';
+                            html += '                   @if(User.Identity.IsAuthenticated){<li><a style="cursor:pointer" class="add_to_cart" id="'+data.ItemsPaging[i].id+'"><i class="fa fa-shopping-cart"></i></a></li>}';
+                            html += '           </ul>';
+                            html += '       </div>';
+                            html += '       <div class="product__item__text">';
+                            html += '           <h6><a href="#">'+data.itemsPaging[i].name+'</a></h6>';
+                            html += '           <h5>'+data.itemsPaging[i].unitPrice+'</h5>';
+                            html += '       </div>';
+                            html += '   </div>';
+                            html += '</div>';
+                        }
+                        $("#loadProductPage").removeClass('loader');
+                        $("#loadProductPage").html(html);
+                        for(i=0;i<data.pageTotal;i++)
+                        {
+                            if((i+1) != pageNumber)
+                            {
+                                $("#page_"+(i+1)).removeClass("active");
+                            }
+                            else{
+                                $("#page_"+(i+1)).addClass("active");
+                            }
+                        }
+                        
+                        
+                        $('.set-bg').each(function () {
+                            var bg = $(this).data('setbg');
+                            $(this).css('background-image', 'url(' + bg + ')');
+                        });
+                    },
+                    error: function(xhr){
+                        alert("error");
+                    }
+                })
+            }
+            $(document).on('click','.number_page',function(){
+                var id = $(this).attr("id");
+                var pageNumber = $("#"+id).text();
+                var selectedSort = $(".select_sort_value").children("option:selected").val();
+                $("#loadProductPage").html('').addClass('loader');
+                loadItem(selectedSort,pageNumber);
+            })
+            $(document).on('change','.select_sort_value',function(){
+                var selectedSort= $(this).children("option:selected").val();
+                loadItem(selectedSort,1);    
+            }) 
+            })(jQuery);
+    </script>
+}

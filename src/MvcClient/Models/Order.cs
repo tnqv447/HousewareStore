@@ -14,7 +14,7 @@ namespace MvcClient.Models
         public OrderStatus Status { get; set; }
         public string Address { get; set; }
         public string PaymentAuthCode { get; set; }
-        public decimal Total { get; set; }
+        public double Total { get; set; }
         public string CardNumber { get; set; }
         public string CardHolderName { get; set; }
         public DateTime CardExpiration { get; set; }

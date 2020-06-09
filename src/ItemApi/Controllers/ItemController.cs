@@ -29,7 +29,7 @@ namespace ItemApi.Controllers
         // GET /catalog
         [AllowAnonymous]
         [HttpGet("catalog")]
-        public async Task<IndexDTO> GetCatalog(string category = "", string searchString = "")
+        public async Task<IndexDTO> GetCatalog(string category = "", string searchString = "", string sortOrder = "")
         {
 
             var indexDTO = new IndexDTO()
@@ -39,7 +39,7 @@ namespace ItemApi.Controllers
                 Categories = await _categoryRepos.GetAllCategoryNames(),
 
                 CategoriesId = await _categoryRepos.GetAllCategoryIds(),
-                Items = await _itemRepos.GetItemsBySearch(category, searchString)
+                Items = await _itemRepos.GetItemsBySearch(category, searchString,sortOrder)
             };
 
             return indexDTO;

@@ -24,9 +24,9 @@ namespace MvcClient.Controllers
             _itemService = itemService;
         }
 
-        public async Task<IActionResult> Index(string itemGenre, string searchString)
+        public async Task<IActionResult> Index(string itemGenre, string searchString,string sortOrder)
         {
-            var catalog = await _itemService.GetCatalog(itemGenre, searchString);
+            var catalog = await _itemService.GetCatalog(itemGenre, searchString,sortOrder);
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);

@@ -48,7 +48,7 @@
                 <div class="col-lg-9">
                     <div class="hero__search">
                         <div class="hero__search__form">
-                            <form asp-action="Index" method="GET">
+                            <form asp-action="SearchCategory" method="GET">
                             <div >
                                 <select class="hero__search__categories"  asp-for="ItemCategory"  asp-items="@selectList">
                                     <option value="">All categories </option><span class="arrow_carrot-down"></span>
@@ -147,49 +147,7 @@
                 </div>
             }
             
-            @section Scripts{
-                <script>
-                    (function ($) {
-                        $(document).on('click','.add_to_cart',function(){
-                            var item_id = $(this).attr('id');
-                            var item_name = $('#item_name_'+item_id).text();
-                            var item_price = $('#item_price_'+item_id).val();
-                            var item_category_id = $('#item_category_id_'+item_id).val();
-                            var item_picture_url = $('#item_picture_uri_'+item_id).val();
-                            
-                            var item = new Object()
-                            item.Id = parseInt(item_id);
-                            item.Name = item_name;
-                            item.UnitPrice = parseFloat(item_price),
-                            item.CategoryId = parseInt(item_category_id);
-                            item.PictureUrl = item_picture_url;
-                            
-                            $.ajax({
-                                type: 'POST',
-                                
-                                
-                                data: item ,
-                                url: '@Url.Action("AddToCart","Cart")',
-                                success:function(data){
-                                    var total_quantities = 0;
-                                    var total_price = 0;
-                                    for( i = 0;i < data.cartItems.length;i++){
-                                        total_quantities += data.cartItems[i].quantity;
-                                        total_price += data.cartItems[i].unitPrice;   
-                                        
-                                    }
-                                    $("#loadCart").text(total_quantities);
-                                    $("#loadTotal").text("$ " + $.number(total_price,2));    
-                                
-                                },
-                                error: function(xhr){
-                                    alert("error");
-                                }
-                            })
-                        })
-                        })(jQuery);
-                </script>
-            }
+            
         </div>
     </div>
 </section>
