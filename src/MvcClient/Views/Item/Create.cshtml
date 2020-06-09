@@ -1,4 +1,4 @@
-@model MvcClient.ViewModels.CreateItemViewModel
+@model MvcClient.ViewModels.ItemCategoryViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -21,8 +21,6 @@
                 <div class="row">
                     <div class="col-md-3"><label asp-for="Item.Category" class="control-label"></label></div>
                     <div class="col-md-7">
-                        @* <select asp-for="Item.Category" asp-items="@selectList" class="form-control">
-                        </select> *@
                         @Html.DropDownListFor(n =>n.Item.CategoryId,
                          new SelectList(Model.Categories, "CategoryId", "CategoryName", 1),
                          new { @class = "form-control" })

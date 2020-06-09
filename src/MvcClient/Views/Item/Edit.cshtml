@@ -1,4 +1,4 @@
-@model Item
+@model MvcClient.ViewModels.ItemCategoryViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,26 +12,32 @@
     <div class="col-md-4">
         <form method="POST">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id"/>
+            <input type="hidden" asp-for="Item.Id"/>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control"/> 
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="Item.Name" class="control-label"></label>
+                <input asp-for="Item.Name" class="form-control"/> 
+                <span asp-validation-for="Item.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control"/> 
-                <span asp-validation-for="Category" class="text-danger"></span>
+                <div class="row">
+                    <div class="col-md-3"><label asp-for="Item.Category" class="control-label"></label></div>
+                    <div class="col-md-7">
+                        @Html.DropDownListFor(n =>n.Item.CategoryId,
+                         new SelectList(Model.Categories, "CategoryId", "CategoryName", 1),
+                         new { @class = "form-control" })
+                    </div>
+                </div>
+                <span asp-validation-for="Item.Category" class="text-danger"></span>
+            </div>     
+            <div class="form-group">
+                <label asp-for="Item.UnitPrice" class="control-label"></label>
+                <input asp-for="Item.UnitPrice" class="form-control"/> 
+                <span asp-validation-for="Item.UnitPrice" class="text-danger"></span>
             </div>    
             <div class="form-group">
-                <label asp-for="UnitPrice" class="control-label"></label>
-                <input asp-for="UnitPrice" class="form-control"/> 
-                <span asp-validation-for="UnitPrice" class="text-danger"></span>
-            </div>    
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control"/> 
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Item.Description" class="control-label"></label>
+                <input asp-for="Item.Description" class="form-control"/> 
+                <span asp-validation-for="Item.Description" class="text-danger"></span>
             </div>    
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary"/>

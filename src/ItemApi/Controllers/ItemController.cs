@@ -55,8 +55,8 @@ namespace ItemApi.Controllers
             {
                 return NotFound();
             }
-
-            return _mapper.Map<ItemDTO>(Item);
+            // return _mapper.Map<ItemDTO>(Item);
+            return await _itemRepos.MappingToItemDTO(Item);
         }
 
         [AllowAnonymous]
