@@ -38,7 +38,6 @@ namespace ItemApi.Data.Repos
             {
                 Items = Items.Where(m => m.Name.Contains(searchString));
             }
-<<<<<<< HEAD
             if(!string.IsNullOrEmpty(sortOrder))
             {
                 switch (sortOrder)
@@ -59,9 +58,6 @@ namespace ItemApi.Data.Repos
             }
             return await Items
                 .Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync();
-=======
-            return await MappingToItemDTO(Items);
->>>>>>> 2065de25e9aae98f39adc274249eeaa7326a4ab0
         }
 
         public bool ItemExists(int id)
