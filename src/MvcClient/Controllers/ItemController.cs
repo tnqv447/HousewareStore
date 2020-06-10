@@ -30,8 +30,9 @@ namespace MvcClient.Controllers
             webHostEnvironment = hostEnvironment;
         }
 
-        public async Task<IActionResult> Index(string itemGenre, string searchString,double minPrice,double maxPrice, string sortOrder)
+        public async Task<IActionResult> Index(string itemGenre, string searchString, double minPrice, double maxPrice, string sortOrder, int pageNumber = 1)
         {
+            var pageSize = 6;
             var catalog = await _itemService.GetCatalog(itemGenre, searchString, minPrice, maxPrice, sortOrder);
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
@@ -44,7 +45,9 @@ namespace MvcClient.Controllers
                     .Where(m => m.ItemStatus == ItemStatus.Approved || m.OwnerId == userId)
                     .ToList();
             }
-            //ok
+            catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
+            catalog.PageIndex = pageNumber;
+            catalog.PageTotal = catalog.ItemsPaging.TotalPages;
             return View(catalog);
         }
 

@@ -98,7 +98,7 @@ namespace ItemApi.Data.Repos
                            from cat in catGroup.DefaultIfEmpty()
                            select new ItemDTO(i, cat.CategoryName);
             return await ItemsDto.ToListAsync();
-        }//chúc mừng m
+        }
         public async Task<ItemDTO> MappingToItemDTO(Item item)
         {
             var Category = await _categoryRepos.GetBy(item.CategoryId);
