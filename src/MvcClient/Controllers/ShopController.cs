@@ -73,8 +73,8 @@ namespace MvcClient.Controllers
                 catalog.Items = catalog.Items
                     .Where(m => m.ItemStatus == ItemStatus.Approved)
                     .ToList();
-                catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
             }
+            catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
             Console.WriteLine(minPrice);
             ChangeUriPlaceholder(catalog.Items);
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
