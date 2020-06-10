@@ -31,7 +31,6 @@ namespace ItemApi.Controllers
         [HttpGet("catalog")]
         public async Task<IndexDTO> GetCatalog(string category = "", string searchString = "",double minPrice = 0,double maxPrice = 0, string sortOrder = "")
         {
-            Console.WriteLine(minPrice);
             var indexDTO = new IndexDTO()
             {
                 ItemCategory = category,

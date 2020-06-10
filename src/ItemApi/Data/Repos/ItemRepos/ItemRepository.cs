@@ -51,10 +51,12 @@ namespace ItemApi.Data.Repos
                         Items = Items.OrderBy(m => m.Name);
                         break;
                 }
+            
+
+                
+            }
             if(minPrice != 0 && maxPrice != 0){
                     Items = Items.Where(m => m.UnitPrice >= minPrice && m.UnitPrice <= maxPrice);
-            }
-                
             }
             return await Items
                 .Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync();

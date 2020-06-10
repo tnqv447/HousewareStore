@@ -34,7 +34,7 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var catalog = await _service.GetCatalog("", "",10,100000000,"");
+            var catalog = await _service.GetCatalog("", "",0,0,"");
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
 
