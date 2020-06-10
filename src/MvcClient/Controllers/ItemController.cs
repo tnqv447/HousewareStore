@@ -38,7 +38,7 @@ namespace MvcClient.Controllers
                     .Where(m => m.ItemStatus == ItemStatus.Approved || m.OwnerId == userId)
                     .ToList();
             }
-
+            //ok
             return View(catalog);
         }
 
