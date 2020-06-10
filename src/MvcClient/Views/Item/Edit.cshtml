@@ -8,59 +8,63 @@
 
 <h4>Movie</h4>
 <hr/>
-<div class="row">
-    <div class="col-md-4">
-        <form method="POST" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Item.Id"/>
-            <input asp-for="Item.OwnerId" type="hidden"/> 
-            <input asp-for="Item.ItemStatus" type="hidden"/> 
-            <input asp-for="Item.DbStatus" type="hidden" > 
-            <input asp-for="Item.PictureUrl" type="hidden" > 
-            @{string PictureURLPath = @Url.Content("~/img/product/"+@Model.Item.PictureUrl);}
-            <img src="@PictureURLPath" height="300px" width="300px"/>
-            <div class="form-group"> 
-                <label asp-for="ImageURL" class="control-label"></label>  
-                <div class="custom-file">  
-                    <input asp-for="ImageURL" class="custom-file-input" >  
-                    <label class="custom-file-label" for="customFile">Choose file</label>  
-                </div>  
-                <span asp-validation-for="ImageURL" class="text-danger"></span>  
-            </div> 
-            <div class="form-group">
-                <label asp-for="Item.Name" class="control-label"></label>
-                <input asp-for="Item.Name" class="form-control"/> 
-                <span asp-validation-for="Item.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-md-3"><label asp-for="Item.Category" class="control-label"></label></div>
-                    <div class="col-md-7">
-                        @Html.DropDownListFor(n =>n.Item.CategoryId,
-                         new SelectList(Model.Categories, "CategoryId", "CategoryName", 1),
-                         new { @class = "form-control" })
-                    </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <form method="POST" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Item.Id"/>
+                <input asp-for="Item.OwnerId" type="hidden"/> 
+                <input asp-for="Item.ItemStatus" type="hidden"/> 
+                <input asp-for="Item.DbStatus" type="hidden" > 
+                <input asp-for="Item.PictureUrl" type="hidden" > 
+                @{string PictureURLPath = @Url.Content("~/img/product/"+@Model.Item.PictureUrl);}
+                <img src="@PictureURLPath" height="300px" width="300px"/>
+                <div class="form-group"> 
+                    <label asp-for="ImageURL" class="control-label"></label>  
+                    <div class="custom-file">  
+                        <input asp-for="ImageURL" class="custom-file-input" >  
+                        <label class="custom-file-label" for="customFile">Choose file</label>  
+                    </div>  
+                    <span asp-validation-for="ImageURL" class="text-danger"></span>  
+                </div> 
+                <div class="form-group">
+                    <label asp-for="Item.Name" class="control-label"></label>
+                    <input asp-for="Item.Name" class="form-control"/> 
+                    <span asp-validation-for="Item.Name" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="Item.Category" class="text-danger"></span>
-            </div>     
-            <div class="form-group">
-                <label asp-for="Item.UnitPrice" class="control-label"></label>
-                <input asp-for="Item.UnitPrice" class="form-control"/> 
-                <span asp-validation-for="Item.UnitPrice" class="text-danger"></span>
-            </div>    
-            <div class="form-group">
-                <label asp-for="Item.Description" class="control-label"></label>
-                <input asp-for="Item.Description" class="form-control"/> 
-                <span asp-validation-for="Item.Description" class="text-danger"></span>
-            </div>    
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary"/>
-            </div>
-    </form>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3"><label asp-for="Item.Category" class="control-label"></label></div>
+                        <div class="col-md-7">
+                            @Html.DropDownListFor(n =>n.Item.CategoryId,
+                            new SelectList(Model.Categories, "CategoryId", "CategoryName", 1),
+                            new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <span asp-validation-for="Item.Category" class="text-danger"></span>
+                </div>     
+                <div class="form-group">
+                    <label asp-for="Item.UnitPrice" class="control-label"></label>
+                    <input asp-for="Item.UnitPrice" class="form-control"/> 
+                    <span asp-validation-for="Item.UnitPrice" class="text-danger"></span>
+                </div>    
+                <div class="form-group">
+                    <label asp-for="Item.Description" class="control-label"></label>
+                    <input asp-for="Item.Description" class="form-control"/> 
+                    <span asp-validation-for="Item.Description" class="text-danger"></span>
+                </div>    
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-<div>
-    <a asp-action="Index">Back to list</a>
+    
+    <div class="row">
+        <a asp-action="Index">Back to list</a>
+    </div>
 </div>
 
 @section Scripts {

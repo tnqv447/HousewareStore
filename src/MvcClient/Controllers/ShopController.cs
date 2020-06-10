@@ -30,7 +30,7 @@ namespace MvcClient.Controllers
             _identityService = identityService;
         }
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string sortOrder, string itemCategory,string currentFilter, string searchString, double minPrice,double maxPrice, int pageNumber = 1)
+        public async Task<IActionResult> Index(string sortOrder, string itemCategory, string currentFilter, string searchString, double minPrice, double maxPrice, int pageNumber = 1)
         {
             if (searchString != null)
             {
@@ -41,7 +41,7 @@ namespace MvcClient.Controllers
                 searchString = currentFilter;
             }
 
-            var catalog = await _service.GetCatalog(itemCategory, searchString,minPrice,maxPrice, sortOrder);
+            var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder);
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
             int pageSize = 6;
@@ -51,8 +51,8 @@ namespace MvcClient.Controllers
                 catalog.Items = catalog.Items
                     .Where(m => m.ItemStatus == ItemStatus.Approved)
                     .ToList();
-                
-                
+
+
             }
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
             ChangeUriPlaceholder(catalog.Items);
@@ -61,10 +61,11 @@ namespace MvcClient.Controllers
         }
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> ItemPaging(string itemCategory, string searchString, string sortOrder,double minPrice,double maxPrice, string currentFilter, int pageNumber)
+        public async Task<IActionResult> ItemPaging(string itemCategory, string searchString, string sortOrder, double minPrice, double maxPrice, string currentFilter, int pageNumber)
         {
             int pageSize = 6;
-            var catalog = await _service.GetCatalog(itemCategory, searchString,minPrice,maxPrice, sortOrder);
+            var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder);
+            //đợi t chút, t push cái mới lên code này code cũ mà
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
             if (!isAdminOrManager)
