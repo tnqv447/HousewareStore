@@ -27,9 +27,9 @@ namespace MvcClient.Controllers
             _itemService = itemService;
         }
 
-        public async Task<IActionResult> Index(string itemGenre, string searchString,string sortOrder)
+        public async Task<IActionResult> Index(string itemGenre, string searchString, string sortOrder)
         {
-            var catalog = await _itemService.GetCatalog(itemGenre, searchString,sortOrder);
+            var catalog = await _itemService.GetCatalog(itemGenre, searchString, sortOrder);
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);
@@ -99,6 +99,7 @@ namespace MvcClient.Controllers
             //t mới làm ajax + pagination bao ngon, pull cái xài thử m, khi t fix xong cái này đã, chứ đal
             return View();
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
