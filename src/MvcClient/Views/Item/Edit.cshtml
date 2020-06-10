@@ -9,15 +9,24 @@
 <h4>Movie</h4>
 <hr/>
 <div class="row">
-    @* MvcClient\wwwroot\img\product\item_7.jpg *@
     <div class="col-md-4">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Item.Id"/>
             <input asp-for="Item.OwnerId" type="hidden"/> 
             <input asp-for="Item.ItemStatus" type="hidden"/> 
             <input asp-for="Item.DbStatus" type="hidden" > 
-            <img src="@Url.Content("~/img/product/"+@Model.Item.PictureUrl)" height="300px" width="300px"/>
+            <input asp-for="Item.PictureUrl" type="hidden" > 
+            @{string PictureURLPath = @Url.Content("~/img/product/"+@Model.Item.PictureUrl);}
+            <img src="@PictureURLPath" height="300px" width="300px"/>
+            <div class="form-group"> 
+                <label asp-for="ImageURL" class="control-label"></label>  
+                <div class="custom-file">  
+                    <input asp-for="ImageURL" class="custom-file-input" >  
+                    <label class="custom-file-label" for="customFile">Choose file</label>  
+                </div>  
+                <span asp-validation-for="ImageURL" class="text-danger"></span>  
+            </div> 
             <div class="form-group">
                 <label asp-for="Item.Name" class="control-label"></label>
                 <input asp-for="Item.Name" class="form-control"/> 
@@ -45,15 +54,6 @@
                 <span asp-validation-for="Item.Description" class="text-danger"></span>
             </div>    
             <div class="form-group">
-                @* @using (Html.BeginForm("Create","Content", FormMethod.Post, new { enctype ="multipart/form-data" }))  
-                {   
-                <input type="file"  asp-for="Item.PictureUrl"/>  
-                }   *@
-                <label asp-for="Item.PictureUrl" class="control-label"></label>
-                <input asp-for="Item.PictureUrl" class="form-control" type="file"/> 
-                <span asp-validation-for="Item.Description" class="text-danger"></span>
-            </div>  
-            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
     </form>
@@ -65,4 +65,12 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">  
+        // Add the following code if you want the name of the file appear on select  
+        $(".custom-file-input").on("change", function () {  
+            var fileName = $(this).val().split("\\").pop();  
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);  
+        });  
+    </script> 
 }
