@@ -59,6 +59,7 @@ namespace ItemApi.Data
                         UnitPrice = 109000,
                         Description = "Dung tích lớn: 1.8 lít. Công suất mạnh mẽ: 1500W. Tự ngắt điện khi nước sôi",
                         PictureUrl = "item_10.jpg",
+                        OwnerId = "b682f90b-1157-4c36-bdf3-5099cbab02a7",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
                         CategoryId = 2
@@ -69,6 +70,7 @@ namespace ItemApi.Data
                         UnitPrice = 120000,
                         Description = "Dung tích bình lớn tiện lợi cho việc sử dụng lâu dài trong 1 ngày.",
                         PictureUrl = "item_9.jpg",
+                        OwnerId = "b682f90b-1157-4c36-bdf3-5099cbab02a7",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
                         CategoryId = 4
@@ -79,6 +81,7 @@ namespace ItemApi.Data
                         UnitPrice = 119000,
                         Description = "Dung tích: 375ml; Kích thước ly: 8,33 cm x 11,9 cm. \nThiết kế tinh tế, sang trọng, mang tính thẩm mỹ cao.",
                         PictureUrl = "item_8.jpg",
+                        OwnerId = "b682f90b-1157-4c36-bdf3-5099cbab02a7",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
                         CategoryId = 4
@@ -89,6 +92,7 @@ namespace ItemApi.Data
                         UnitPrice = 90000,
                         Description = "Tráng men đá chống dính, bong tróc. \nTay cầm làm bằng nhựa chống cháy ở nhiệt độ cao. \nPhù hợp sử dụng chiên xào nhiều món",
                         PictureUrl = "item_7.jpg",
+                        OwnerId = "8ce6c08a-207b-48a4-85e2-741ad4041cd5",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
                         CategoryId = 1
@@ -99,6 +103,7 @@ namespace ItemApi.Data
                         UnitPrice = 149000,
                         Description = "Được làm từ inox không gỉ. \nChảo chống dính thiết kế 3 đáy. \nbề mặt chảo sần caro khi nấu ăn dầu không dính nhiều trên thực phẩm",
                         PictureUrl = "item_6.jpg",
+                        OwnerId = "6cbb393b-2043-4330-998f-032d5f0ea957",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
                         CategoryId = 1
@@ -109,6 +114,7 @@ namespace ItemApi.Data
                         UnitPrice = 369000,
                         Description = "Công nghệ nướng Halogen tiết kiệm điện năng. \nThanh nướng kép – Truyền nhiệt nhanh, nướng chín đều. \nHẹn giờ & Điều chỉnh nhiệt độ linh hoạt. \nGiá để thực phẩm bằng thép không gỉ, an toàn cho sức khỏe. \nĐiều khiển bằng núm xoay dễ dàng, tiện lợi",
                         PictureUrl = "item_5.jpg",
+                        OwnerId = "6cbb393b-2043-4330-998f-032d5f0ea957",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
                         CategoryId = 2
@@ -119,6 +125,7 @@ namespace ItemApi.Data
                         UnitPrice = 1699000,
                         Description = "Có 3 mâm nhiệt, làm cơm chín đều. Thiết kế quai xách tiện dụng. Nhiều chế độ nấu ăn đa dạng",
                         PictureUrl = "item_4.jpg",
+                        OwnerId = "6cbb393b-2043-4330-998f-032d5f0ea957",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
                         CategoryId = 2
@@ -130,6 +137,7 @@ namespace ItemApi.Data
                         UnitPrice = 250000,
                         Description = "Sứ chất lượng kao.",
                         PictureUrl = "item_3.jpg",
+                        OwnerId = "8ce6c08a-207b-48a4-85e2-741ad4041cd5",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
                         CategoryId = 3
@@ -141,6 +149,7 @@ namespace ItemApi.Data
                         UnitPrice = 20000,
                         Description = "Không muỗng mà muốn ăn thì chỉ có ăn dơ ăn bốc.",
                         PictureUrl = "item_2.jpg",
+                        OwnerId = "8ce6c08a-207b-48a4-85e2-741ad4041cd5",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
                         CategoryId = 2
@@ -152,6 +161,7 @@ namespace ItemApi.Data
                         UnitPrice = 15000,
                         Description = "Không đũa mà cũng muốn ăn thì cũng chỉ có ăn dơ ăn bốc.",
                         PictureUrl = "item_1.jpg",
+                        OwnerId = "8ce6c08a-207b-48a4-85e2-741ad4041cd5",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
                         CategoryId = 2
