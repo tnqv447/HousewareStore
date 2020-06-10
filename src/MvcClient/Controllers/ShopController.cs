@@ -52,7 +52,7 @@ namespace MvcClient.Controllers
                     .Where(m => m.ItemStatus == ItemStatus.Approved)
                     .ToList();
                 catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
-                Console.WriteLine(catalog.ItemsPaging);
+                
             }
 
             ChangeUriPlaceholder(catalog.Items);
