@@ -8,55 +8,76 @@
     var selectList = new SelectList(Model.Categories);
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="container-fluid p-3 my-3 bg-primary text-white">
+  <h2 style="font-weight:bold; text-align: center;">Items Management</h2>
+</div>
 
-<form asp-action="Index" method="GET">
-    <p>
-        <select asp-for="ItemCategory" asp-items="@selectList">
-            <option value="">All</option>
-        </select>
-        Title: <input asp-for="SearchString" type="text"/>
-        <input type="submit" value="Filter"/>
-    </p>
-</form>
+<div class="container">
+    <div class="row">
+        <a class="btn btn-outline-primary" asp-action="Create">Create New</a>
+    </div>
+    <br />
+    <div class="row">
+        <form  class="form-inline" asp-action="Index" method="GET">
+            <div class="form-group">
+                <select class="form-control mb-2 mr-sm-2" style="width: 150px;" asp-for="ItemCategory" asp-items="@selectList">
+                    <option value="">All</option>
+                </select>
+                <input placeholder="Nani the f*ck?" class="form-control mb-2 mr-sm-2" asp-for="SearchString" type="text"/>
+                <input class="btn btn-success" type="submit" value="Filter"/>
+            </div>
+        </form>
+    </div>
+    
+    <table class="table table-striped table-hover table-responsive">
+        <thead class="thead-dark">
+            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Items[0].Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Items[0].Category)</th>
+            <th>@Html.DisplayNameFor(model => model.Items[0].UnitPrice)</th>
+            <th>@Html.DisplayNameFor(model => model.Items[0].Description)</th>
+            <th>@Html.DisplayNameFor(model => model.Items[0].ItemStatus)</th>
+            @* <th>@Html.DisplayNameFor(model => model.Items[0].OwnerId)</th> *@
+            <th></th>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureUrl);}
+                <td><img src="@PictureURLPath" asp-append-version="true" height="150px" width="500px"/></td>
+                <td>@Html.DisplayFor(model => item.Name)</td>
+                <td>@Html.DisplayFor(model => item.Category)</td>
+                <td>@Html.DisplayFor(model => item.UnitPrice)</td>
+                <td>@Html.DisplayFor(model => item.Description)</td>
+                <td>
+                    @{
+                        if((int)item.ItemStatus == 1 ){
+                            <p class="badge badge-success text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
+                        }
+                        else if((int)item.ItemStatus == 0){
+                            <p class="badge badge-primary text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
+                        }else{
+                            <p class="badge badge-danger text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
+                        }
+                    }
+                </td>
+                <td class="btn-group">
+                    <a style="font-weight:bold;" class="btn btn-info text-white" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Update)).Succeeded)
+                {
+                    <a style="font-weight:bold;" class="btn btn-warning text-white" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                }
+             
+                @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Delete)).Succeeded)
+                {
+                    <a  style="font-weight:bold;" class="btn btn-danger text-white" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 
-<table class="table">
-    <thead>
-        <th>@Html.DisplayNameFor(model => model.Items[0].Name)</th>
-        <th>@Html.DisplayNameFor(model => model.Items[0].Category)</th>
-        <th>@Html.DisplayNameFor(model => model.Items[0].UnitPrice)</th>
-        <th>@Html.DisplayNameFor(model => model.Items[0].Description)</th>
-        <th>@Html.DisplayNameFor(model => model.Items[0].ItemStatus)</th>
-        @* <th>@Html.DisplayNameFor(model => model.Items[0].OwnerId)</th> *@
-        <th></th>
-    </thead>
-    <tbody>
-    @foreach (var item in Model.Items)
-    {
-        <tr>
-            <td>@Html.DisplayFor(model => item.Name)</td>
-            <td>@Html.DisplayFor(model => item.Category)</td>
-            <td>@Html.DisplayFor(model => item.UnitPrice)</td>
-            <td>@Html.DisplayFor(model => item.Description)</td>
-            <td>@Html.DisplayFor(model => item.ItemStatus)</td>
-            @* <td>@Html.DisplayFor(model => item.OwnerId)</td> *@
-            <td>
-            @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Update)).Succeeded)
-            {
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <text>|</text>
-            }
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-            @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Delete)).Succeeded)
-            {
-                <text>|</text><a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            }
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
-
+</div>
