@@ -29,6 +29,7 @@ namespace MvcClient.Controllers
             _logger = logger;
             _identityService = identityService;
         }
+        //a du ma, wtf, sao dang nhap cai la bi loi vay ta
         [AllowAnonymous]
         public async Task<IActionResult> Index(string sortOrder, string itemCategory, string searchString, string currentFilter, int pageNumber = 1)
         {
