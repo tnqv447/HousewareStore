@@ -13,6 +13,12 @@
         <form method="POST">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="Item.PictureUrl" class="control-label"></label>
+                <input asp-for="Item.PictureUrl" class="form-control" type="file" enctype='multipart/form-data'/> 
+                  @* <input type="file" asp-for="Item.PictureUrl" class="form-control" enctype='multipart/form-data'/> *@
+                <span asp-validation-for="Item.Description" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
                 <label asp-for="Item.Name" class="control-label"></label>
                 <input asp-for="Item.Name" class="form-control"/> 
                 <span asp-validation-for="Item.Name" class="text-danger"></span>

@@ -9,11 +9,15 @@
 <h4>Movie</h4>
 <hr/>
 <div class="row">
+    @* MvcClient\wwwroot\img\product\item_7.jpg *@
     <div class="col-md-4">
         <form method="POST">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Item.Id"/>
             <input asp-for="Item.OwnerId" type="hidden"/> 
+            <input asp-for="Item.ItemStatus" type="hidden"/> 
+            <input asp-for="Item.DbStatus" type="hidden" > 
+            <img src="@Url.Content("~/img/product/"+@Model.Item.PictureUrl)" height="300px" width="300px"/>
             <div class="form-group">
                 <label asp-for="Item.Name" class="control-label"></label>
                 <input asp-for="Item.Name" class="form-control"/> 
@@ -40,6 +44,15 @@
                 <input asp-for="Item.Description" class="form-control"/> 
                 <span asp-validation-for="Item.Description" class="text-danger"></span>
             </div>    
+            <div class="form-group">
+                @* @using (Html.BeginForm("Create","Content", FormMethod.Post, new { enctype ="multipart/form-data" }))  
+                {   
+                <input type="file"  asp-for="Item.PictureUrl"/>  
+                }   *@
+                <label asp-for="Item.PictureUrl" class="control-label"></label>
+                <input asp-for="Item.PictureUrl" class="form-control" type="file"/> 
+                <span asp-validation-for="Item.Description" class="text-danger"></span>
+            </div>  
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
