@@ -189,7 +189,7 @@
                         </div>
                         <div class="col-lg-4 col-md-4">
                             <div class="filter__found">
-                                <h6><span>@Model.Items.Count</span> Products found</h6>
+                                <h6><span id="number_products">@Model.Items.Count</span> Products found</h6>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-3">
@@ -202,39 +202,39 @@
                 </div>
                 <div class="row" id="loadProductPage">
                     
-                @foreach(var item in Model.ItemsPaging){
-                    <div class="col-lg-4 col-md-6 col-sm-6">
-                        <div class="product__item">
-                            <div class="product__item__pic set-bg" data-setbg="img/product/@item.PictureUrl">
-                                <ul class="product__item__pic__hover">
-                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                    @if(User.Identity.IsAuthenticated){
-                                        <li><a style="cursor:pointer" class="add_to_cart" id="@item.Id"><i class="fa fa-shopping-cart"></i></a></li>
-                        
-                                    }
-                                </ul>
-                            </div>
-                            <div class="product__item__text">
-                                <h6><a href="#">@item.Name</a></h6>
-                                <h5>@item.UnitPrice</h5>
+                    @foreach(var item in Model.ItemsPaging){
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="img/product/@item.PictureUrl">
+                                    <ul class="product__item__pic__hover">
+                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        @if(User.Identity.IsAuthenticated){
+                                            <li><a style="cursor:pointer" class="add_to_cart" id="@item.Id"><i class="fa fa-shopping-cart"></i></a></li>
+                            
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6><a href="#">@item.Name</a></h6>
+                                    <h5>@item.UnitPrice</h5>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
-                @{
-                    var prevDisabled = !Model.ItemsPaging.HasPrevious ? "disabled" : "";
-                    var nextDisabled = !Model.ItemsPaging.HasNext ? "disabled" : "";
-                }   
+                    }
+                    @{
+                        var prevDisabled = !Model.ItemsPaging.HasPrevious ? "disabled" : "";
+                        var nextDisabled = !Model.ItemsPaging.HasNext ? "disabled" : "";
+                    }   
                 
                 </div>
-                <div class="product__pagination">
-                    <a class="@prevDisabled" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex - 1)"><i class="fa fa-long-arrow-left"></i></a>
+                <div style="text-align:center" class="product__pagination">
+                    <a style="cursor:pointer" class="@prevDisabled number_page" id="page_@(Model.ItemsPaging.PageIndex-1)"><i class="fa fa-long-arrow-left"></i></a>
                     @for(var i = 0;i<Model.ItemsPaging.TotalPages;i++){
                         var pageActive = Model.ItemsPaging.PageIndex == (i+1) ?"active":"";
                         <a style="cursor:pointer" id="page_@(i+1)" class="number_page @pageActive" >@(i+1)</a>
                     }
-                    <a class="@nextDisabled" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex + 1)"><i class="fa fa-long-arrow-right"></i></a>
+                    <a style="cursor:pointer" class="@nextDisabled number_page" id="page_@(Model.ItemsPaging.PageIndex+1)"><i class="fa fa-long-arrow-right"></i></a>
                 </div>
                 <div class="product__discount">
                     <div class="section-title product__discount__title">
@@ -278,78 +278,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div class="product__discount__item__pic set-bg"
-                                        data-setbg="img/product/discount/pd-3.jpg">
-                                        <div class="product__discount__percent">-20%</div>
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Dried Fruit</span>
-                                        <h5><a href="#">Mixed Fruitss</a></h5>
-                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div class="product__discount__item__pic set-bg"
-                                        data-setbg="img/product/discount/pd-4.jpg">
-                                        <div class="product__discount__percent">-20%</div>
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Dried Fruit</span>
-                                        <h5><a href="#">Raisin’n’nuts</a></h5>
-                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div class="product__discount__item__pic set-bg"
-                                        data-setbg="img/product/discount/pd-5.jpg">
-                                        <div class="product__discount__percent">-20%</div>
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Dried Fruit</span>
-                                        <h5><a href="#">Raisin’n’nuts</a></h5>
-                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="product__discount__item">
-                                    <div class="product__discount__item__pic set-bg"
-                                        data-setbg="img/product/discount/pd-6.jpg">
-                                        <div class="product__discount__percent">-20%</div>
-                                        <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__discount__item__text">
-                                        <span>Dried Fruit</span>
-                                        <h5><a href="#">Raisin’n’nuts</a></h5>
-                                        <div class="product__item__price">$30.00 <span>$36.00</span></div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -367,6 +296,7 @@
             $(document).ajaxComplete(function(){
             })
             function loadItem(itemCategory,minPrice,maxPrice,sortValue,pageNumber){
+                pageNumber = parseInt(pageNumber);
                 minPrice = parseFloat(minPrice);
                 maxPrice = parseFloat(maxPrice);
                 $.ajax({
@@ -374,9 +304,10 @@
                     data: {itemCategory:itemCategory,minPrice:minPrice,maxPrice:maxPrice,sortOrder:sortValue, pageNumber: pageNumber} ,
                     url: '@Url.Action("ItemPaging","Shop")',
                     success:function(data){
-                        
+                        count = 0;
                         html = ''
                         for(i = 0;i < data.itemsPaging.length;i++){
+                            count += 1;
                             html += '<div class="col-lg-4 col-md-6 col-sm-6">';
                             html += '   <div class="product__item">';
                             html += '       <div class="product__item__pic set-bg" data-setbg="img/product/'+data.itemsPaging[i].pictureUrl+'">';
@@ -394,17 +325,35 @@
                             html += '   </div>';
                             html += '</div>';
                         }
-                        
-                        for(i=0;i<data.pageTotal;i++)
-                        {
-                            if((i+1) != pageNumber)
-                            {
-                                $("#page_"+(i+1)).removeClass("active");
+                        html_2 = '';
+                        if(count==0){
+                            html += "<div class='col-md-12'><h3>Sorry we couldn't find any products</h3></div>";
+                        }
+                        else{
+                            if(pageNumber == 1){
+                                html_2 += '<a style="cursor:pointer"  class="disabled" ><i class="fa fa-long-arrow-left"></i></a>';
                             }
                             else{
-                                $("#page_"+(i+1)).addClass("active");
+                                html_2 += '<a style="cursor:pointer" id="page_'+(pageNumber-1)+'" class="number_page" ><i class="fa fa-long-arrow-left"></i></a>'
+                            }
+                            for(i=0;i<data.pageTotal;i++)
+                            {
+                                if((i+1) != pageNumber)
+                                {
+                                    html_2 += '<a style="cursor:pointer" id="page_'+(i+1)+'" class="number_page" >'+(i+1)+'</a>';
+                                }
+                                else{
+                                    html_2 += '<a style="cursor:pointer" id="page_'+(i+1)+'" class="active number_page" >'+(i+1)+'</a>';
+                                }
+                            }
+                            if(pageNumber == data.pageTotal){
+                                html_2 += '<a style="cursor:pointer"  class="disabled" ><i class="fa fa-long-arrow-right"></i></a>';
+                            }
+                            else{
+                                html_2 += '<a style="cursor:pointer" id="page_'+(pageNumber+1)+'" class="number_page" ><i class="fa fa-long-arrow-right"></i></a>'
                             }
                         }
+                        
                         
                         
                         
@@ -412,7 +361,9 @@
                     complete: function(){
                         setTimeout(function(){
                             $("#loadProductPage").removeClass('preloder_product');
-                            $("#loadProductPage").html(html);   
+                            $("#loadProductPage").html(html);
+                            $(".product__pagination").html(html_2);
+                            $("#number_products").text(count);   
                             $('.set-bg').each(function () {
                                 var bg = $(this).data('setbg');
                                 $(this).css('background-image', 'url(' + bg + ')');
@@ -429,15 +380,14 @@
             $(document).on('click','.number_page',function(){
                 $('html, body').animate({
                     scrollTop: $("#loadProductPage").offset().top
-                }, 2000);
-                var id = $(this).attr("id");
-                var pageNumber = $("#"+id).text();
+                }, 1500);
+                var pageNumber = $(this).attr("id").slice(5);
                 var selectedSort = $(".select_sort_value").children("option:selected").val();
                 var category = $('ul#select_category').find('li.active').data('itemCategory');
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1)
-                html = '<div class="loader_product"><br><br>loading ...</div>';
-                
+                html = '<div class="loader_product"></div>';
+                $(".product__pagination").html('');
                 $("#loadProductPage").addClass("preloder_product").html(html);
                 loadItem(category,minPrice,maxPrice,selectedSort,pageNumber);
             })
@@ -447,8 +397,8 @@
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1);
                 var loadHtml = '';
-                
-                html = '<div class="loader_product"><br><br>loading...</div>';
+                $(".product__pagination").html('');
+                html = '<div class="loader_product"></div>';
                 
                 $("#loadProductPage").addClass("preloder_product").html(html);
                 loadItem(category,minPrice,maxPrice,selectedSort,1);    
@@ -461,32 +411,33 @@
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1)
                 var loadHtml = '';
-
-                html = '<div class="loader_product"><br><br>loading...</div>';
+                $(".product__pagination").html('');
+                html = '<div class="loader_product"></div>';
                 
                 $("#loadProductPage").addClass("preloder_product").html(html);
                 loadItem(category,minPrice,maxPrice,selectedSort,1);    
             })
             $(document).on('keyup','.price_filter',function(){
-                var selectedSort= $(this).children("option:selected").val();
+                var selectedSort = $(".select_sort_value").children("option:selected").val();
                 var category = $('ul#select_category').find('li.active').data('itemCategory');
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1)
                 var loadHtml = '';
-                
-                html = '<div class="loader_product"><br><br>loading...</div>';
+                $(".product__pagination").html('');
+                html = '<div class="loader_product"></div>';
                 
                 $("#loadProductPage").addClass("preloder_product").html(html);
                 loadItem(category,minPrice,maxPrice,selectedSort,1);
             })
             $(document).on('mouseup','.price-range',function(){
-                var selectedSort= $(this).children("option:selected").val();
+                var selectedSort = $(".select_sort_value").children("option:selected").val();
                 var category = $('ul#select_category').find('li.active').data('itemCategory');
+                alert(category);
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1)
                 var loadHtml = '';
-                
-                html = '<div class="loader_product"><br><br>loading...</div>';
+                $(".product__pagination").html('');
+                html = '<div class="loader_product"></div>';
                 
                 $("#loadProductPage").addClass("preloder_product").html(html);
                 loadItem(category,minPrice,maxPrice,selectedSort,1);
