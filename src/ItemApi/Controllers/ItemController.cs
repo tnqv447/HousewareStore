@@ -37,9 +37,9 @@ namespace ItemApi.Controllers
                 ItemCategory = category,
                 SearchString = searchString,
                 Categories = await _categoryRepos.GetAllCategoryNames(),
-
+                SortOrder = sortOrder,
                 CategoriesId = await _categoryRepos.GetAllCategoryIds(),
-                Items = await _itemRepos.GetItemsBySearch(category, searchString,sortOrder)
+                Items = await _itemRepos.GetItemsBySearch(category, searchString, sortOrder)
             };
 
             return indexDTO;

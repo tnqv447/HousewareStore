@@ -7,6 +7,7 @@ namespace MvcClient.ViewModels
     {
         public string SearchString { get; set; }
         public string ItemCategory { get; set; }
+        public string SortOrder { get; set; }
         public IEnumerable<string> Categories { get; set; }
         public PaginatedList<Item> ItemsPaging { get; set; }
         public int PageTotal { get; set; }
