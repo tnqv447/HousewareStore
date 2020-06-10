@@ -30,9 +30,9 @@ namespace MvcClient.Controllers
             webHostEnvironment = hostEnvironment;
         }
 
-        public async Task<IActionResult> Index(string itemGenre, string searchString, string sortOrder)
+        public async Task<IActionResult> Index(string itemGenre, string searchString,double minPrice,double maxPrice, string sortOrder)
         {
-            var catalog = await _itemService.GetCatalog(itemGenre, searchString, sortOrder);
+            var catalog = await _itemService.GetCatalog(itemGenre, searchString, minPrice, maxPrice, sortOrder);
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);
