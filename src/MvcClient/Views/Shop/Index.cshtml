@@ -81,9 +81,11 @@
                 <div class="sidebar">
                     <div class="sidebar__item">
                         <h4>Department</h4>
-                        <ul>
+                        <ul id="select_category">
+                        
                             @foreach(var item in Model.Categories){
-                                <li><a href="#">@item</a></li>
+                                var category = Model.ItemCategory == item ? "active":"";
+                                <li data-itemCategory = "@item" class="choose_category @category"><a>@item</a></li>
                             }
                         </ul>
                     </div>
@@ -91,15 +93,15 @@
                         <h4>Price</h4>
                         <div class="price-range-wrap">
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="10" data-max="540">
+                                data-min="10" data-max="100000000">
                                 <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                             </div>
                             <div class="range-slider">
                                 <div class="price-input">
-                                    <input type="text" id="minamount">
-                                    <input type="text" id="maxamount">
+                                    <input class="price_filter" type="text" id="minamount" >
+                                    <input class="price_filter" type="text" id="maxamount" >
                                 </div>
                             </div>
                         </div>
@@ -364,10 +366,12 @@
             })
             $(document).ajaxComplete(function(){
             })
-            function loadItem(sortValue,pageNumber){
+            function loadItem(itemCategory,minPrice,maxPrice,sortValue,pageNumber){
+                minPrice = parseFloat(minPrice);
+                maxPrice = parseFloat(maxPrice);
                 $.ajax({
                     type: 'GET',
-                    data: {sortOrder:sortValue, pageNumber: pageNumber} ,
+                    data: {itemCategory:itemCategory,minPrice:minPrice,maxPrice:maxPrice,sortOrder:sortValue, pageNumber: pageNumber} ,
                     url: '@Url.Action("ItemPaging","Shop")',
                     success:function(data){
                         
@@ -429,21 +433,53 @@
                 var id = $(this).attr("id");
                 var pageNumber = $("#"+id).text();
                 var selectedSort = $(".select_sort_value").children("option:selected").val();
-                
+                var category = $('ul#select_category').find('li.active').data('itemCategory');
+                var minPrice = $('#minamount').val().slice(1);
+                var maxPrice = $('#maxamount').val().slice(1)
                 html = '<div class="loader_product"><br><br>loading ...</div>';
                 
                 $("#loadProductPage").addClass("preloder_product").html(html);
-                loadItem(selectedSort,pageNumber);
+                loadItem(category,minPrice,maxPrice,selectedSort,pageNumber);
             })
             $(document).on('change','.select_sort_value',function(){
                 var selectedSort= $(this).children("option:selected").val();
+                var category = $('ul#select_category').find('li.active').data('itemCategory');
+                var minPrice = $('#minamount').val().slice(1);
+                var maxPrice = $('#maxamount').val().slice(1);
+                alert(minPrice);
+                var loadHtml = '';
+                
+                html = '<div class="loader_product"><br><br>loading...</div>';
+                
+                $("#loadProductPage").addClass("preloder_product").html(html);
+                loadItem(category,minPrice,maxPrice,selectedSort,1);    
+            })
+            $(document).on('click','.choose_category',function(){
+                var category = $(this).text();
+                $("ul#select_category li.active").removeClass('active');
+                $(this).addClass('active');
+                var selectedSort = $(".select_sort_value").children("option:selected").val();
+                var minPrice = $('#minamount').val().slice(1);
+                var maxPrice = $('#maxamount').val().slice(1)
                 var loadHtml = '';
 
                 html = '<div class="loader_product"><br><br>loading...</div>';
                 
                 $("#loadProductPage").addClass("preloder_product").html(html);
-                loadItem(selectedSort,1);    
-            }) 
+                loadItem(category,minPrice,maxPrice,selectedSort,1);    
+            })
+            $(document).on('change','.price_filter',function(){
+                var selectedSort= $(this).children("option:selected").val();
+                var category = $('ul#select_category').find('li.active').data('itemCategory');
+                var minPrice = $('#minamount').val().slice(1);
+                var maxPrice = $('#maxamount').val().slice(1)
+                var loadHtml = '';
+                
+                html = '<div class="loader_product"><br><br>loading...</div>';
+                
+                $("#loadProductPage").addClass("preloder_product").html(html);
+                loadItem(category,minPrice,maxPrice,selectedSort,1);
+            })
             })(jQuery);
     </script>
 }

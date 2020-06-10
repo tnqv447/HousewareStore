@@ -21,14 +21,10 @@ namespace ItemApi.Data.Repos
             _categoryRepos = categoryRepos;
         }
 
-        public async Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null,string sortOrder=" ", DbStatus dbStatus = DbStatus.Active)
+        public async Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null,double minPrice = 0 , double maxPrice = 0, string sortOrder=null, DbStatus dbStatus = DbStatus.Active)
         {
 
             var Items = dbStatus == DbStatus.All ? _context.Items : _context.Items.Where(m => m.DbStatus.Equals(dbStatus));
-            
-            if(string.IsNullOrEmpty(sortOrder)){
-                sortOrder = " ";
-            }
             if (!string.IsNullOrEmpty(category))
             {
                 var categoryId = _categoryRepos.GetCategoryIdByName(category);
@@ -55,6 +51,10 @@ namespace ItemApi.Data.Repos
                         Items = Items.OrderBy(m => m.Name);
                         break;
                 }
+            if(minPrice != 0 && maxPrice != 0){
+                    Items = Items.Where(m => m.UnitPrice >= minPrice && m.UnitPrice <= maxPrice);
+            }
+                
             }
             return await Items
                 .Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync();

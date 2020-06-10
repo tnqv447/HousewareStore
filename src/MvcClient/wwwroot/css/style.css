@@ -1161,6 +1161,10 @@ ol {
 /*---------------------
   Sidebar
 -----------------------*/
+.sidebar__item .active a{
+	font-weight: 600;
+	color: #7fad39; 
+}
 
 .sidebar__item {
 	margin-bottom: 35px;
@@ -1185,6 +1189,7 @@ ol {
 	color: #1c1c1c;
 	line-height: 39px;
 	display: block;
+	cursor:pointer;
 }
 
 .sidebar__item .latest-product__text {
@@ -1209,7 +1214,7 @@ ol {
 
 .price-range-wrap .range-slider .price-input:after {
 	position: absolute;
-	left: 38px;
+	left: 60px;
 	top: 13px;
 	height: 1px;
 	width: 5px;
@@ -1221,7 +1226,7 @@ ol {
 	font-size: 16px;
 	color: #dd2222;
 	font-weight: 700;
-	max-width: 20%;
+	max-width: 35%;
 	border: none;
 	display: inline-block;
 }
