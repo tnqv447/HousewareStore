@@ -21,7 +21,7 @@ namespace ItemApi.Data.Repos
             _categoryRepos = categoryRepos;
         }
 
-        public async Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null,double minPrice = 0 , double maxPrice = 0, string sortOrder=null, DbStatus dbStatus = DbStatus.Active)
+        public async Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null, double minPrice = 0, double maxPrice = 0, string sortOrder = null, DbStatus dbStatus = DbStatus.Active)
         {
 
             var Items = dbStatus == DbStatus.All ? _context.Items : _context.Items.Where(m => m.DbStatus.Equals(dbStatus));
@@ -34,32 +34,33 @@ namespace ItemApi.Data.Repos
             {
                 Items = Items.Where(m => m.Name.Contains(searchString));
             }
-            if(!string.IsNullOrEmpty(sortOrder))
+            if (!string.IsNullOrEmpty(sortOrder))
             {
                 switch (sortOrder)
                 {
                     case "name_desc":
-                        Items =Items.OrderByDescending(m => m.Name);
+                        Items = Items.OrderByDescending(m => m.Name);
                         break;
                     case "price":
                         Items = Items.OrderBy(m => m.UnitPrice);
                         break;
                     case "price_desc":
-                        Items =Items.OrderByDescending(m => m.UnitPrice);
+                        Items = Items.OrderByDescending(m => m.UnitPrice);
                         break;
                     default:
                         Items = Items.OrderBy(m => m.Name);
                         break;
                 }
-            
 
-                
+
+
             }
-            if(minPrice != 0 && maxPrice != 0){
-                    Items = Items.Where(m => m.UnitPrice >= minPrice && m.UnitPrice <= maxPrice);
+            if (minPrice != 0 && maxPrice != 0)
+            {
+                Items = Items.Where(m => m.UnitPrice >= minPrice && m.UnitPrice <= maxPrice);
             }
-            return await Items
-                .Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync();
+            // return await Items.Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync();
+            return await MappingToItemDTO(Items);
         }
 
         public bool ItemExists(int id)
