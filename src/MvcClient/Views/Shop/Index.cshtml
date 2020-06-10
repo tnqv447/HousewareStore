@@ -199,26 +199,27 @@
                     </div>
                 </div>
                 <div class="row" id="loadProductPage">
-                    @foreach(var item in Model.ItemsPaging){
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/@item.PictureUrl">
-                                    <ul class="product__item__pic__hover">
-                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        @if(User.Identity.IsAuthenticated){
-                                            <li><a style="cursor:pointer" class="add_to_cart" id="@item.Id"><i class="fa fa-shopping-cart"></i></a></li>
-                            
-                                        }
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6><a href="#">@item.Name</a></h6>
-                                    <h5>@item.UnitPrice</h5>
-                                </div>
+                    
+                @foreach(var item in Model.ItemsPaging){
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="img/product/@item.PictureUrl">
+                                <ul class="product__item__pic__hover">
+                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                    @if(User.Identity.IsAuthenticated){
+                                        <li><a style="cursor:pointer" class="add_to_cart" id="@item.Id"><i class="fa fa-shopping-cart"></i></a></li>
+                        
+                                    }
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#">@item.Name</a></h6>
+                                <h5>@item.UnitPrice</h5>
                             </div>
                         </div>
-                    }
+                    </div>
+                }
                 @{
                     var prevDisabled = !Model.ItemsPaging.HasPrevious ? "disabled" : "";
                     var nextDisabled = !Model.ItemsPaging.HasNext ? "disabled" : "";
@@ -357,6 +358,12 @@
 @section Scripts{
     <script>
         (function ($) {
+            var delay = 1000;
+            $(document).ajaxStart(function(){
+                
+            })
+            $(document).ajaxComplete(function(){
+            })
             function loadItem(sortValue,pageNumber){
                 $.ajax({
                     type: 'GET',
@@ -383,8 +390,7 @@
                             html += '   </div>';
                             html += '</div>';
                         }
-                        $("#loadProductPage").removeClass('loader');
-                        $("#loadProductPage").html(html);
+                        
                         for(i=0;i<data.pageTotal;i++)
                         {
                             if((i+1) != pageNumber)
@@ -397,25 +403,45 @@
                         }
                         
                         
-                        $('.set-bg').each(function () {
-                            var bg = $(this).data('setbg');
-                            $(this).css('background-image', 'url(' + bg + ')');
-                        });
+                        
+                    },
+                    complete: function(){
+                        setTimeout(function(){
+                            $("#loadProductPage").removeClass('preloder_product');
+                            $("#loadProductPage").html(html);   
+                            $('.set-bg').each(function () {
+                                var bg = $(this).data('setbg');
+                                $(this).css('background-image', 'url(' + bg + ')');
+                            }); 
+                        },delay)
+                        
                     },
                     error: function(xhr){
                         alert("error");
                     }
                 })
             }
+            
             $(document).on('click','.number_page',function(){
+                $('html, body').animate({
+                    scrollTop: $("#loadProductPage").offset().top
+                }, 2000);
                 var id = $(this).attr("id");
                 var pageNumber = $("#"+id).text();
                 var selectedSort = $(".select_sort_value").children("option:selected").val();
-                $("#loadProductPage").html('').addClass('loader');
+                
+                html = '<div class="loader_product"><br><br>loading ...</div>';
+                
+                $("#loadProductPage").addClass("preloder_product").html(html);
                 loadItem(selectedSort,pageNumber);
             })
             $(document).on('change','.select_sort_value',function(){
                 var selectedSort= $(this).children("option:selected").val();
+                var loadHtml = '';
+
+                html = '<div class="loader_product"><br><br>loading...</div>';
+                
+                $("#loadProductPage").addClass("preloder_product").html(html);
                 loadItem(selectedSort,1);    
             }) 
             })(jQuery);

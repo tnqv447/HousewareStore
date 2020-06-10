@@ -40,27 +40,11 @@ namespace MvcClient.Controllers
             {
                 searchString = currentFilter;
             }
-            switch (sortOrder)
-            {
-                case "name":
-                    break;
-                case "name_desc":
-                    
-                    break;
-                case "price":
-                    
-                    break;
-                case "price_desc":
-                    
-                    break;
-                default:
-                    
-                    break;
-            }
+            
             var catalog = await _service.GetCatalog(itemCategory, searchString,sortOrder);
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
-            int pageSize = 5;
+            int pageSize = 6;
             if (!isAdminOrManager)
             {
                 //var userId = _identityService.Get (User).Id;
@@ -78,7 +62,7 @@ namespace MvcClient.Controllers
         [HttpGet]
         public async Task<IActionResult> ItemPaging(string itemCategory, string searchString,string sortOrder, string currentFilter,int pageNumber)
         {
-            int pageSize = 5;
+            int pageSize = 6;
             var catalog = await _service.GetCatalog(itemCategory, searchString,sortOrder);
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
