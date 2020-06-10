@@ -36,6 +36,7 @@ namespace ItemApi.Data.Repos
             }
             if (!string.IsNullOrEmpty(sortOrder))
             {
+                //bà mẹ m, dotnet run làm nãy giờ sửa có chạy cái đéo gì đâu
                 switch (sortOrder)
                 {
                     case "name_desc":
@@ -59,9 +60,11 @@ namespace ItemApi.Data.Repos
             {
                 Items = Items.Where(m => m.UnitPrice >= minPrice && m.UnitPrice <= maxPrice);
             }
-            // return await Items.Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync();
-            return await MappingToItemDTO(Items);
-        }
+            // where gì, t mapper mà vs lại list items vẫn là nó chứ có thay đổi đâu, m ngáo r
+            //đây là sql sai
+            // return await Items.Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync(); // cơ mà cái return này thì t mới sửa hồi nãy, hàm thì tạo hôm qua nhưng ko dùng cho hàm search này
+            return await MappingToItemDTO(Items);// nhiệm vụ cái này là mapper item to itemdto // itemdto có chư cả caterogyName và id
+        }// cái này t thêm từ hôn qua rồi // tại cái trên thì ko trả về caterogyName, ủa mà hqua m chỉnh r, nãy t mới teesst bên t vẫn ok, m có chỉnh chỗ nào nữa k v
 
         public bool ItemExists(int id)
         {
@@ -90,11 +93,12 @@ namespace ItemApi.Data.Repos
 
         public async Task<IEnumerable<ItemDTO>> MappingToItemDTO(IQueryable<Item> items)
         {
-            var ItemsDto = from i in _context.Items
-                           join c in _context.Categories on i.CategoryId equals c.CategoryId
-                           select new ItemDTO(i, c.CategoryName);
+            var ItemsDto = from i in items
+                           join c in _context.Categories on i.CategoryId equals c.CategoryId into catGroup
+                           from cat in catGroup.DefaultIfEmpty()
+                           select new ItemDTO(i, cat.CategoryName);
             return await ItemsDto.ToListAsync();
-        }
+        }//chúc mừng m
         public async Task<ItemDTO> MappingToItemDTO(Item item)
         {
             var Category = await _categoryRepos.GetBy(item.CategoryId);

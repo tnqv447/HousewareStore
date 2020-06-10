@@ -81,11 +81,11 @@
                 <div class="sidebar">
                     <div class="sidebar__item">
                         <h4>Department</h4>
-                        <ul id="select_category">
+                        <ul id="select_category" name="select_category">
                         
                             @foreach(var item in Model.Categories){
                                 var category = Model.ItemCategory == item ? "active":"";
-                                <li data-itemCategory = "@item" class="choose_category @category"><a>@item</a></li>
+                                <li data-itemcategory = "@item" class="choose_category @category"><a>@item</a></li>
                             }
                         </ul>
                     </div>
@@ -383,7 +383,7 @@
                 }, 1500);
                 var pageNumber = $(this).attr("id").slice(5);
                 var selectedSort = $(".select_sort_value").children("option:selected").val();
-                var category = $('ul#select_category').find('li.active').data('itemCategory');
+                var category = $('ul#select_category').find('li.active').text();
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1)
                 html = '<div class="loader_product"></div>';
@@ -393,7 +393,7 @@
             })
             $(document).on('change','.select_sort_value',function(){
                 var selectedSort= $(this).children("option:selected").val();
-                var category = $('ul#select_category').find('li.active').data('itemCategory');
+                var category = $('ul#select_category').find('li.active').text();
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1);
                 var loadHtml = '';
@@ -419,7 +419,7 @@
             })
             $(document).on('keyup','.price_filter',function(){
                 var selectedSort = $(".select_sort_value").children("option:selected").val();
-                var category = $('ul#select_category').find('li.active').data('itemCategory');
+                var category = $('ul#select_category').find('li.active').text();
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1)
                 var loadHtml = '';
@@ -431,8 +431,7 @@
             })
             $(document).on('mouseup','.price-range',function(){
                 var selectedSort = $(".select_sort_value").children("option:selected").val();
-                var category = $('ul#select_category').find('li.active').data('itemCategory');
-                alert(category);
+                var category = $('ul#select_category').find('li.active').text();
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1)
                 var loadHtml = '';

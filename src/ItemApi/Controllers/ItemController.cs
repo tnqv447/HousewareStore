@@ -39,7 +39,7 @@ namespace ItemApi.Controllers
                 MinPrice = minPrice,
                 MaxPrice = maxPrice,
                 SortOrder = sortOrder,
-
+                // nếu nó ko đc thì xóa nó đi, xóa cái nào
                 CategoriesId = await _categoryRepos.GetAllCategoryIds(),
                 Items = await _itemRepos.GetItemsBySearch(category, searchString, minPrice, maxPrice, sortOrder)
             };
@@ -57,7 +57,7 @@ namespace ItemApi.Controllers
             {
                 return NotFound();
             }
-            // return _mapper.Map<ItemDTO>(Item);
+            // return _mapper.Map<ItemDTO>(Item);//// cái vừa sửa chỉ có ở hàm search đó thui
             return await _itemRepos.MappingToItemDTO(Item);
         }
 

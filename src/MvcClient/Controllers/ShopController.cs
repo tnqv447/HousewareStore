@@ -76,7 +76,6 @@ namespace MvcClient.Controllers
                     .ToList();
             }
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
-            Console.WriteLine(minPrice);
             ChangeUriPlaceholder(catalog.Items);
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
 
