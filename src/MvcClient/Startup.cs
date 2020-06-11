@@ -47,9 +47,9 @@ namespace MvcClient
 
             IdentityModelEventSource.ShowPII = true;
             services.AddControllersWithViews(
-                
+
             ).AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             ConfigAuthentication(services);
 
