@@ -9,9 +9,13 @@
 
 <h1>Details</h1>
 
-<div>
+<div class="container">
     <h4>Item</h4>
     <hr/>
+    <dl class="row">
+        @{string PictureURLPath = @Url.Content("~/img/product/"+@Model.PictureUrl);}
+        <img src="@PictureURLPath" height="300px" width="300px"/>
+    </dl>
     <dl class="row">
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
@@ -32,26 +36,28 @@
         <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ItemStatus)</dt>
         <dd class="col-sm-10">@Html.DisplayFor(model => model.ItemStatus)</dd>
     </dl>
+
+
+    <div class="row">
+        @if((await AuthorizationService.AuthorizeAsync(User, Model, ItemOperations.Approve)).Succeeded)
+        {
+            <form asp-action="Approve" contro method="POST" style="display: inline;">
+                <input type="hidden" asp-for="@Model.Id"/>
+                <button type="submit" class="btn btn-xs btn-success">Approve</button>
+            </form>
+        }
+        @if((await AuthorizationService.AuthorizeAsync(User, Model, ItemOperations.Reject)).Succeeded)
+        {
+            <form asp-action="Reject" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-xs btn-danger">Reject</button>
+                <input type="hidden" asp-for="@Model.Id"/>
+            </form>
+        }
+    </div>
+
+    <div class="row">
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to list</a>
+    </div>
 </div>
 
-<div>
-@if((await AuthorizationService.AuthorizeAsync(User, Model, ItemOperations.Approve)).Succeeded)
-{
-    <form asp-action="Approve" contro method="POST" style="display: inline;">
-        <input type="hidden" asp-for="@Model.Id"/>
-        <button type="submit" class="btn btn-xs btn-success">Approve</button>
-    </form>
-}
-@if((await AuthorizationService.AuthorizeAsync(User, Model, ItemOperations.Reject)).Succeeded)
-{
-    <form asp-action="Reject" method="POST" style="display: inline;">
-        <button type="submit" class="btn btn-xs btn-danger">Reject</button>
-        <input type="hidden" asp-for="@Model.Id"/>
-    </form>
-}
-</div>
-
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to list</a>
-</div>

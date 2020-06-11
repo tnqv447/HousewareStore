@@ -29,17 +29,19 @@ namespace ItemApi.Controllers
         // GET /catalog
         [AllowAnonymous]
         [HttpGet("catalog")]
-        public async Task<IndexDTO> GetCatalog(string category = "", string searchString = "", string sortOrder = "")
+        public async Task<IndexDTO> GetCatalog(string category = "", string searchString = "", double minPrice = 0, double maxPrice = 0, string sortOrder = "")
         {
-
             var indexDTO = new IndexDTO()
             {
                 ItemCategory = category,
                 SearchString = searchString,
                 Categories = await _categoryRepos.GetAllCategoryNames(),
+                MinPrice = minPrice,
+                MaxPrice = maxPrice,
                 SortOrder = sortOrder,
+                // nếu nó ko đc thì xóa nó đi, xóa cái nào
                 CategoriesId = await _categoryRepos.GetAllCategoryIds(),
-                Items = await _itemRepos.GetItemsBySearch(category, searchString, sortOrder)
+                Items = await _itemRepos.GetItemsBySearch(category, searchString, minPrice, maxPrice, sortOrder)
             };
 
             return indexDTO;
@@ -55,7 +57,7 @@ namespace ItemApi.Controllers
             {
                 return NotFound();
             }
-            // return _mapper.Map<ItemDTO>(Item);
+            // return _mapper.Map<ItemDTO>(Item);//// cái vừa sửa chỉ có ở hàm search đó thui
             return await _itemRepos.MappingToItemDTO(Item);
         }
 
@@ -125,17 +127,5 @@ namespace ItemApi.Controllers
 
             return NoContent();
         }
-
-        [AllowAnonymous]
-        [HttpGet("create")]
-        public async Task<CreateItemDTO> GetCreateItem()
-        {
-            var CreateItemDTO = new CreateItemDTO()
-            {
-                Categories = await _categoryRepos.GetAllCategories(),
-            };
-            return CreateItemDTO;
-        }
-
     }
 }
