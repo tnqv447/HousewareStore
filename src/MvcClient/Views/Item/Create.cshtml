@@ -2,23 +2,29 @@
 
 @{
     ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Create</h1>
-
-<h4>Item</h4>
-<hr/>
 <div class="container">
+    <div class="row" style="text-align: justify;">
+        <h1>Create</h1>
+    </div>
+    <br />
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-8">
             <form method="POST" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group"> 
                     <label asp-for="ImageURL" class="control-label"></label>  
-                    <div class="custom-file">  
-                        <input asp-for="ImageURL" class="custom-file-input" >  
-                        <label class="custom-file-label" for="customFile">Choose file</label>  
-                    </div>  
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Upload</span>
+                        </div>
+                        <div class="custom-file"> 
+                            <input asp-for="ImageURL" class="custom-file-input" >  
+                            <label class="custom-file-label" for="customFile">Choose file</label>  
+                        </div>
+                    </div>
                     <span asp-validation-for="ImageURL" class="text-danger"></span>  
                 </div> 
                 <div class="form-group">
@@ -27,25 +33,26 @@
                     <span asp-validation-for="Item.Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <div class="row">
-                        <div class="col-md-3"><label asp-for="Item.Category" class="control-label"></label></div>
-                        <div class="col-md-7">
-                            @Html.DropDownListFor(n =>n.Item.CategoryId,
-                            new SelectList(Model.Categories, "CategoryId", "CategoryName", 1),
-                            new { @class = "form-control" })
-                        </div>
-                    </div>
-                    @* <input asp-for="Item.Category" class="form-control"/>  *@
+                    <label asp-for="Item.Category" class="control-label"></label>
+                    @Html.DropDownListFor(n =>n.Item.CategoryId,
+                    new SelectList(Model.Categories, "CategoryId", "CategoryName", 1),
+                    new { @class = "custom-select" })
                     <span asp-validation-for="Item.Category" class="text-danger"></span>
                 </div>    
                 <div class="form-group">
                     <label asp-for="Item.UnitPrice" class="control-label"></label>
-                    <input asp-for="Item.UnitPrice" class="form-control"/> 
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input asp-for="Item.UnitPrice" class="form-control"/>
+                    </div>
                     <span asp-validation-for="Item.UnitPrice" class="text-danger"></span>
                 </div>    
                 <div class="form-group">
                     <label asp-for="Item.Description" class="control-label"></label>
-                    <input asp-for="Item.Description" class="form-control"/> 
+                    @* <input asp-for="Item.Description" class="form-control" />  *@
+                    <textarea asp-for="Item.Description" class="form-control" aria-label="With textarea"></textarea>
                     <span asp-validation-for="Item.Description" class="text-danger"></span>
                 </div>    
                 <div class="form-group">

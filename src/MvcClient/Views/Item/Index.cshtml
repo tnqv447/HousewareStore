@@ -8,112 +8,148 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
     var selectList = new SelectList(Model.Categories);
 }
-                <div class="row">
-                    <!-- Primary table start -->
-                    <div class="col-12 mt-5">
+<div class="row">
+    <div class="col-12 mt-5">
+        <div class="card">
+            <div class="card-body">
+                @if(!User.IsInRole("Administrators")){
+                    <a  type="button" class="btn btn-outline-primary mb-3" asp-action="Create">Create New</a>
+                }
+                <br />
+                <form  method="GET">
+                    <div class="form-row align-items-center">
+                        <div class="col-md-5 my-1">
+                            <select class="custom-select"  asp-for="ItemCategory"  asp-items="@selectList">
+                                <option value="">All categories </option><span class="arrow_carrot-down"></span>
+                            </select>                  
+                        </div> 
+                        <div class="col-md-5 my-1">                
+                            <input type="text" class="form-control" asp-for="SearchString"  placeholder="What do yo u need?">        
+                        </div>  
+                        <div class="col-auto my-1">
+                            <button type="submit" value="Filter" class="site-btn">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>            
+                        </div>               
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+        
+<div class="row">
+    <!-- Primary table start -->
+    <div class="col-12 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">LIST OF ITEMS</h4>
+                <div class="table-responsive data-tables datatable-primary">
+                    <table id="dataTable2" class="table table-hover table-striped text-center">
+                        <thead class="text-capitalize">
+                            <tr>
+                                <th>Index</th>
+                                <th>Image</th>
+                                <th>@Html.DisplayNameFor(model => model.Items[0].Name)</th>
+                                <th>@Html.DisplayNameFor(model => model.Items[0].Category)</th>
+                                <th>@Html.DisplayNameFor(model => model.Items[0].UnitPrice)</th>
+                                <th>@Html.DisplayNameFor(model => model.Items[0].Description)</th>
+                                <th>@Html.DisplayNameFor(model => model.Items[0].ItemStatus)</th>
+                                @* <th>@Html.DisplayNameFor(model => model.Items[0].OwnerId)</th>  *@
+                                <th>Action</th>.
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if(Model.ItemsPaging.Count() == 0){
+                                    <tr><td><h4>Sorry we didn't find any item!</h4></td></tr>
+                                }
+                                else{
+                                    var count = 1;
+                                    @foreach (var item in Model.ItemsPaging)
+                                    {
+                                        <tr>
+                                            <td  width="5%">@count</td> @{count++;}
+                                            @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureUrl);
+                                            int countWords = @item.Description.Split(".").Length;
+                                            string[] value = item.Description.Split(".");}
+                                            <td class="item"><img class="img_aspect" src="@PictureURLPath" asp-append-version="true" /></td>
+                                            <td width="8%">@Html.DisplayFor(model => item.Name)</td>
+                                            <td width="5%">@Html.DisplayFor(model => item.Category)</td>
+                                            <td width="8%">@Html.DisplayFor(model => item.UnitPrice)</td>
+                                            <td width="29%" style="text-align:left;padding-left:20px">
+                                                @for(int i=0;i<countWords;i++){
+                                                    <span style="font-weight: bold; font-size:25px">.</span>
+                                                    @Html.DisplayFor(model => value[i])
+                                                    <br>
+                                                }
+                                            </td>
+                                            <td width="10%">
+                                                @{
+                                                    if((int)item.ItemStatus == 1 ){
+                                                        <p class="badge badge-success text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
+                                                    }
+                                                    else if((int)item.ItemStatus == 0){
+                                                        <p class="badge badge-primary text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
+                                                    }else{
+                                                        <p class="badge badge-danger text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                <a type="button" class="btn btn-rounded btn-primary mb-3" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                                @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Update)).Succeeded)
+                                                {
+                                                <a type="button" class="btn btn-rounded btn-success mb-3" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                                }
+                                            
+                                                @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Delete)).Succeeded)
+                                                {
+                                                <a type="button" class="btn btn-rounded btn-danger mb-3" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                        @{
+                        var prevDisabled = !Model.ItemsPaging.HasPrevious ? "disabled" : "";
+                        var nextDisabled = !Model.ItemsPaging.HasNext ? "disabled" : "";
+                    }   
+                    <div class="col-lg-6 col-md-8 mt-5" style="text-align:center">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Data Table Primary</h4>
-                                <div class="data-tables datatable-primary">
-                                    <table id="dataTable2" class="text-center">
-                                        <thead class="text-capitalize">
-                                            <tr>
-                                                <th>STT</th>
-                                                <th>Picture</th>
-                                                <th>@Html.DisplayNameFor(model => model.Items[0].Name)</th>
-                                                <th>@Html.DisplayNameFor(model => model.Items[0].Category)</th>
-                                                <th>@Html.DisplayNameFor(model => model.Items[0].UnitPrice)</th>
-                                                <th>@Html.DisplayNameFor(model => model.Items[0].Description)</th>
-                                                <th>@Html.DisplayNameFor(model => model.Items[0].ItemStatus)</th>
-                                                @* <th>@Html.DisplayNameFor(model => model.Items[0].OwnerId)</th>  *@
-                                                <th>Action</th>.
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                             @{var count = 1; //cái qq gì đây
-                                            }
-                                            @foreach (var item in Model.ItemsPaging)
-                                            {
-                                                <tr>
-                                                    <td  width="5%">@count</td> @{count++;}
-                                                    @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureUrl);
-                                                    int countWords = @item.Description.Split(".").Length;
-                                                    string[] value = item.Description.Split(".");}
-                                                    <td class="item"><img class="img_aspect" src="@PictureURLPath" asp-append-version="true" /></td>
-                                                    <td width="8%">@Html.DisplayFor(model => item.Name)</td>
-                                                    <td width="5%">@Html.DisplayFor(model => item.Category)</td>
-                                                    <td width="8%">@Html.DisplayFor(model => item.UnitPrice)</td>
-                                                    <td width="29%" style="text-align:left;padding-left:20px">
-                                                        @for(int i=0;i<countWords;i++){
-                                                            <span style="font-weight: bold; font-size:25px">.</span>
-                                                            @Html.DisplayFor(model => value[i])
-                                                            <br>
-                                                        }
-                                                    </td>
-                                                    <td width="10%">
-                                                        @{
-                                                            if((int)item.ItemStatus == 1 ){
-                                                                <p class="badge badge-success text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
-                                                            }
-                                                            else if((int)item.ItemStatus == 0){
-                                                                <p class="badge badge-primary text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
-                                                            }else{
-                                                                <p class="badge badge-danger text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
-                                                            }
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-rounded btn-primary mb-3" asp-action="Details" asp-route-id="@item.Id">Details</button>
-                                                        @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Update)).Succeeded)
-                                                        {
-                                                        <button type="button" class="btn btn-rounded btn-success mb-3" asp-action="Edit" asp-route-id="@item.Id">Edit</button>
-                                                        }
-                                                    
-                                                        @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Delete)).Succeeded)
-                                                        {
-                                                        <button type="button" class="btn btn-rounded btn-danger mb-3" asp-action="Delete" asp-route-id="@item.Id">Delete</button>
-                                                        }
-                                                    </td>
-                                                </tr>
-                                            }
-                                            
-                                        </tbody>
-                                    </table>
-                                     @{
-                                        var prevDisabled = !Model.ItemsPaging.HasPrevious ? "disabled" : "";
-                                        var nextDisabled = !Model.ItemsPaging.HasNext ? "disabled" : "";
-                                    }   
-                                    <div class="col-lg-6 col-md-8 mt-5" style="text-align:center">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <nav aria-label="...">
-                                                    <ul class="pagination">
-                                                        <li class="page-item disabled">
-                                                            <a class="page-link @prevDisabled" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex-1)" tabindex="-1">Previous</a>
-                                                        </li>
-                                                        @for(var i = 0;i<Model.ItemsPaging.TotalPages;i++){
-                                                            if( (i+1) == Model.ItemsPaging.PageIndex){
-                                                                <li class="page-item active">
-                                                                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@Model.ItemsPaging.PageIndex">@(i+1) <span class="sr-only">(current)</span></a>
-                                                                </li>
-                                                            }
-                                                            else{
-                                                                <li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@(i+1)">@(i+1)</a></li>
-                                                            }
-                                                        }
-                                                        
-                                                        
-                        
-                                                            <a class="page-link @nextDisabled" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex+1)">Next</a>
-                                                        </li>
-                                                    </ul>
-                                                </nav>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <nav aria-label="...">
+                                    <form method="GET">
+                                        <ul class="pagination">
+                                            <li class="page-item disabled">
+                                                <a class="page-link @prevDisabled" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex-1)" tabindex="-1">Previous</a>
+                                            </li>
+                                            @for(var i = 0;i<Model.ItemsPaging.TotalPages;i++){
+                                                var pageIndex = i+1;
+                                                if( pageIndex == Model.ItemsPaging.PageIndex){
+                                                    <li class="page-item active">
+                                                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@Model.ItemsPaging.PageIndex">@pageIndex <span class="sr-only">(current)</span></a>
+                                                    </li>
+                                                }
+                                                else{
+                                                    <li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@pageIndex">@pageIndex</a></li>
+                                                }
+                                            }                                                                                                  
+                                                <a class="page-link @nextDisabled" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex+1)">Next</a>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                    
+                                </nav>
                             </div>
                         </div>
                     </div>
-                    <!-- Primary table end -->
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- Primary table end -->
+</div>
