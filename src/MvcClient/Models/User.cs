@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
-using IdentityApi.Models;
-namespace IdentityApi.DTO
+
+namespace MvcClient.Models
 {
-    public class ApplicationUserDTO
+    public class User
     {
         [JsonProperty("user_id")]
         public string UserId { get; set; }
@@ -43,5 +43,25 @@ namespace IdentityApi.DTO
         public string Password { get; set; }
     }
 
+    public class Address
+    {
+        [JsonProperty("street_address")]
+        [Display(Name = "Street address")]
+        public string StreetAddress { get; set; }
 
+        [Display(Name = "Locality/District")]
+        public string Locality { get; set; }
+
+        public string City { get; set; }
+        public string Country { get; set; }
+
+        [JsonProperty("postal_code")]
+        [Display(Name = "Postal code")]
+        public string PostalCode { get; set; }
+
+        public override string ToString()
+        {
+            return $"{StreetAddress}, {Locality}, {City}, {Country}, {PostalCode}";
+        }
+    }
 }

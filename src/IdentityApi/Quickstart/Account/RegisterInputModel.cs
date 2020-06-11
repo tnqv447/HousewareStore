@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
@@ -7,11 +8,19 @@ namespace IdentityServer4.Quickstart.UI
     {
         [Required]
         public string Username { get; set; }
-        [Required]
+
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "The Password cannot be empty.")]
+        [DisplayName("Password")]
+        [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
         public string Password { get; set; }
-        [Required]
+
+        [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
+        [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
+        [Compare("Password", ErrorMessage = "The entered passwords do not match.")]
         public string ConfirmPassword { get; set; }
+
         public bool RememberMe { get; set; }
         public string Role { get; set; }
         public string ReturnUrl { get; set; }
@@ -50,8 +59,8 @@ namespace IdentityServer4.Quickstart.UI
 
         public string Website { get; set; }
         public Address Address { get; set; }
-        
-        public UserProfileInputModel(){}
+
+        public UserProfileInputModel() { }
         public UserProfileInputModel(string Name, string GivenName, string FamilyName, string PhoneNumber, string Email, string PictureUrl, Address address)
         {
             this.Name = Name;
@@ -82,15 +91,15 @@ namespace IdentityServer4.Quickstart.UI
         public string PostalCode { get; set; }
         public Address()
         {
-            
+
         }
-        public Address(string StreetAddress,string Locality, string City, string Country, string PostalCode)
+        public Address(string StreetAddress, string Locality, string City, string Country, string PostalCode)
         {
             this.StreetAddress = StreetAddress;
             this.Locality = Locality;
             this.City = City;
             this.Country = Country;
-            this.PostalCode = PostalCode;            
+            this.PostalCode = PostalCode;
         }
     }
 }
