@@ -66,8 +66,6 @@ namespace MvcClient.Controllers
         {
 
         
-            Console.WriteLine(item.Name);
-            Console.WriteLine(item.UnitPrice);
             var cartItem = new CartItem
             {
                 Id = Guid.NewGuid().ToString(),
