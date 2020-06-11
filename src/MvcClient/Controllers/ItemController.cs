@@ -30,10 +30,11 @@ namespace MvcClient.Controllers
             webHostEnvironment = hostEnvironment;
         }
 
-        public async Task<IActionResult> Index(string itemGenre, string searchString, double minPrice, double maxPrice, string sortOrder, int pageNumber = 1)
+        public async Task<IActionResult> Index(int pageNumber = 1, string ItemCategory = null, string SearchString = null)
         {
+            // double minPrice = 0, double maxPrice = 999999, string sortOrder = "Name"
             var pageSize = 6;
-            var catalog = await _itemService.GetCatalog(itemGenre, searchString, minPrice, maxPrice, sortOrder);
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, 0, 500, null);
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);
