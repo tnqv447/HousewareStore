@@ -1,70 +1,106 @@
 @model Cart
-
-<div class="container">
-    <article class="esh-basket-titles row">
-        <table style="width: 80%;">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th></th>
-                    <th style="width: 10rem;text-align:center">Price</th>
-                    <th style="text-align: center;">Quantity</th>
-                    <th style="text-align: right;">Cost</th>
-                </tr>
-            </thead>
-            <tbody>
-            @for (int i = 0; i < Model.CartItems.Count; i++)
-            {
-                var item = Model.CartItems[i];
-                
-                <tr>
-                    <td><img class="esh-basket-image" src="@item.PictureUrl"/></td>
-                    <td>@item.ItemName</td>
-                    <td style="text-align:center">$ @item.UnitPrice.ToString("N2")</td>
-                    <td style="text-align: center;">
-                        <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
-                        <input style="width: 6rem;" min="1" asp-for="@item.Quantity"/>
-                    </td>
-                    <td style="text-align: right;">$ @Math.Round(item.UnitPrice * item.Quantity, 2).ToString("N2")</td>
-                    <td style="text-align: right;" type="button" value="[X]"></td>
-                </tr>
-                @if (item.OldUnitPrice != 0)
-                {
-                    <div class="alert alert-warning esh-basket-margin12" role="alert">
-                        Note that the price of this article changed in our Catalog. The old price when you originally added it to the basket was $ 
-                        @item.OldUnitPrice 
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">Products</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.CartItems.Count; i++)
+                            {
+                                var item = Model.CartItems[i];
+                                <tr>
+                                    <td class="shoping__cart__item">
+                                        <img src="img/product/@item.PictureUrl"/>
+                                        <h5>@item.ItemName</h5>
+                                    </td>
+                                    <td class="shoping__cart__price">$ @item.UnitPrice.ToString("N2")</td>
+                                    <td class="shoping__cart__quantity">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input min="1" asp-for="@item.Quantity"/>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
+                                    </td>
+                                    <td class="shoping__cart__total">$ @Math.Round(item.UnitPrice * item.Quantity, 2).ToString("N2")</td>
+                                    <td class="shoping__cart__item__close" type="button" value="[X]">
+                                        <span class="icon_close"></span>
+                                    </td>
+                                </tr>
+                                @if (item.OldUnitPrice != 0)
+                                {
+                                    <div class="alert alert-warning esh-basket-margin12" role="alert">
+                                        Note that the price of this article changed in our Catalog. The old price when you originally added it to the basket was $ 
+                                        @item.OldUnitPrice 
+                                    </div>
+                                }
+                            }
+                            <tr>
+                                <td class="shoping__cart__item">
+                                    <img src="img/cart/cart-1.jpg" alt="">
+                                    <h5>Vegetable’s Package</h5>
+                                </td>
+                                <td class="shoping__cart__price">
+                                    $55.00
+                                </td>
+                                <td class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="1">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="shoping__cart__total">
+                                    $110.00
+                                </td>
+                                <td class="shoping__cart__item__close">
+                                    <span class="icon_close"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
+                    <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
+                    <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
+                        Upadate Cart</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__continue">
+                    <div class="shoping__discount">
+                        <h5>Discount Codes</h5>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your coupon code">
+                            <button type="submit" class="site-btn">APPLY COUPON</button>
+                        </form>
                     </div>
-                }
-            }
-                <tr>
-                    <td colspan="4"></td>
-                    <td style="text-align: right;">TOTAL</td>
-                </tr>
-                <tr>
-                    <td colspan="4"></td>
-                    <td style="text-align: right;"><section class="esh-basket-item esh-basket-item--mark">$ @Model.Total()</section></td>
-                </tr>
-                <tr>
-                    <article class="esh-basket-items row">
-                    <td colspan="3"></td>
-                    <td style="text-align: center;">
-                        <section class="esh-basket-item">
-                            <input class="btn esh-basket-checkout"  name="action" value="[ Clear ]" type="submit" />
-                        </section>
-                    </td>
-                    <td style="text-align: center;">
-                        <section class="esh-basket-item">
-                            <button class="btn esh-basket-checkout" name="name" value="[ Update ]" type="submit">[ Update ]</button>
-                        </section>
-                    </td>
-                    <td style="text-align: right;">
-                        <section class="esh-basket-item">
-                            <input type="submit" class="btn esh-basket-checkout" value="[ Checkout ]" name="action" />
-                        </section>
-                    </td>
-                    </article>
-                </tr>
-            </tbody>
-        </table>
-    </article>
-</div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Cart Total</h5>
+                    <ul>
+                        <li>Subtotal <span>$454.98</span></li>
+                        <li>Total <span>$454.98</span></li>
+                    </ul>
+                    <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
