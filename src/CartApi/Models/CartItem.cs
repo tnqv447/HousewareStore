@@ -7,6 +7,6 @@ namespace CartApi.Models
         public string ItemName { get; set; }
         public decimal UnitPrice { get; set; }
         public int Quantity { get; set; }
-        public string PictureUri { get; set; }
+        public string PictureUrl { get; set; }
     }
 }
