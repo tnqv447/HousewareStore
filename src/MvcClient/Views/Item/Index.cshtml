@@ -35,14 +35,22 @@
                                             @foreach (var item in Model.ItemsPaging)
                                             {
                                                 <tr>
-                                                    <td width="5%">@count</td> @{count++;}
-                                                    @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureUrl);}
-                                                    <td width="10%"><img src="@PictureURLPath" asp-append-version="true"/></td>
-                                                    <td width="10%">@Html.DisplayFor(model => item.Name)</td>
-                                                    <td width="10%">@Html.DisplayFor(model => item.Category)</td>
-                                                    <td width="10%">@Html.DisplayFor(model => item.UnitPrice)</td>
-                                                    <td width="20%">@Html.DisplayFor(model => item.Description)</td>
-                                                    <td width="20%">
+                                                    <td  width="5%">@count</td> @{count++;}
+                                                    @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureUrl);
+                                                    int countWords = @item.Description.Split(".").Length;
+                                                    string[] value = item.Description.Split(".");}
+                                                    <td class="item"><img class="img_aspect" src="@PictureURLPath" asp-append-version="true" /></td>
+                                                    <td width="8%">@Html.DisplayFor(model => item.Name)</td>
+                                                    <td width="5%">@Html.DisplayFor(model => item.Category)</td>
+                                                    <td width="8%">@Html.DisplayFor(model => item.UnitPrice)</td>
+                                                    <td width="29%" style="text-align:left;padding-left:20px">
+                                                        @for(int i=0;i<countWords;i++){
+                                                            <span style="font-weight: bold; font-size:25px">.</span>
+                                                            @Html.DisplayFor(model => value[i])
+                                                            <br>
+                                                        }
+                                                    </td>
+                                                    <td width="10%">
                                                         @{
                                                             if((int)item.ItemStatus == 1 ){
                                                                 <p class="badge badge-success text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
@@ -63,7 +71,7 @@
                                                     
                                                         @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Delete)).Succeeded)
                                                         {
-                                                        <button type="button" class="btn btn-rounded btn-warning mb-3" asp-action="Delete" asp-route-id="@item.Id">Delete</button>
+                                                        <button type="button" class="btn btn-rounded btn-danger mb-3" asp-action="Delete" asp-route-id="@item.Id">Delete</button>
                                                         }
                                                     </td>
                                                 </tr>

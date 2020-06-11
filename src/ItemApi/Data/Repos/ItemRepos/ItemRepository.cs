@@ -60,11 +60,9 @@ namespace ItemApi.Data.Repos
             {
                 Items = Items.Where(m => m.UnitPrice >= minPrice && m.UnitPrice <= maxPrice);
             }
-            // where gì, t mapper mà vs lại list items vẫn là nó chứ có thay đổi đâu, m ngáo r
-            //đây là sql sai
-            // return await Items.Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync(); // cơ mà cái return này thì t mới sửa hồi nãy, hàm thì tạo hôm qua nhưng ko dùng cho hàm search này
-            return await MappingToItemDTO(Items);// nhiệm vụ cái này là mapper item to itemdto // itemdto có chư cả caterogyName và id
-        }// cái này t thêm từ hôn qua rồi // tại cái trên thì ko trả về caterogyName, ủa mà hqua m chỉnh r, nãy t mới teesst bên t vẫn ok, m có chỉnh chỗ nào nữa k v
+            // return await Items.Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync(); 
+            return await MappingToItemDTO(Items);
+        }
 
         public bool ItemExists(int id)
         {

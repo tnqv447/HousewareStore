@@ -62,7 +62,18 @@
     -webkit-transition: padding-left 0.3s ease 0s;
     transition: padding-left 0.3s ease 0s;
 }
-
+.item {
+    width: 223px;
+    min-height: 100px;
+    max-height: 223px;
+    float: left;
+    margin: 3px;
+    padding: 3px;
+}
+.img_aspect{
+    max-width: 100%;
+    max-height: 220px ;   
+}
 .sbar_collapsed.page-container {
     padding-left: 0;
 }
@@ -548,7 +559,7 @@
 }
 
 .notify-title a {
-    float: right;
+    
     display: inline-block;
     color: #ffee1d;
     font-size: 13px;
@@ -1267,7 +1278,7 @@ table.dbkit-table tr td {
     color: #e1e1e1;
 }
 
-.member-box .media-body {}
+
 
 .member-box .media-body p {
     font-size: 18px;
@@ -1500,7 +1511,7 @@ table.dbkit-table tr td {
     opacity: 0;
 }
 
-@-webkit-keyframes pulse {
+@keyframes pulse {
     0% {
         -webkit-transform: scale(0);
         opacity: 0.0;
@@ -1788,7 +1799,7 @@ table.dbkit-table tr td {
     letter-spacing: 0;
 }
 
-.btn-xl {
+.sxl {
     padding: 19px 24px;
 }
 
@@ -1989,7 +2000,7 @@ label {
 
 /*-------------------- 18. Icons ------------------- */
 
-.fw-icons {}
+
 
 .fw-icons a {
     color: #444;
@@ -2212,7 +2223,7 @@ table.dataTable thead td {
 
 /*-------------------- 22. Invoice ------------------- */
 
-.invoice-area {}
+
 
 .invoice-head {
     margin-bottom: 30px;
@@ -2255,7 +2266,7 @@ table.dataTable thead td {
     margin-bottom: 5px;
 }
 
-.invoice-table {}
+
 
 .invoice-table .table-bordered td,
 .invoice-table .table-bordered th {
