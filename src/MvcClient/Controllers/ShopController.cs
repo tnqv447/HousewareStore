@@ -64,21 +64,30 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> ItemPaging(string itemCategory, string searchString, string sortOrder, double minPrice, double maxPrice, string currentFilter, int pageNumber)
         {
             int pageSize = 6;
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
             var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder);
-            //đợi t chút, t push cái mới lên code này code cũ mà
+            Console.WriteLine(catalog.Items.Count);
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
             if (!isAdminOrManager)
             {
-                //var userId = _identityService.Get (User).Id;
+                // var userId = _identityService.Get (User).Id;
                 catalog.Items = catalog.Items
                     .Where(m => m.ItemStatus == ItemStatus.Approved)
                     .ToList();
             }
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
+
             ChangeUriPlaceholder(catalog.Items);
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
-
+            catalog.PageIndex = pageNumber;
             return new JsonResult(catalog);
         }
 

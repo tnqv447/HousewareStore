@@ -18,7 +18,7 @@ namespace ItemApi.Data
                 var categories = new List<Category> {
                     new Category {
                     //CategoryId = 0,
-                    CategoryName = "Pots & Pans"
+                    CategoryName = "Pots And Pans"
                     },
                     new Category {
                     //CategoryId = 1,

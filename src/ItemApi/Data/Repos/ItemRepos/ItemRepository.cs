@@ -36,7 +36,6 @@ namespace ItemApi.Data.Repos
             }
             if (!string.IsNullOrEmpty(sortOrder))
             {
-                //bà mẹ m, dotnet run làm nãy giờ sửa có chạy cái đéo gì đâu
                 switch (sortOrder)
                 {
                     case "name_desc":
@@ -93,7 +92,7 @@ namespace ItemApi.Data.Repos
         {
             var ItemsDto = from i in items
                            join c in _context.Categories on i.CategoryId equals c.CategoryId into catGroup
-                           from cat in catGroup.DefaultIfEmpty()
+                           from cat in catGroup
                            select new ItemDTO(i, cat.CategoryName);
             return await ItemsDto.ToListAsync();
         }

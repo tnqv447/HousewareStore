@@ -29,7 +29,6 @@ namespace MvcClient.Services
         public async Task<Order> GetOrder(int id)
         {
             var uri = _serviceBaseUrl + $"/{id}";
-            Console.WriteLine(uri);
             return await _httpClient.GetAsync<Order>(uri);
         }
 

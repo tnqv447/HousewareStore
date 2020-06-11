@@ -93,7 +93,7 @@
                         <h4>Price</h4>
                         <div class="price-range-wrap">
                             <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                data-min="10000" data-max="2000000">
+                                data-min="0" data-max="500">
                                 <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
                                 <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
@@ -205,7 +205,10 @@
                     @foreach(var item in Model.ItemsPaging){
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg" data-setbg="img/product/@item.PictureUrl">
+                                <div class="product__item__pic " >
+                                    <div class="item__picture__inside" style="position:relative">
+                                        <img class="item_picture" src="img/product/@item.PictureUrl">
+                                    </div>
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -217,7 +220,7 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6><a href="#">@item.Name</a></h6>
-                                    <h5>@item.UnitPrice</h5>
+                                    <h5>$@item.UnitPrice.ToString("N2")</h5>
                                 </div>
                             </div>
                         </div>
@@ -310,17 +313,18 @@
                             count += 1;
                             html += '<div class="col-lg-4 col-md-6 col-sm-6">';
                             html += '   <div class="product__item">';
-                            html += '       <div class="product__item__pic set-bg" data-setbg="img/product/'+data.itemsPaging[i].pictureUrl+'">';
+                            html += '       <div class="product__item__pic">';
+                            html += '           <div class="item__picture__inside" style="position:relative">';
+                            html += '               <img class="item_picture" src="img/product/'+data.itemsPaging[i].pictureUrl+'"></div>';
                             html += '           <ul class="product__item__pic__hover">';
                             html += '               <li><a href="#"><i class="fa fa-heart"></i></a></li>';
-                            html += '                   <li><a href="#"><i class="fa fa-heart"></i></a></li>';
                             html += '                   <li><a href="#"><i class="fa fa-retweet"></i></a></li>';
                             html += '                   @if(User.Identity.IsAuthenticated){<li><a style="cursor:pointer" class="add_to_cart" id="'+data.itemsPaging[i].id+'"><i class="fa fa-shopping-cart"></i></a></li>}';
                             html += '           </ul>';
                             html += '       </div>';
                             html += '       <div class="product__item__text">';
                             html += '           <h6><a href="#">'+data.itemsPaging[i].name+'</a></h6>';
-                            html += '           <h5>'+data.itemsPaging[i].unitPrice+'</h5>';
+                            html += '           <h5>$'+data.itemsPaging[i].unitPrice+'</h5>';
                             html += '       </div>';
                             html += '   </div>';
                             html += '</div>';
