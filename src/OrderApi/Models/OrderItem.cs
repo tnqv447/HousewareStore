@@ -7,7 +7,7 @@ namespace OrderApi.Models
         public OrderItem()
         {
         }
-        public OrderItem(int itemId, string itemName, decimal unitPrice, string pictureUrl, int units = 1)
+        public OrderItem(int itemId, string itemName, decimal unitPrice, string pictureUrl, string ownerId, OrderItemStatus status, int units = 1)
         {
             if (units <= 0)
             {
@@ -18,6 +18,8 @@ namespace OrderApi.Models
             UnitPrice = unitPrice;
             PictureUrl = pictureUrl;
             Units = units;
+            OwnerId = ownerId;
+            Status = status;
         }
 
         public int Id { get; set; }
@@ -26,8 +28,11 @@ namespace OrderApi.Models
         public decimal UnitPrice { get; set; }
         public string PictureUrl { get; set; }
         public int Units { get; set; }
+        public string OwnerId { get; set; }
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }
+
+        public OrderItemStatus Status { get; set; }
         public void SetPictureUri(string pictureUrl)
         {
             PictureUrl = pictureUrl;
@@ -41,5 +46,14 @@ namespace OrderApi.Models
 
             Units += units;
         }
+
+
+    }
+
+    public enum OrderItemStatus
+    {
+        Preparing = 0,
+        Shipped = 1,
+        Delivered = 2
     }
 }

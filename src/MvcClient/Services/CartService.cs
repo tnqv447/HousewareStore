@@ -44,10 +44,12 @@ namespace MvcClient.Services
             if (itemFound == null)
             {
                 cart.CartItems.Add(item);
+                Console.WriteLine("new: " + item.PictureUrl);
             }
             else
             {
                 itemFound.Quantity++;
+                Console.WriteLine("exists: " + itemFound.PictureUrl);
             }
 
             await UpdateCart(cart);

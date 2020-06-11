@@ -27,25 +27,26 @@ namespace MvcClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(Dictionary<string, int> quantities, string action)
         {
-            
+
             if (action == "[ Checkout ]")
             {
-                
+
                 return RedirectToAction("Create", "Order");
                 // return RedirectToAction("Index","Cart");
             }
-            else if(action == "[ Clear ]"){
+            else if (action == "[ Clear ]")
+            {
                 var buyer = _identitySvc.Get(User);
 
                 await _cartSvc.ClearCart(buyer);
 
-                return RedirectToAction("Index","Cart");
+                return RedirectToAction("Index", "Cart");
             }
-            else if(action == "[ Update ]")
+            else if (action == "[ Update ]")
             {
                 Cart upCart = new Cart();
                 await _cartSvc.UpdateCart(upCart);
-                return RedirectToAction("Index","Cart");
+                return RedirectToAction("Index", "Cart");
             }
             try
             {
@@ -65,9 +66,7 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> AddToCart(Item item)
         {
 
-        
-            Console.WriteLine(item.Name);
-            Console.WriteLine(item.UnitPrice);
+
             var cartItem = new CartItem
             {
                 Id = Guid.NewGuid().ToString(),
@@ -84,20 +83,20 @@ namespace MvcClient.Controllers
 
             await _cartSvc.AddItemToCart(buyer, cartItem);
 
-            var listCart = await _cartSvc.GetCart(buyer); 
-            
-            
+            var listCart = await _cartSvc.GetCart(buyer);
+
             return new JsonResult(listCart);
         }
 
         [HttpDelete]
-        public async Task<IActionResult> ClearCart(){
+        public async Task<IActionResult> ClearCart()
+        {
 
             var buyer = _identitySvc.Get(User);
 
             await _cartSvc.ClearCart(buyer);
 
-            return RedirectToAction("Index","Cart");
+            return RedirectToAction("Index", "Cart");
         }
 
         private void HandleBrokenCircuitException()

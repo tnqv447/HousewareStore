@@ -86,19 +86,16 @@
                         <a href="./home"><img src="img/logo.png" alt=""></a>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-5">
                     <nav class="header__menu">
                         <ul>
                             <li id="url_Home" class="active"><a asp-action="Index" asp-controller="Home">Home</a></li>
                             <li id="url_Shop"><a asp-action="Index" asp-controller="Shop">Shop</a></li>
                             <li id="url_Contact"><a asp-action="Contact" asp-controller="Home">Contact</a></li>
-                            
-                            
-
                         </ul>
                     </nav>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <nav class="header__menu">
                         <ul>
                             <partial name="_LoginPartial"/>
@@ -192,9 +189,9 @@
     <script src="~/js/mixitup.min.js"></script>
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/main.js" asp-append-version="true"></script>
-    @section Scripts{
     <script>
         (function ($) {
+            var add_cart_dela = 1000;
             $(document).on('click','.add_to_cart',function(){
                 var item_id = $(this).attr('id');
                 var item_name = $('#item_name_'+item_id).text();
@@ -220,12 +217,17 @@
                         var total_price = 0;
                         for( i = 0;i < data.cartItems.length;i++){
                             total_quantities += data.cartItems[i].quantity;
-                            total_price += data.cartItems[i].unitPrice;   
+                            total_price += (data.cartItems[i].unitPrice * data.cartItems[i].quantity);   
                             
                         }
                         $("#loadCart").text(total_quantities);
                         $("#loadTotal").text("$ " + $.number(total_price,2));    
                     
+                    },
+                    complete: function(){
+                        setTimeout(function(){
+
+                        },delay)
                     },
                     error: function(xhr){
                         alert("error");
@@ -234,9 +236,6 @@
             })
             })(jQuery);
     </script>
-    
-    }
-    
 
     @RenderSection("Scripts", required: false)
 </body>

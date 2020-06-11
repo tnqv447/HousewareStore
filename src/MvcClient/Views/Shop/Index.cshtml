@@ -209,6 +209,9 @@
                                     <div class="item__picture__inside" style="position:relative">
                                         <img class="item_picture" src="img/product/@item.PictureUrl">
                                     </div>
+                                    <input type="hidden" value="@item.CategoryId" id="item_category_id_@item.Id">
+                                    <input type="hidden" value="@item.PictureUrl" id="item_picture_uri_@item.Id"/>
+                                    <input type="hidden" value="@item.UnitPrice" id="item_price_@item.Id"/>
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
@@ -219,7 +222,7 @@
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#">@item.Name</a></h6>
+                                    <h6 ><a id="item_name_@item.Id">@item.Name</a></h6>
                                     <h5>$@item.UnitPrice.ToString("N2")</h5>
                                 </div>
                             </div>
@@ -316,6 +319,9 @@
                             html += '       <div class="product__item__pic">';
                             html += '           <div class="item__picture__inside" style="position:relative">';
                             html += '               <img class="item_picture" src="img/product/'+data.itemsPaging[i].pictureUrl+'"></div>';
+                            html += '           <input type="hidden" value="'+data.itemsPaging[i].categoryId+'" id="item_category_id_'+ data.itemsPaging[i].id+'">';        
+                            html += '           <input type="hidden" value="'+data.itemsPaging[i].pictureUrl+'" id="item_picture_uri_'+data.itemsPaging[i].id+'"/>';        
+                            html += '           <input type="hidden" value="'+data.itemsPaging[i].unitPrice+'" id="item_price_'+data.itemsPaging[i].id+'"/>';        
                             html += '           <ul class="product__item__pic__hover">';
                             html += '               <li><a href="#"><i class="fa fa-heart"></i></a></li>';
                             html += '                   <li><a href="#"><i class="fa fa-retweet"></i></a></li>';
@@ -323,7 +329,7 @@
                             html += '           </ul>';
                             html += '       </div>';
                             html += '       <div class="product__item__text">';
-                            html += '           <h6><a href="#">'+data.itemsPaging[i].name+'</a></h6>';
+                            html += '           <h6><a id="item_name_'+data.itemsPaging[i].id+'" href="#">'+data.itemsPaging[i].name+'</a></h6>';
                             html += '           <h5>$'+data.itemsPaging[i].unitPrice+'</h5>';
                             html += '       </div>';
                             html += '   </div>';
