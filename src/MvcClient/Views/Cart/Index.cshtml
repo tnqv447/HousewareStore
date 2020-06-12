@@ -69,10 +69,109 @@
         </div>
     </div>
 </section>
-<form method="POST">
-
-    <div class="esh-basket">
         @await Component.InvokeAsync("BasketList", new { user = identityService.Get(User) })
-    </div>
 
-</form>
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            function loadCart(){
+                $.ajax({
+                    method: 'GET',
+                    url: '@Url.Action("Cart","Cart")',
+                    success: function(data){
+                        html = '';
+                        html +='<input type="hidden" id="length_cart" value="'+data.cartItems.length+'">';
+                        for(i=0; i<data.cartItems.length;i++){
+                            html += '<tr>';
+                            html += '   <td class="shoping__cart__item">';
+                            html += '      <img class="item_picture" src="img/product/'+data.cartItems[i].pictureUrl+'"/></td>';
+                            html += '   <td><h5>'+data.cartItems[i].itemName+'</h5></td>';
+                            html += '   </td>';
+                            html += '   <td class="shoping__cart__price">$ '+data.cartItems[i].unitPrice+'</td>';
+                            html += '   <td class="shoping__cart__quantity">';
+                            html += '       <div class="quantity">';
+                            html += '           <div class="pro-qty">';
+                            html += '               <input min="1" type="number" data-val="true" data-val-required="The Quantity field is required." id="item_Quantity" name="item.Quantity" value="'+data.cartItems[i].quantity+'"/>';
+                            html += '           </div>';
+                            html += '       </div>';
+                            html += '       <input type="hidden" name="quantities[' + i + '].Key" value="'+data.cartItems[i].id+'" />';
+                            html += '   </td>';
+                            html += '   <td class="shoping__cart__total">$ '+(data.cartItems[i].quantity * data.cartItems[i].unitPrice)+'</td>';
+                            html += '   <td class="shoping__cart__item__close clear_item" id="'+data.cartItems[i].id+'">';
+                            html += '       <span class="icon_close"></span>';
+                            html += '   </td>';
+                            html += '</tr>';
+                            if (data.cartItems[i].oldUnitPrice != 0)
+                                {
+                                    html +='<div class="alert alert-warning esh-basket-margin12" role="alert">';
+                                    html +='    Note that the price of this article changed in our Catalog. The old price when you originally added it to the basket was $'; 
+                                    html += data.cartItems[i].oldUnitPrice; 
+                                    html += '</div>';
+                                }
+                            }
+                        $("#cart_body").html('');
+                        $("#cart_body").html(html);
+                        var proQty = $('.pro-qty');
+                        proQty.prepend('<span class="dec qtybtn">-</span>');
+                        proQty.append('<span class="inc qtybtn">+</span>');
+                        proQty.on('click', '.qtybtn', function () {
+                            var $button = $(this);
+                            var oldValue = $button.parent().find('input').val();
+                            if ($button.hasClass('inc')) {
+                                var newVal = parseFloat(oldValue) + 1;
+                            } else {
+                                // Don't allow decrementing below zero
+                                if (oldValue > 0) {
+                                    var newVal = parseFloat(oldValue) - 1;
+                                } else {
+                                    newVal = 0;
+                                }
+                            }
+                            $button.parent().find('input').val(newVal);
+                        });
+                    },
+
+                    error: function(xhr){
+                        alert(xhr);
+                    }
+                })
+            }
+            $(document).on('click','.clear_item',function(){
+                var action = "[ Clear Item ]";
+                var id = $(this).attr('id'); 
+                $.ajax({
+                    method: 'POST',
+                    url: '@Url.Action("AllACtion","Cart")',
+                    data: {action: action, id: id},
+                    success: function(data){
+                        loadCart();
+                    },
+                    error: function(xhr){
+                        alert(xhr);
+                    }
+                })
+            })
+            $(document).on('click','.update_cart',function(){
+                var quantities = {}
+                var action = '[ Update ]';
+                var length = $("#length_cart").val();
+                for(i=0;i<length;i++){
+                    var quantity = $("#item_Quantity_"+i+"").val();
+                    var itemId = $('input[name="quantities['+i+'].Key"]').val();
+                    quantities[itemId] = quantity;
+                }
+                $.ajax({
+                    method: 'POST',
+                    url: '@Url.Action("AllAction","cart")',
+                    data: {action:action, quantities:quantities},
+                    success: function(data){
+                        loadCart();
+                    },
+                    error: function(xhr){
+                        alert(xhr);
+                    }
+                })
+            })
+        });
+    </script>
+}

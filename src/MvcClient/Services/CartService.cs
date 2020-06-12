@@ -34,7 +34,14 @@ namespace MvcClient.Services
 
             return await _httpClient.PutAsync<Cart>(uri, cart);
         }
-
+        public async Task RemoveItemCart(Buyer user, string id){
+            var cart = await GetCart(user);
+            var itemFound = cart.CartItems.Find(x => x.Id == id);
+            if(itemFound != null){
+                cart.CartItems.Remove(itemFound);
+            }
+            await UpdateCart(cart);
+        }
         public async Task AddItemToCart(Buyer user, CartItem item)
         {
             var cart = await GetCart(user);
@@ -43,13 +50,14 @@ namespace MvcClient.Services
 
             if (itemFound == null)
             {
+                
                 cart.CartItems.Add(item);
-                Console.WriteLine("new: " + item.PictureUrl);
+
             }
             else
             {
                 itemFound.Quantity++;
-                Console.WriteLine("exists: " + itemFound.PictureUrl);
+
             }
 
             await UpdateCart(cart);
