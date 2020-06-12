@@ -7,14 +7,14 @@ namespace IdentityApi.Data.Repos
 {
     public abstract class Repository<T> : IRepository<T> where T : class
     {
-        private readonly  ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public Repository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<List<T>> GetAll()
         {
             return await _context.Set<T>().ToListAsync();
         }
