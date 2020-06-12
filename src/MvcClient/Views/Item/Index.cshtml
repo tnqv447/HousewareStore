@@ -16,7 +16,7 @@
                     <a  type="button" class="btn btn-outline-primary mb-3" asp-action="Create">Create New</a>
                 }
                 <br />
-                <form  method="GET">
+                
                     <div class="form-row align-items-center">
                         <div class="col-md-5 my-1">
                             <select class="custom-select"  asp-for="ItemCategory"  asp-items="@selectList">
@@ -27,12 +27,12 @@
                             <input type="text" class="form-control" asp-for="SearchString"  placeholder="What do yo u need?">        
                         </div>  
                         <div class="col-auto my-1">
-                            <button type="submit" value="Filter" class="site-btn">
+                            <button type="submit" value="Filter" class="site-btn search_item">
                                 <i class="fa fa-search" aria-hidden="true"></i>
                             </button>            
                         </div>               
                     </div>
-                </form>
+                
             </div>
         </div>
     </div>
@@ -48,43 +48,34 @@
                     <table id="dataTable2" class="table table-hover table-striped text-center">
                         <thead class="text-capitalize">
                             <tr>
-                                <th>Index</th>
-                                <th>Image</th>
-                                <th>@Html.DisplayNameFor(model => model.Items[0].Name)</th>
-                                <th>@Html.DisplayNameFor(model => model.Items[0].Category)</th>
-                                <th>@Html.DisplayNameFor(model => model.Items[0].UnitPrice)</th>
-                                <th>@Html.DisplayNameFor(model => model.Items[0].Description)</th>
-                                <th>@Html.DisplayNameFor(model => model.Items[0].ItemStatus)</th>
-                                @* <th>@Html.DisplayNameFor(model => model.Items[0].OwnerId)</th>  *@
-                                <th>Action</th>.
+                                <th width="5%">Index</th>
+                                <th width="15%" >Image</th>
+                                <th width="20%">@Html.DisplayNameFor(model => model.Items[0].Name)</th>
+                                <th width="8%">@Html.DisplayNameFor(model => model.Items[0].Category)</th>
+                                <th width="8%">@Html.DisplayNameFor(model => model.Items[0].UnitPrice)</th>
+                                <th width="5%"> @Html.DisplayNameFor(model => model.Items[0].ItemStatus)</th>
+                                <th width="10%">Action</th>.
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="item_body">
                             @{
                                 if(Model.ItemsPaging.Count() == 0){
-                                    <tr><td><h4>Sorry we didn't find any item!</h4></td></tr>
+                                    <tr><h4>Sorry we didn't find any item!</h4></tr>
                                 }
                                 else{
                                     var count = 1;
                                     @foreach (var item in Model.ItemsPaging)
                                     {
                                         <tr>
-                                            <td  width="5%">@count</td> @{count++;}
+                                            <td>@count</td> @{count++;}
                                             @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureUrl);
                                             int countWords = @item.Description.Split(".").Length;
                                             string[] value = item.Description.Split(".");}
                                             <td class="item"><img class="img_aspect" src="@PictureURLPath" asp-append-version="true" /></td>
-                                            <td width="8%">@Html.DisplayFor(model => item.Name)</td>
-                                            <td width="5%">@Html.DisplayFor(model => item.Category)</td>
-                                            <td width="8%">@Html.DisplayFor(model => item.UnitPrice)</td>
-                                            <td width="29%" style="text-align:left;padding-left:20px">
-                                                @for(int i=0;i<countWords;i++){
-                                                    <span style="font-weight: bold; font-size:25px">.</span>
-                                                    @Html.DisplayFor(model => value[i])
-                                                    <br>
-                                                }
-                                            </td>
-                                            <td width="10%">
+                                            <td >@Html.DisplayFor(model => item.Name)</td>
+                                            <td >@Html.DisplayFor(model => item.Category)</td>
+                                            <td>@Html.DisplayFor(model => item.UnitPrice)</td>
+                                            <td>
                                                 @{
                                                     if((int)item.ItemStatus == 1 ){
                                                         <p class="badge badge-success text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
@@ -97,10 +88,10 @@
                                                 }
                                             </td>
                                             <td>
-                                                <a type="button" class="btn btn-rounded btn-primary mb-3" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                                <a type="button" class="btn btn-rounded btn-primary mb-3" asp-action="Details" asp-route-id="@item.Id">Details</a><br>
                                                 @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Update)).Succeeded)
                                                 {
-                                                <a type="button" class="btn btn-rounded btn-success mb-3" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                                <a type="button" class="btn btn-rounded btn-success mb-3" asp-action="Edit" asp-route-id="@item.Id">Edit</a><br>
                                                 }
                                             
                                                 @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Delete)).Succeeded)
@@ -118,38 +109,141 @@
                         var prevDisabled = !Model.ItemsPaging.HasPrevious ? "disabled" : "";
                         var nextDisabled = !Model.ItemsPaging.HasNext ? "disabled" : "";
                     }   
+                    @* Start Pagination *@
                     <div class="col-lg-6 col-md-8 mt-5" style="text-align:center">
                         <div class="card">
                             <div class="card-body">
                                 <nav aria-label="...">
-                                    <form method="GET">
-                                        <ul class="pagination">
-                                            <li class="page-item disabled">
-                                                <a class="page-link @prevDisabled" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex-1)" tabindex="-1">Previous</a>
-                                            </li>
-                                            @for(var i = 0;i<Model.ItemsPaging.TotalPages;i++){
-                                                var pageIndex = i+1;
-                                                if( pageIndex == Model.ItemsPaging.PageIndex){
-                                                    <li class="page-item active">
-                                                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@Model.ItemsPaging.PageIndex">@pageIndex <span class="sr-only">(current)</span></a>
-                                                    </li>
-                                                }
-                                                else{
-                                                    <li class="page-item"><a class="page-link" asp-action="Index" asp-route-pageNumber="@pageIndex">@pageIndex</a></li>
-                                                }
-                                            }                                                                                                  
-                                                <a class="page-link @nextDisabled" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex+1)">Next</a>
-                                            </li>
-                                        </ul>
-                                    </form>
-                                    
+                                    <ul class="pagination" id="pagination_body">
+                                        <li class="page-item @prevDisabled">
+                                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex-1)" tabindex="-1" id="num-page@(Model.ItemsPaging.PageIndex-1)">Previous</a>
+                                        </li>
+                                        @for(var i = 0;i<Model.ItemsPaging.TotalPages;i++){
+                                            var pageIndex = i+1;
+                                            var idpageIndex = "num-page" + pageIndex;
+                                            if( pageIndex == Model.ItemsPaging.PageIndex){
+                                                <li class="page-item active">
+                                                    <a class="page-link" id="@idpageIndex" asp-action="Index" asp-route-pageNumber="@Model.ItemsPaging.PageIndex">@pageIndex <span class="sr-only">(current)</span></a>
+                                                </li>
+                                            }
+                                            else{
+                                                <li class="page-item"><a class="page-link" id="@idpageIndex" asp-action="Index" asp-route-pageNumber="@pageIndex">@pageIndex</a></li>
+                                            }
+                                        }    
+                                        <li class="page-item @nextDisabled">
+                                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex+1)" id="num-page@(Model.ItemsPaging.PageIndex+1)">Next</a>
+                                        </li>                                                                                              
+                                    </ul>     
                                 </nav>
                             </div>
                         </div>
                     </div>
+                    @* End Pagination *@
                 </div>
             </div>
         </div>
     </div>
     <!-- Primary table end -->
 </div>
+
+
+@* Javascript *@
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            var delay_time = 500;
+            function loadPage(searchString,category,pageNumber){
+                $.ajax({
+                    method:'GET',
+                    url: '@Url.Action("ItemPaging","Item")',
+                    data:{SearchString: searchString, ItemCategory:category, pageNumber:pageNumber },
+                    success:function(data){
+                        html = '';
+                        html_2 = '';     
+                        for(i=0; i<data.itemsPaging.length;i++)
+                        {
+                            var item = data.itemsPaging[i];
+                            html += '<tr>';
+                            html += '<td>'+(i+1)+'</td>';
+                            html += '<td class="item"><img class="img_aspect" src="img/product/'+item.pictureUrl+'" /></td>';
+                            html += '<td >'+item.name+'</td>';
+                            html += '<td >'+item.category+'</td>';
+                            html += '<td>'+item.unitPrice+'</td>';
+                            html += '<td>';
+                            if(item.itemStatus == 1 ){
+                                    html +='<p class="badge badge-success text-white" style="text-align: justify; font-size: 16px;">Approved</p>';
+                                }
+                            else if(item.itemStatus == 0){
+                                html+= '<p class="badge badge-primary text-white" style="text-align: justify; font-size: 16px;">Submitted</p>';
+                            }else{
+                                html += '<p class="badge badge-danger text-white" style="text-align: justify; font-size: 16px;">Rejected</p>';
+                            }
+                            html += '</td>';
+                            html += '<td>';
+                            html += '<a type="button" style="color:#000000" class="btn btn-rounded btn-primary mb-3" asp-action="Details" asp-route-id="'+item.id+'">Details</a><br>';
+                            if(data.ownerId == item.ownerId)
+                            {
+                                html += '<a type="button" style="color:#000000" class="btn btn-rounded btn-success mb-3" asp-action="Edit" asp-route-id="'+item.id+'">Edit</a><br>';
+                                html += '<a type="button" style="color:#000000" class="btn btn-rounded btn-danger mb-3" asp-action="Delete" asp-route-id="'+item.id+'">Delete</a>';
+                            }
+                            html += '</td>';
+                            
+                            
+                            html += '</tr>';
+                        }
+                        // html_2
+                        var prevDisabled = "";
+                        var nextDisabled = "";
+                        if( data.pageIndex <= 1 ) prevDisabled = "disabled";
+                        if( data.pageIndex >= data.pageTotal ) nextDisabled ="disabled";
+                        var idprev="num-page"+ (data.pageIndex-1);
+                        var idnext="num-page"+ (data.pageIndex+1);
+                        html_2 +='<li class="page-item '+ prevDisabled +'"><a class="page-link" id="'+idprev+'" asp-action="Index" asp-route-pageNumber="'+(data.pageIndex-1)+'" tabindex="-1">Previous</a></li>';
+                        for(var i = 0;i<data.pageTotal;i++){
+                            var pageIndex = i+1;
+                            var idpageIndex = "num-page" + pageIndex;
+                            if( pageIndex == data.pageIndex){
+                                html_2 +='<li class="page-item active"><a class="page-link" id="'+idpageIndex+'" asp-action="Index" asp-route-pageNumber="'+data.itemsPaging.PageIndex+'">'+pageIndex+' <span class="sr-only">(current)</span></a></li>';
+                            }
+                            else{
+                                html_2 +='<li class="page-item"><a class="page-link" id="'+idpageIndex+'" asp-action="Index" asp-route-pageNumber="'+pageIndex+'">'+pageIndex+'</a></li>';
+                            }
+                        }    
+                        html_2 +='<li class="page-item '+nextDisabled+'"><a class="page-link" id="'+idnext+'" asp-action="Index" asp-route-pageNumber="'+(data.pageIndex+1)+'">Next</a></li>';                                                                                              
+                    },
+                    complete:function(){
+                        setTimeout(function(){
+                            $("#item_body").removeClass('preloder_item').html(html);
+                            $("#pagination_body").html(html_2);
+                        },delay_time)
+                    },
+                    error: function(xhr){
+                        alert(xhr);
+                    }
+                })
+            }
+            $(document).on('click','.search_item',function(){
+                var searchString = $("#SearchString").val();
+                var itemCategory = $("#ItemCategory").children("option:selected").val();
+                html = '<div class="preloder_item"><div class="loader_item"></div></div>';
+                html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
+                $('#item_body').html('');
+                $("#pagination_body").html('');
+                $("#item_body").html(html);
+                loadPage(searchString,itemCategory,1);
+            });
+            $(document).on('click','.page-link',function(){
+                var searchString = $("#SearchString").val();
+                var itemCategory = $("#ItemCategory").children("option:selected").val();
+                var pageNumber = $(this).attr("id").slice(8);
+                html = '<div class="preloder_item"><div class="loader_item"></div></div>';
+                html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
+                $('#item_body').html('');
+                $("#pagination_body").html('');
+                $("#item_body").html(html);
+                loadPage(searchString,itemCategory,pageNumber);
+
+            })
+        })
+    </script>
+}
