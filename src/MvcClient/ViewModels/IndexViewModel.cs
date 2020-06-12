@@ -10,6 +10,8 @@ namespace MvcClient.ViewModels
         public string SortOrder { get; set; }
         public IEnumerable<string> Categories { get; set; }
         public PaginatedList<Item> ItemsPaging { get; set; }
+        public string OwnerId { get; set; }
+        public string UserRole { get; set; }
         public int PageIndex { get; set; }
         public int PageTotal { get; set; }
         public IEnumerable<int> CategoriesId { get; set; }

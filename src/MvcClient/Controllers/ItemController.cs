@@ -38,6 +38,18 @@ namespace MvcClient.Controllers
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);
+            if (User.IsInRole(Constants.AdministratorsRole))
+            {
+                catalog.UserRole = "administator";
+            }
+            else if (User.IsInRole(Constants.ManagersRole))
+            {
+                catalog.UserRole = "manager";
+            }
+            else
+            {
+                catalog.UserRole = "seller";
+            }
 
             if (!isAuthorized)
             {
@@ -45,11 +57,46 @@ namespace MvcClient.Controllers
                 catalog.Items = catalog.Items
                     .Where(m => m.ItemStatus == ItemStatus.Approved || m.OwnerId == userId)
                     .ToList();
+                catalog.OwnerId = userId;
             }
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
             catalog.PageIndex = pageNumber;
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
             return View(catalog);
+        }
+        public async Task<IActionResult> ItemPaging(int pageNumber = 1, string ItemCategory = null, string SearchString = null)
+        {
+            // double minPrice = 0, double maxPrice = 999999, string sortOrder = "Name"
+            var pageSize = 6;
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, 0, 500, null);
+
+            var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
+                                User.IsInRole(Constants.ManagersRole);
+            if (User.IsInRole(Constants.AdministratorsRole))
+            {
+                catalog.UserRole = "administator";
+            }
+            else if (User.IsInRole(Constants.ManagersRole))
+            {
+                catalog.UserRole = "manager";
+            }
+            else
+            {
+                catalog.UserRole = "seller";
+            }
+
+            if (!isAuthorized)
+            {
+                var userId = _identityService.Get(User).Id;
+                catalog.Items = catalog.Items
+                    .Where(m => m.ItemStatus == ItemStatus.Approved || m.OwnerId == userId)
+                    .ToList();
+                catalog.OwnerId = userId;
+            }
+            catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
+            catalog.PageIndex = pageNumber;
+            catalog.PageTotal = catalog.ItemsPaging.TotalPages;
+            return new JsonResult(catalog);
         }
 
 
