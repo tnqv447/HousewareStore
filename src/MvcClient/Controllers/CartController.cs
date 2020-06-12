@@ -25,7 +25,7 @@ namespace MvcClient.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(Dictionary<string, int> quantities, string action)
+        public async Task<IActionResult> Index(Dictionary<string, int> quantities, string action, string Id)
         {
 
             if (action == "[ Checkout ]")
@@ -33,20 +33,6 @@ namespace MvcClient.Controllers
 
                 return RedirectToAction("Create", "Order");
                 // return RedirectToAction("Index","Cart");
-            }
-            else if (action == "[ Clear ]")
-            {
-                var buyer = _identitySvc.Get(User);
-
-                await _cartSvc.ClearCart(buyer);
-
-                return RedirectToAction("Index", "Cart");
-            }
-            else if (action == "[ Update ]")
-            {
-                Cart upCart = new Cart();
-                await _cartSvc.UpdateCart(upCart);
-                return RedirectToAction("Index", "Cart");
             }
             try
             {
@@ -61,7 +47,32 @@ namespace MvcClient.Controllers
 
             return View();
         }
-
+        [HttpGet]
+        public async Task<IActionResult> Cart(){
+            var buyer = _identitySvc.Get(User);
+            var cart = await _cartSvc.GetCart(buyer);
+            return new JsonResult(cart);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AllAction(Dictionary<string, int> quantities,string action,string id){
+            string msg="Fail";
+            if(action == "[ Clear Item ]"){
+                var buyer = _identitySvc.Get(User);
+                await _cartSvc.RemoveItemCart(buyer, id);
+                msg = "Succesfull";
+                
+            }
+            else if(action=="[ Update ]"){
+                var buyer = _identitySvc.Get(User);
+                Cart upCart = await _cartSvc.GetCart(buyer);
+                for(int i=0;i<upCart.CartItems.Count;i++){
+                    var item = upCart.CartItems[i];
+                    item.Quantity = quantities[item.Id];
+                }
+                await _cartSvc.UpdateCart(upCart);
+            }
+            return new JsonResult(msg);
+        }
         [HttpPost]
         public async Task<IActionResult> AddToCart(Item item)
         {
