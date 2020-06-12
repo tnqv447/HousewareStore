@@ -2,17 +2,32 @@
 
 namespace IdentityApi.Data.Migrations
 {
-    public partial class App : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Address",
+                name: "City",
                 table: "AspNetUsers",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "EmailStr",
+                name: "Country",
+                table: "AspNetUsers",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Locality",
+                table: "AspNetUsers",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "PostalCode",
+                table: "AspNetUsers",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "StreetAddress",
                 table: "AspNetUsers",
                 nullable: true);
 
@@ -32,27 +47,7 @@ namespace IdentityApi.Data.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "NewPassword",
-                table: "AspNetUsers",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Password",
-                table: "AspNetUsers",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "PhoneNumberStr",
-                table: "AspNetUsers",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
                 name: "PictureUrl",
-                table: "AspNetUsers",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "Role",
                 table: "AspNetUsers",
                 nullable: true);
 
@@ -65,11 +60,23 @@ namespace IdentityApi.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Address",
+                name: "City",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
-                name: "EmailStr",
+                name: "Country",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "Locality",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "PostalCode",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "StreetAddress",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
@@ -85,23 +92,7 @@ namespace IdentityApi.Data.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
-                name: "NewPassword",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Password",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "PhoneNumberStr",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
                 name: "PictureUrl",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "Role",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(

@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IdentityApi.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200612085719_App")]
-    partial class App
+    [Migration("20200612194116_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3");
+                .HasAnnotation("ProductVersion", "3.1.5");
 
             modelBuilder.Entity("IdentityApi.Models.ApplicationUser", b =>
                 {
@@ -25,9 +25,6 @@ namespace IdentityApi.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -39,9 +36,6 @@ namespace IdentityApi.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("EmailStr")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("FamilyName")
                         .HasColumnType("TEXT");
@@ -58,9 +52,6 @@ namespace IdentityApi.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("NewPassword")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("TEXT")
                         .HasMaxLength(256);
@@ -68,9 +59,6 @@ namespace IdentityApi.Data.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasColumnType("TEXT")
                         .HasMaxLength(256);
-
-                    b.Property<string>("Password")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("TEXT");
@@ -81,13 +69,7 @@ namespace IdentityApi.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("PhoneNumberStr")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("PictureUrl")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Role")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")
@@ -241,6 +223,42 @@ namespace IdentityApi.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("IdentityApi.Models.ApplicationUser", b =>
+                {
+                    b.OwnsOne("IdentityApi.Models.Address", "Address", b1 =>
+                        {
+                            b1.Property<string>("ApplicationUserId")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("City")
+                                .HasColumnName("City")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Country")
+                                .HasColumnName("Country")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("Locality")
+                                .HasColumnName("Locality")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("PostalCode")
+                                .HasColumnName("PostalCode")
+                                .HasColumnType("TEXT");
+
+                            b1.Property<string>("StreetAddress")
+                                .HasColumnName("StreetAddress")
+                                .HasColumnType("TEXT");
+
+                            b1.HasKey("ApplicationUserId");
+
+                            b1.ToTable("AspNetUsers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ApplicationUserId");
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

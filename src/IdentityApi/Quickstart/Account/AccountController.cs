@@ -109,7 +109,7 @@ namespace IdentityServer4.Quickstart.UI
                     Console.WriteLine(model.UserProfile.Name);
                     //var temp = this.CreateClaims(model.UserProfile);
 
-                    result = this.CreateUser(model.Username, model.Password, model.Role, this.CreateClaims(model.UserProfile));
+                    result = this.CreateUser(model.Username, model.Password, model.Role, model.UserProfile);
                 }
                 else
                 {
@@ -140,33 +140,49 @@ namespace IdentityServer4.Quickstart.UI
         }
 
         //ham tao list Claims tu UserProfileInputModel
-        private Claim[] CreateClaims(UserProfileInputModel profile)
+        // private Claim[] CreateClaims(UserProfileInputModel profile)
+        // {
+        //     return new Claim[]{
+        //             new Claim(JwtClaimTypes.Name, profile.Name),
+        //             new Claim(JwtClaimTypes.GivenName, profile.GivenName),
+        //             new Claim(JwtClaimTypes.FamilyName, profile.FamilyName),
+        //             new Claim(JwtClaimTypes.PhoneNumber, profile.PhoneNumber),
+        //             new Claim(JwtClaimTypes.PhoneNumberVerified, "true", ClaimValueTypes.Boolean),
+        //             new Claim(JwtClaimTypes.Email, profile.Email),
+        //             new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
+        //             new Claim(JwtClaimTypes.Picture, profile.PictureUrl.IsNullOrEmpty()?"default_avatar.png":profile.PictureUrl),
+        //             new Claim(JwtClaimTypes.WebSite, profile.Website),
+        //             new Claim(JwtClaimTypes.Address, JsonConvert.SerializeObject(profile.Address), IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json)
+        //         };
+        // }
+        private ApplicationUser TransferDataToUser(UserProfileInputModel profile)
         {
-            return new Claim[]{
-                    new Claim(JwtClaimTypes.Name, profile.Name),
-                    new Claim(JwtClaimTypes.GivenName, profile.GivenName),
-                    new Claim(JwtClaimTypes.FamilyName, profile.FamilyName),
-                    new Claim(JwtClaimTypes.PhoneNumber, profile.PhoneNumber),
-                    new Claim(JwtClaimTypes.PhoneNumberVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.Email, profile.Email),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.Picture, profile.PictureUrl.IsNullOrEmpty()?"default_avatar.png":profile.PictureUrl),
-                    new Claim(JwtClaimTypes.WebSite, profile.Website),
-                    new Claim(JwtClaimTypes.Address, JsonConvert.SerializeObject(profile.Address), IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json)
-                };
+            var user = new ApplicationUser
+            {
+                //UserName = profile.UserName,     --------// username khong ton tai trong profile
+                Name = profile.Name,
+                GivenName = profile.GivenName,
+                FamilyName = profile.FamilyName,
+                Email = profile.Email,
+                EmailConfirmed = true,
+                PhoneNumber = profile.PhoneNumber,
+                PhoneNumberConfirmed = true,
+                PictureUrl = profile.PictureUrl,
+                Website = profile.Website,
+                Address = profile.Address
+            };
+            return user;
         }
 
         //ham tao user tra ve boolean la ket qua
-        private bool CreateUser(string username, string password, string role, Claim[] claims)
+        private bool CreateUser(string username, string password, string role, UserProfileInputModel profile)
         {
             var user = _userManager.FindByNameAsync(username).Result;
             var success = true;
             if (user == null)
             {
-                user = new ApplicationUser
-                {
-                    UserName = username
-                };
+                user = this.TransferDataToUser(profile);
+                user.UserName = username;
                 var result = _userManager.CreateAsync(user, password).Result;
                 if (!result.Succeeded)
                 {
@@ -180,13 +196,12 @@ namespace IdentityServer4.Quickstart.UI
                     success = false;
                     throw new Exception(result.Errors.First().Description);
                 }
-
-                result = _userManager.AddClaimsAsync(user, claims).Result;
-                if (!result.Succeeded)
-                {
-                    success = false;
-                    throw new Exception(result.Errors.First().Description);
-                }
+                // result = _userManager.AddClaimsAsync(user, claims).Result;
+                // if (!result.Succeeded)
+                // {
+                //     success = false;
+                //     throw new Exception(result.Errors.First().Description);
+                // }
                 Log.Debug($"{username} created");
                 return success;
             }

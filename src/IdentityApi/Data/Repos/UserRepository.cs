@@ -1,3 +1,4 @@
+using System.Xml;
 using System;
 using System.Net.Http;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using Newtonsoft.Json;
 using Serilog;
+using IdentityApi.DTO;
 
 namespace IdentityApi.Data.Repos
 {
@@ -32,80 +34,83 @@ namespace IdentityApi.Data.Repos
         public async Task<ApplicationUser> GetUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            await this.TransferClaimsToUser(user);
+            //await this.TransferClaimsToUser(user);
             return user;
         }
 
-        public async Task<List<ApplicationUser>> GetAllUser()
+        public async Task<IList<ApplicationUser>> GetAllUser()
         {
             var users = await this.GetAll();
-            foreach (var user in users)
-            {
-                await this.TransferClaimsToUser(user);
-            }
+            // foreach (var user in users)
+            // {
+            //     await this.TransferClaimsToUser(user);
+            // }
             return users;
         }
 
-        public async Task<List<ApplicationUser>> GetUsersByRole(string role)
+        public async Task<IList<ApplicationUser>> GetUsersByRole(string role)
         {
-            var users = (await this.GetAll()).Where(m => m.Role.Equals(role)).ToList();
-            foreach (var user in users)
-            {
-                await this.TransferClaimsToUser(user);
-            }
+            var users = await _userManager.GetUsersInRoleAsync(role);
+            // foreach (var user in users)
+            // {
+            //     await this.TransferClaimsToUser(user);
+            // }
             return users;
         }
 
-        public async Task UpdateUser(ApplicationUser user)
+        public async Task<bool> UpdateUser(ApplicationUserDTO dto)
         {
-            var claims = await _userManager.GetClaimsAsync(await _userManager.FindByIdAsync(user.Id));
-            var replace = this.TransferUserToClaims(user);
-
-            //update claims
-            foreach (var temp in replace)
+            var user = this.TransferDataToUser(dto);
+            var res = await _userManager.UpdateAsync(user);
+            if (res.Succeeded)
             {
-                var toBeReplaced = GetClaim(claims, temp.Type);
-                if (!toBeReplaced.Value.Equals(temp.Value))
-                    await _userManager.ReplaceClaimAsync(user, toBeReplaced, temp);
+                Log.Debug($"{dto.UserName} updated");
             }
+            else
+            {
+                Log.Debug($"Update {dto.UserName} failed. Some errors happned");
+            }
+            return res.Succeeded;
+
+            // var claims = await .up.GetClaimsAsync(await _userManager.FindByIdAsync(user.Id));
+            // var replace = this.TransferUserToClaims(user);
+
+            // //update claims
+            // foreach (var temp in replace)
+            // {
+            //     var toBeReplaced = GetClaim(claims, temp.Type);
+            //     if (!toBeReplaced.Value.Equals(temp.Value))
+            //         await _userManager.ReplaceClaimAsync(user, toBeReplaced, temp);
+            // }
 
         }
-        public async Task<bool> CreateUser(ApplicationUser temp)
+        public async Task<bool> CreateUser(ApplicationUserDTO dto)
         {
-            var user = await _userManager.FindByNameAsync(temp.UserName);
+            var user = await _userManager.FindByNameAsync(dto.UserName);
             var success = true;
             if (user == null)
             {
-                user = new ApplicationUser
-                {
-                    UserName = temp.UserName
-                };
-                var result = _userManager.CreateAsync(user, temp.Password).Result;
+                user = this.TransferDataToUser(dto);
+                var result = _userManager.CreateAsync(user, dto.Password).Result;
                 if (!result.Succeeded)
                 {
                     success = false;
                     throw new Exception(result.Errors.First().Description);
                 }
 
-                result = _userManager.AddToRoleAsync(user, temp.Role).Result;
+                result = _userManager.AddToRoleAsync(user, dto.Role).Result;
                 if (!result.Succeeded)
                 {
                     success = false;
                     throw new Exception(result.Errors.First().Description);
                 }
 
-                result = _userManager.AddClaimsAsync(user, this.TransferUserToClaims(temp)).Result;
-                if (!result.Succeeded)
-                {
-                    success = false;
-                    throw new Exception(result.Errors.First().Description);
-                }
-                Log.Debug($"{temp.UserName} created");
+                Log.Debug($"{dto.UserName} created");
                 return success;
             }
             else
             {
-                Log.Debug($"{temp.UserName} already exists");
+                Log.Debug($"{dto.UserName} already exists");
                 return false;
             }
         }
@@ -157,33 +162,54 @@ namespace IdentityApi.Data.Repos
             return (await _userManager.FindByIdAsync(id)) == null ? false : true;
         }
 
-        //mapping support function
-        private async Task TransferClaimsToUser(ApplicationUser user)
-        {
-            var claims = await _userManager.GetClaimsAsync(user);
-            user.Name = GetClaimValue(claims, "name");
-            user.GivenName = GetClaimValue(claims, "given_name");
-            user.FamilyName = GetClaimValue(claims, "family_name");
-            user.PhoneNumber = GetClaimValue(claims, "phone_number");
-            user.Email = GetClaimValue(claims, "email");
-            user.Website = GetClaimValue(claims, "website");
-            user.PictureUrl = GetClaimValue(claims, "picture");
-            user.Address = GetClaimValue(claims, "address");
-            user.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
-        }
+        //mapping support 
 
-        private List<Claim> TransferUserToClaims(ApplicationUser user)
+        // private async Task TransferClaimsToUser(ApplicationUser user)
+        // {
+        //     var claims = await _userManager.GetClaimsAsync(user);
+        //     user.Name = GetClaimValue(claims, "name");
+        //     user.GivenName = GetClaimValue(claims, "given_name");
+        //     user.FamilyName = GetClaimValue(claims, "family_name");
+        //     user.PhoneNumber = GetClaimValue(claims, "phone_number");
+        //     user.Email = GetClaimValue(claims, "email");
+        //     user.Website = GetClaimValue(claims, "website");
+        //     user.PictureUrl = GetClaimValue(claims, "picture");
+        //     user.Address = GetClaimValue(claims, "address");
+        //     user.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+        // }
+
+        // private List<Claim> TransferUserToClaims(ApplicationUser user)
+        // {
+        //     return new List<Claim>{
+        //         new Claim("name", user.Name),
+        //         new Claim("given_name", user.GivenName),
+        //         new Claim("family_name", user.FamilyName),
+        //         new Claim("phone_number", user.PhoneNumberStr),
+        //         new Claim("email", user.EmailStr),
+        //         new Claim("website", user.Website),
+        //         new Claim("picture", user.PictureUrl),
+        //         new Claim("address", user.Address)
+        //     };
+        // }
+        private ApplicationUser TransferDataToUser(ApplicationUserDTO dto)
         {
-            return new List<Claim>{
-                new Claim("name", user.Name),
-                new Claim("given_name", user.GivenName),
-                new Claim("family_name", user.FamilyName),
-                new Claim("phone_number", user.PhoneNumberStr),
-                new Claim("email", user.EmailStr),
-                new Claim("website", user.Website),
-                new Claim("picture", user.PictureUrl),
-                new Claim("address", user.Address)
+            var user = new ApplicationUser
+            {
+                UserName = dto.UserName,
+                Name = dto.Name,
+                GivenName = dto.GivenName,
+                FamilyName = dto.FamilyName,
+                Email = dto.Email,
+                EmailConfirmed = true,
+                PhoneNumber = dto.PhoneNumber,
+                PhoneNumberConfirmed = true,
+                PictureUrl = dto.PictureUrl,
+                Website = dto.Website,
+                Address = dto.Address
             };
+            if (!String.IsNullOrEmpty(dto.UserId))
+                user.Id = dto.UserId;
+            return user;
         }
 
         private static string GetClaimValue(IList<Claim> userClaims, string claimType)

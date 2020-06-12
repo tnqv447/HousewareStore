@@ -33,13 +33,12 @@ namespace IdentityApi.DTO
 
         public string Website { get; set; }
 
-        public string Address { get; set; }
-
-        public string Role { get; set; }
+        public Address Address { get; set; }
 
 
         //for add,update user
         //public string UserNameStr { get; set; }
+        public string Role { get; set; }
         public string Password { get; set; }
     }
 

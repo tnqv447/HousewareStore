@@ -48,29 +48,27 @@ namespace IdentityApi.Quickstart.User
         [HttpGet("manage")]
         public async Task<ActionResult<List<ApplicationUserDTO>>> ManagerUser(string role = null)
         {
-            var user = new List<ApplicationUser>();
+            IList<ApplicationUser> users = null;
             if (String.IsNullOrEmpty(role))
             {
-                user = await _userRepo.GetAllUser();
+                users = await _userRepo.GetAllUser();
             }
             else
             {
-                user = await _userRepo.GetUsersByRole(role);
+                users = await _userRepo.GetUsersByRole(role);
             }
 
-            user = user.OrderBy(m => m.Role).ThenBy(m => m.UserName).ToList();
-
-            return toDtoRange(user);
+            return new List<ApplicationUserDTO>(toDtoRange(users));
         }
 
         [HttpPost]
         public async Task<ActionResult<ApplicationUser>> Create(ApplicationUserDTO dto)
         {
-            var user = this.toEntity(dto);
-            if (!String.IsNullOrEmpty(user.UserName) && !String.IsNullOrEmpty(user.Password))
+            //var user = this.toEntity(dto);
+            if (!String.IsNullOrEmpty(dto.UserName) && !String.IsNullOrEmpty(dto.Password))
             {
-                await _userRepo.CreateUser(user);
-                return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+                await _userRepo.CreateUser(dto);
+                return CreatedAtAction(nameof(GetUser), new { id = dto.UserId }, dto);
             }
             return NotFound();
 
@@ -85,7 +83,7 @@ namespace IdentityApi.Quickstart.User
             }
 
             // var Item = await _itemRepos.GetBy(id);
-            var user = toEntity(dto);
+            var user = await _userRepo.GetUser(id);
             if (user == null)
             {
                 return NotFound();
@@ -95,7 +93,7 @@ namespace IdentityApi.Quickstart.User
 
             try
             {
-                await _userRepo.Update(user);
+                await _userRepo.UpdateUser(dto);
             }
             catch (DbUpdateConcurrencyException) when (!_userRepo.UserExists(id).Result)
             {
@@ -115,7 +113,7 @@ namespace IdentityApi.Quickstart.User
                 return NotFound();
             }
 
-            await _userRepo.Delete(user);
+            await _userRepo.DeleteUser(user);
 
             return NoContent();
         }
@@ -131,13 +129,13 @@ namespace IdentityApi.Quickstart.User
         {
             return _mapper.Map<ApplicationUserDTO, ApplicationUser>(dto);
         }
-        private List<ApplicationUserDTO> toDtoRange(List<ApplicationUser> users)
+        private IList<ApplicationUserDTO> toDtoRange(IList<ApplicationUser> users)
         {
-            return _mapper.Map<List<ApplicationUser>, List<ApplicationUserDTO>>(users);
+            return _mapper.Map<IList<ApplicationUser>, IList<ApplicationUserDTO>>(users);
         }
-        private List<ApplicationUser> toEntityRange(List<ApplicationUserDTO> dtos)
+        private IList<ApplicationUser> toEntityRange(IList<ApplicationUserDTO> dtos)
         {
-            return _mapper.Map<List<ApplicationUserDTO>, List<ApplicationUser>>(dtos);
+            return _mapper.Map<IList<ApplicationUserDTO>, IList<ApplicationUser>>(dtos);
         }
 
     }

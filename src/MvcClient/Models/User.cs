@@ -33,9 +33,7 @@ namespace MvcClient.Models
 
         public string Website { get; set; }
 
-        public string Address { get; set; }
-
-        public Address ViewAddress { get; set; }
+        public Address Address { get; set; }
 
         public string Role { get; set; }
 

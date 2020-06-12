@@ -8,10 +8,10 @@ namespace IdentityApi.Data.Repos
     public interface IUserRepository : IRepository<ApplicationUser>
     {
         Task<ApplicationUser> GetUser(string id);
-        Task<List<ApplicationUser>> GetAllUser();
-        Task<List<ApplicationUser>> GetUsersByRole(string role);
-        Task UpdateUser(ApplicationUser user);
-        Task<bool> CreateUser(ApplicationUser user);
+        Task<IList<ApplicationUser>> GetAllUser();
+        Task<IList<ApplicationUser>> GetUsersByRole(string role);
+        Task<bool> UpdateUser(ApplicationUserDTO dto);
+        Task<bool> CreateUser(ApplicationUserDTO dto);
         Task<bool> DeleteUser(ApplicationUser user);
         Task<bool> UserExists(string id);
 
