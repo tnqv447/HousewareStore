@@ -30,11 +30,13 @@ namespace MvcClient.Controllers
             webHostEnvironment = hostEnvironment;
         }
 
-        public async Task<IActionResult> Index(int pageNumber = 1, string ItemCategory = null, string SearchString = null)
+        public async Task<IActionResult> Index(int pageNumber = 1, string ItemCategory = null, string SearchString = null, double minPrice , double maxPrice )
         {
             // double minPrice = 0, double maxPrice = 999999, string sortOrder = "Name"
+            if(minPrice == null) minPrice =0;
+            if(maxPrice == null) maxPrice =9999;
             var pageSize = 6;
-            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, 0, 500, null);
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null);
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);
@@ -64,11 +66,13 @@ namespace MvcClient.Controllers
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
             return View(catalog);
         }
-        public async Task<IActionResult> ItemPaging(int pageNumber = 1, string ItemCategory = null, string SearchString = null)
+        public async Task<IActionResult> ItemPaging(int pageNumber = 1, string ItemCategory = null, string SearchString = null, double minPrice , double maxPrice )
         {
-            // double minPrice = 0, double maxPrice = 999999, string sortOrder = "Name"
+            // string sortOrder = "Name"
+            if(minPrice == null) minPrice =0;
+            if(maxPrice == null) maxPrice =9999;
             var pageSize = 6;
-            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, 0, 500, null);
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null);
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);

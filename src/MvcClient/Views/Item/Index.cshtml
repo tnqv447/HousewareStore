@@ -32,6 +32,18 @@
                             </button>            
                         </div>               
                     </div>
+                    <div class="form-row align-items-center">
+                        <div class="col-md-5 my-1">
+                            <label asp-for="minPrice" class="control-label"></label>                  
+                            <input type="number" class="form-control" asp-for="minPrice" >        
+                        </div> 
+                        <div class="col-md-5 my-1">   
+                            <label asp-for="maxPrice" class="control-label"></label>             
+                            <input type="number" class="form-control" asp-for="maxPrice"  >        
+                        </div> 
+                        <div class="col-auto my-1">          
+                        </div>               
+                    </div>
                 
             </div>
         </div>
@@ -152,11 +164,11 @@
     <script>
         $(document).ready(function(){
             var delay_time = 500;
-            function loadPage(searchString,category,pageNumber){
+            function loadPage(searchString,category,pageNumber,minPrice,maxPrice){
                 $.ajax({
                     method:'GET',
                     url: '@Url.Action("ItemPaging","Item")',
-                    data:{SearchString: searchString, ItemCategory:category, pageNumber:pageNumber },
+                    data:{SearchString: searchString, ItemCategory: category, pageNumber: pageNumber, minPrice: minPrice, maxPrice: maxPrice},
                     success:function(data){
                         html = '';
                         html_2 = '';     
@@ -225,23 +237,28 @@
             $(document).on('click','.search_item',function(){
                 var searchString = $("#SearchString").val();
                 var itemCategory = $("#ItemCategory").children("option:selected").val();
+                var minPrice = parseFloat($("#minPrice").val());
+                var maxPrice = parseFloat($("#maxPrice").val());
+                alert(minPrice +" "+ maxPrice);
                 html = '<div class="preloder_item"><div class="loader_item"></div></div>';
                 html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
                 $('#item_body').html('');
                 $("#pagination_body").html('');
                 $("#item_body").html(html);
-                loadPage(searchString,itemCategory,1);
+                loadPage(searchString,itemCategory,1,minPrice,maxPrice);
             });
             $(document).on('click','.page-link',function(){
                 var searchString = $("#SearchString").val();
                 var itemCategory = $("#ItemCategory").children("option:selected").val();
+                var minPrice = parseFloat($("#minPrice").val());
+                var maxPrice = parseFloat($("#maxPrice").val());
                 var pageNumber = $(this).attr("id").slice(8);
                 html = '<div class="preloder_item"><div class="loader_item"></div></div>';
                 html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
                 $('#item_body').html('');
                 $("#pagination_body").html('');
                 $("#item_body").html(html);
-                loadPage(searchString,itemCategory,pageNumber);
+                loadPage(searchString,itemCategory,pageNumber,minPrice,maxPrice);
 
             })
         })
