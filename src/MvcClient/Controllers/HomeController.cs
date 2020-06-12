@@ -34,7 +34,7 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var catalog = await _service.GetCatalog("", "",0,0,"");
+            var catalog = await _service.GetCatalog();
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
 
@@ -51,9 +51,10 @@ namespace MvcClient.Controllers
             return View(catalog);
         }
         [AllowAnonymous]
-        public IActionResult SearchCategory(string itemCategory, string searchString){    
+        public IActionResult SearchCategory(string itemCategory, string searchString)
+        {
             // var uri = new Uri.Action("Index","Shop");
-            return RedirectToAction("Index","Shop", new{itemCategory = itemCategory, searchString= searchString});
+            return RedirectToAction("Index", "Shop", new { itemCategory = itemCategory, searchString = searchString });
         }
         public IActionResult Privacy()
         {
@@ -62,8 +63,8 @@ namespace MvcClient.Controllers
             //return View();
         }
         [AllowAnonymous]
-        
-        
+
+
         public IActionResult Contact()
         {
             return View();

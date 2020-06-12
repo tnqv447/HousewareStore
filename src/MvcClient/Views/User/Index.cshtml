@@ -1,0 +1,50 @@
+@model UserViewModel
+@{
+    ViewData["Title"] = "Manager - Item";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
+    
+}
+<div class="row">
+    <!-- Primary table start -->
+    <div class="col-12 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">List of Users</h4>
+                <div class="data-tables datatable-primary">
+                    <table id="dataTable2" class="text-center">
+                        <thead class="text-capitalize">
+                            <tr>
+                                <th width="15%%">Name</th>
+                                <th width="20%">Email</th>
+                                <th width="10%">Phone Number</th>
+                                <th width="30%">Address</th>
+                                <th width="10%">Role</th>
+                                <th width="15%">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var item in Model.UsersPaging){
+                                <tr>
+                                    <td>@item.getFullName()</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.PhoneNumber</td>
+                                    <td>@item.Address</td>
+                                    <td>@item.Role</td>
+                                    <td>
+                                        <a style="cursor:pointer">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                            
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Primary table end -->
+    
+</div>

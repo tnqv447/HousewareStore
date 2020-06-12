@@ -19,9 +19,10 @@ namespace MvcClient.Services
             _baseUrl = appSettings.Value.ItemUrl;
         }
 
-        public async Task<IndexViewModel> GetCatalog(string category, string searchString, double minPrice, double maxPrice, string sortOrder)
+        public async Task<IndexViewModel> GetCatalog(string category = null, string searchString = null, double minPrice = 0,
+                                                     double maxPrice = 0, string sortOrder = null, bool isAdmin = false)
         {
-            var uri = _baseUrl + $"/catalog?searchString={searchString}&category={category}&minPrice={minPrice}&maxPrice={maxPrice}&sortOrder={sortOrder}";
+            var uri = _baseUrl + $"/catalog?searchString={searchString}&category={category}&minPrice={minPrice}&maxPrice={maxPrice}&sortOrder={sortOrder}&isAdmin={isAdmin}";
 
             return await _httpClient.GetAsync<IndexViewModel>(uri);
         }

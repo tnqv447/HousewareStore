@@ -4,7 +4,7 @@
 @inject IAuthorizationService AuthorizationService
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Manager - Item";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
     var selectList = new SelectList(Model.Categories);
 }
@@ -27,9 +27,9 @@
                             <input type="text" class="form-control" asp-for="SearchString"  placeholder="What do yo u need?">        
                         </div>  
                         <div class="col-auto my-1">
-                            <button type="submit" value="Filter" class="site-btn search_item">
+                            <a style="cursor:pointer" class="site-btn search_item">
                                 <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>            
+                            </a>            
                         </div>               
                     </div>
                     <div class="form-row align-items-center">
@@ -100,15 +100,15 @@
                                                 }
                                             </td>
                                             <td>
-                                                <a type="button" class="btn btn-rounded btn-primary mb-3" asp-action="Details" asp-route-id="@item.Id">Details</a><br>
+                                                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info"></i></a>
                                                 @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Update)).Succeeded)
                                                 {
-                                                <a type="button" class="btn btn-rounded btn-success mb-3" asp-action="Edit" asp-route-id="@item.Id">Edit</a><br>
+                                                <a style="padding-left:10px; padding-right:10px" asp-action="Edit" asp-route-id="@item.Id"> <i class="fa fa-edit"></i></a>
                                                 }
                                             
                                                 @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Delete)).Succeeded)
                                                 {
-                                                <a type="button" class="btn btn-rounded btn-danger mb-3" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                                <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-close"></i></a>
                                                 }
                                             </td>
                                         </tr>
@@ -128,22 +128,22 @@
                                 <nav aria-label="...">
                                     <ul class="pagination" id="pagination_body">
                                         <li class="page-item @prevDisabled">
-                                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex-1)" tabindex="-1" id="num-page@(Model.ItemsPaging.PageIndex-1)">Previous</a>
+                                            <a class="page-link"  tabindex="-1" id="num-page@(Model.ItemsPaging.PageIndex-1)">Previous</a>
                                         </li>
                                         @for(var i = 0;i<Model.ItemsPaging.TotalPages;i++){
                                             var pageIndex = i+1;
                                             var idpageIndex = "num-page" + pageIndex;
                                             if( pageIndex == Model.ItemsPaging.PageIndex){
                                                 <li class="page-item active">
-                                                    <a class="page-link" id="@idpageIndex" asp-action="Index" asp-route-pageNumber="@Model.ItemsPaging.PageIndex">@pageIndex <span class="sr-only">(current)</span></a>
+                                                    <a class="page-link" id="@idpageIndex"  >@pageIndex <span class="sr-only">(current)</span></a>
                                                 </li>
                                             }
                                             else{
-                                                <li class="page-item"><a class="page-link" id="@idpageIndex" asp-action="Index" asp-route-pageNumber="@pageIndex">@pageIndex</a></li>
+                                                <li class="page-item"><a class="page-link" id="@idpageIndex"  >@pageIndex</a></li>
                                             }
                                         }    
                                         <li class="page-item @nextDisabled">
-                                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.ItemsPaging.PageIndex+1)" id="num-page@(Model.ItemsPaging.PageIndex+1)">Next</a>
+                                            <a class="page-link"   id="num-page@(Model.ItemsPaging.PageIndex+1)">Next</a>
                                         </li>                                                                                              
                                     </ul>     
                                 </nav>
@@ -192,7 +192,7 @@
                             }
                             html += '</td>';
                             html += '<td>';
-                            html += '<a type="button" style="color:#000000" class="btn btn-rounded btn-primary mb-3" asp-action="Details" asp-route-id="'+item.id+'">Details</a><br>';
+                            html += '<a type="button" style="color:#000000" class="btn btn-rounded btn-primary mb-3" href="/Item/Details/'+item.id+'">Details</a><br>';
                             if(data.ownerId == item.ownerId)
                             {
                                 html += '<a type="button" style="color:#000000" class="btn btn-rounded btn-success mb-3" asp-action="Edit" asp-route-id="'+item.id+'">Edit</a><br>';
@@ -239,7 +239,6 @@
                 var itemCategory = $("#ItemCategory").children("option:selected").val();
                 var minPrice = parseFloat($("#minPrice").val());
                 var maxPrice = parseFloat($("#maxPrice").val());
-                alert(minPrice +" "+ maxPrice);
                 html = '<div class="preloder_item"><div class="loader_item"></div></div>';
                 html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
                 $('#item_body').html('');

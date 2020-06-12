@@ -44,7 +44,7 @@ namespace MvcClient
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IIdentityService<Buyer>, IdentityService>();
-
+            services.AddScoped<IUserService, UserService>();
             IdentityModelEventSource.ShowPII = true;
             services.AddControllersWithViews(
 

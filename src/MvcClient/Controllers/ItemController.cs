@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace MvcClient.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Managers, Administrators")]
     public class ItemController : Controller
     {
         private readonly IItemService _itemService;
@@ -34,10 +34,11 @@ namespace MvcClient.Controllers
         {
             // double minPrice = 0, double maxPrice = 999999, string sortOrder = "Name"
             var pageSize = 6;
-            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null);
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized);
+
             if (User.IsInRole(Constants.AdministratorsRole))
             {
                 catalog.UserRole = "administator";
@@ -64,14 +65,15 @@ namespace MvcClient.Controllers
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
             return View(catalog);
         }
-        public async Task<IActionResult> ItemPaging(double minPrice, double maxPrice, int pageNumber = 1, string ItemCategory = null, string SearchString = null)
+        public async Task<IActionResult> ItemPaging(double minPrice, double maxPrice, string sortOrder, int pageNumber = 1, string ItemCategory = null, string SearchString = null)
         {
             // string sortOrder = "Name"
             var pageSize = 6;
-            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null);
+
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized);
             if (User.IsInRole(Constants.AdministratorsRole))
             {
                 catalog.UserRole = "administator";

@@ -4,9 +4,11 @@ using System.Threading.Tasks;
 using ItemApi.DTOs;
 using ItemApi.Models;
 
-namespace ItemApi.Data.Repos {
-    public interface IItemRepository : IRepository<Item> {
-        Task<IEnumerable<ItemDTO>> GetItemsBySearch (string category = null, string searchString = null,double minPrice = 0, double maxPrice = 0,string sortOrder = null, DbStatus dbStatus = DbStatus.All);
+namespace ItemApi.Data.Repos
+{
+    public interface IItemRepository : IRepository<Item>
+    {
+        Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null, double minPrice = 0, double maxPrice = 0, string sortOrder = null, bool isAdmin = false, DbStatus dbStatus = DbStatus.All);
         //Task<IEnumerable<ItemDTO>> GetItemsBySearch (List<Item> items, string category = null, string searchString = null);
         bool ItemExists(int id);
         Task Activate(int id);

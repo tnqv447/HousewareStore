@@ -35,12 +35,18 @@ namespace MvcClient.Models
 
         public string Address { get; set; }
 
+        public Address ViewAddress { get; set; }
+
         public string Role { get; set; }
 
 
         //for add,update user
         //public string UserNameStr { get; set; }
         public string Password { get; set; }
+        public string getFullName()
+        {
+            return Name + " " + FamilyName + " " + GivenName;
+        }
     }
 
     public class Address

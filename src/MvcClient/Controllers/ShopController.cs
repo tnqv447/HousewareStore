@@ -41,9 +41,10 @@ namespace MvcClient.Controllers
                 searchString = currentFilter;
             }
 
-            var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder);
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
+            var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder, isAdminOrManager);
+
             int pageSize = 6;
             if (!isAdminOrManager)
             {
@@ -72,10 +73,11 @@ namespace MvcClient.Controllers
             {
                 searchString = currentFilter;
             }
-            var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder);
-            Console.WriteLine(catalog.Items.Count);
+
+
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
+            var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder, isAdminOrManager);
             if (!isAdminOrManager)
             {
                 // var userId = _identityService.Get (User).Id;

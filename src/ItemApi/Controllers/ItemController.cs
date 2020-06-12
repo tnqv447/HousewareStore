@@ -29,7 +29,7 @@ namespace ItemApi.Controllers
         // GET /catalog
         [AllowAnonymous]
         [HttpGet("catalog")]
-        public async Task<IndexDTO> GetCatalog(string category = "", string searchString = "", double minPrice = 0, double maxPrice = 0, string sortOrder = "")
+        public async Task<IndexDTO> GetCatalog(string category = "", string searchString = "", double minPrice = 0, double maxPrice = 0, string sortOrder = "", bool isAdmin = false)
         {
             var indexDTO = new IndexDTO()
             {
@@ -39,9 +39,9 @@ namespace ItemApi.Controllers
                 MinPrice = minPrice,
                 MaxPrice = maxPrice,
                 SortOrder = sortOrder,
-                // nếu nó ko đc thì xóa nó đi, xóa cái nào
+
                 CategoriesId = await _categoryRepos.GetAllCategoryIds(),
-                Items = await _itemRepos.GetItemsBySearch(category, searchString, minPrice, maxPrice, sortOrder)
+                Items = await _itemRepos.GetItemsBySearch(category, searchString, minPrice, maxPrice, sortOrder, isAdmin)
             };
 
             return indexDTO;

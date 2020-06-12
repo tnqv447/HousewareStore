@@ -1,5 +1,6 @@
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Mvc;
+@using MvcClient.Authorization;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,8 +40,27 @@
                     <nav>
                         <ul class="metismenu" id="menu">
                             <li><a href="#"> <span>Dashboard</span></a></li>
-                            <li><a asp-action="Index" asp-controller="Item"></i> <span>Items</span></a></li>
-                            <li><a href="#"> <span>Users</span></a></li>
+                            <li>
+                                
+                                <a href="javascript:void(0)" aria-expanded="true">
+                                    <i class="ti-layout-sidebar-left"></i>
+                                    <span>
+                                        Management
+                                    </span>
+                                </a>
+                                    <ul class="collapse"> 
+                                        <li><a asp-action="Index" asp-controller="Item"></i> <span>Items</span></a></li>
+                                        @{
+                                            var a = User.IsInRole(Constants.AdministratorsRole);
+                                        }
+                                        @if(a == true){
+                                            <li><a asp-action="Index" asp-controller="User"> <span>Users</span></a></li>
+                                        }
+                                        
+                                    </ul>
+                                
+                            </li>
+                            <li><a href="#"> <span>Analysis</span></a></li>
                         </ul>
                     </nav>
                 </div>
