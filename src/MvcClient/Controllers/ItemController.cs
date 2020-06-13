@@ -8,7 +8,6 @@ using MvcClient.Models;
 using MvcClient.Services;
 using MvcClient.ViewModels;
 using System.IO;
-using System.Drawing;
 using Microsoft.AspNetCore.Hosting;
 
 namespace MvcClient.Controllers

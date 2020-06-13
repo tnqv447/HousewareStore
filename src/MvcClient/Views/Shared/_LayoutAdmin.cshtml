@@ -39,12 +39,10 @@
                 var isManager = User.IsInRole(Constants.ManagersRole);
                 var isAdmin = User.IsInRole(Constants.AdministratorsRole);
             }
-            @if(isManager == true || isAdmin == true){
             <div class="main-menu">
                 <div class="menu-inner">
                     <nav>
                         <ul class="metismenu" id="menu">
-                            
                             <li><a href="#"> <span>Dashboard</span></a></li>                         
                             <li>
                                 <a href="javascript:void(0)" aria-expanded="true">
@@ -61,12 +59,10 @@
                                     </ul>
                             </li>
                             <li><a href="#"> <span>Analysis</span></a></li>
-                            
                         </ul>
                     </nav>
                 </div>
-            </div>  
-            }    
+            </div>    
         </div>
          <div class="main-content">
         <div class="header-area">
