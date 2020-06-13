@@ -8,6 +8,7 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
     var selectList = new SelectList(Model.Categories);
 }
+<input type="hidden" id="OwnerId" value="@Model.OwnerId"> 
 <div class="row">
     <div class="col-12 mt-5">
         <div class="card">
@@ -56,101 +57,123 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="header-title">LIST OF ITEMS</h4>
-                <div class="table-responsive data-tables datatable-primary">
-                    <table id="dataTable2" class="table table-hover table-striped text-center">
-                        <thead class="text-capitalize">
-                            <tr>
-                                <th width="5%">Index</th>
-                                <th width="15%" >Image</th>
-                                <th width="20%">@Html.DisplayNameFor(model => model.Items[0].Name)</th>
-                                <th width="8%">@Html.DisplayNameFor(model => model.Items[0].Category)</th>
-                                <th width="8%">@Html.DisplayNameFor(model => model.Items[0].UnitPrice)</th>
-                                <th width="5%"> @Html.DisplayNameFor(model => model.Items[0].ItemStatus)</th>
-                                <th width="10%">Action</th>.
-                            </tr>
-                        </thead>
-                        <tbody id="item_body">
-                            @{
-                                if(Model.ItemsPaging.Count() == 0){
-                                    <tr><h4>Sorry we didn't find any item!</h4></tr>
-                                }
-                                else{
-                                    var count = 1;
-                                    @foreach (var item in Model.ItemsPaging)
-                                    {
-                                        <tr>
-                                            <td>@count</td> @{count++;}
-                                            @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureUrl);
-                                            int countWords = @item.Description.Split(".").Length;
-                                            string[] value = item.Description.Split(".");}
-                                            <td class="item"><img class="img_aspect" src="@PictureURLPath" asp-append-version="true" /></td>
-                                            <td >@Html.DisplayFor(model => item.Name)</td>
-                                            <td >@Html.DisplayFor(model => item.Category)</td>
-                                            <td>@Html.DisplayFor(model => item.UnitPrice)</td>
-                                            <td>
-                                                @{
-                                                    if((int)item.ItemStatus == 1 ){
-                                                        <p class="badge badge-success text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
-                                                    }
-                                                    else if((int)item.ItemStatus == 0){
-                                                        <p class="badge badge-primary text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
-                                                    }else{
-                                                        <p class="badge badge-danger text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
-                                                    }
-                                                }
-                                            </td>
-                                            <td>
-                                                <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info"></i></a>
-                                                @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Update)).Succeeded)
-                                                {
-                                                <a style="padding-left:10px; padding-right:10px" asp-action="Edit" asp-route-id="@item.Id"> <i class="fa fa-edit"></i></a>
-                                                }
-                                            
-                                                @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Delete)).Succeeded)
-                                                {
-                                                <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-close"></i></a>
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            }
-                        </tbody>
-                    </table>
-                        @{
-                        var prevDisabled = !Model.ItemsPaging.HasPrevious ? "disabled" : "";
-                        var nextDisabled = !Model.ItemsPaging.HasNext ? "disabled" : "";
-                    }   
-                    @* Start Pagination *@
-                    <div class="col-lg-6 col-md-8 mt-5" style="text-align:center">
-                        <div class="card">
-                            <div class="card-body">
-                                <nav aria-label="...">
-                                    <ul class="pagination" id="pagination_body">
-                                        <li class="page-item @prevDisabled">
-                                            <a class="page-link"  tabindex="-1" id="num-page@(Model.ItemsPaging.PageIndex-1)">Previous</a>
-                                        </li>
-                                        @for(var i = 0;i<Model.ItemsPaging.TotalPages;i++){
-                                            var pageIndex = i+1;
-                                            var idpageIndex = "num-page" + pageIndex;
-                                            if( pageIndex == Model.ItemsPaging.PageIndex){
-                                                <li class="page-item active">
-                                                    <a class="page-link" id="@idpageIndex"  >@pageIndex <span class="sr-only">(current)</span></a>
-                                                </li>
-                                            }
-                                            else{
-                                                <li class="page-item"><a class="page-link" id="@idpageIndex"  >@pageIndex</a></li>
-                                            }
-                                        }    
-                                        <li class="page-item @nextDisabled">
-                                            <a class="page-link"   id="num-page@(Model.ItemsPaging.PageIndex+1)">Next</a>
-                                        </li>                                                                                              
-                                    </ul>     
-                                </nav>
+                @* <div class="data-tables"></div> *@
+                <div class="data-tables datatable-primary">
+                        <div class="form-row align-items-center">
+                            <div class="col-md-1 my-1">
+                                <label>Sort By:</label>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="select_sort_value custom-select">
+                                    <option value="" selected>Name </option><span class="arrow_carrot-down"></span>
+                                    <option value="name_desc">Name Descending</option>
+                                    <option value="price">Price</option>
+                                    <option value="price_desc">Price Descending</option>
+                                </select>   
                             </div>
                         </div>
-                    </div>
-                    @* End Pagination *@
+                        <div class="row">
+                            <table id="dataTable2" class="text-center table table-hover table-striped text-center">
+                                <thead class="text-capitalize">
+                                    <tr>
+                                        <th width="5%">Index</th>
+                                        <th width="15%" >Image</th>
+                                        <th width="20%">@Html.DisplayNameFor(model => model.Items[0].Name)</th>
+                                        <th width="8%">@Html.DisplayNameFor(model => model.Items[0].Category)</th>
+                                        <th width="8%">@Html.DisplayNameFor(model => model.Items[0].UnitPrice)</th>
+                                        <th width="5%"> @Html.DisplayNameFor(model => model.Items[0].ItemStatus)</th>
+                                        <th width="10%">Action</th>.
+                                    </tr>
+                                </thead>
+                                <tbody id="item_body">
+                                    @{
+                                        if(Model.ItemsPaging.Count() == 0){
+                                            <tr><h4>Sorry we didn't find any item!</h4></tr>
+                                        }
+                                        else{
+                                            var count = 1;
+                                            @foreach (var item in Model.ItemsPaging)
+                                            {
+                                                <tr>
+                                                    <td>@count</td> @{count++;}
+                                                    @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureUrl);
+                                                    int countWords = @item.Description.Split(".").Length;
+                                                    string[] value = item.Description.Split(".");}
+                                                    <td class="item"><img class="img_aspect" src="@PictureURLPath" asp-append-version="true" /></td>
+                                                    <td >@Html.DisplayFor(model => item.Name)</td>
+                                                    <td >@Html.DisplayFor(model => item.Category)</td>
+                                                    <td>$@Html.DisplayFor(model => item.UnitPrice)</td>
+                                                    <td>
+                                                        @{
+                                                            if((int)item.ItemStatus == 1 ){
+                                                                <p class="badge badge-success text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
+                                                            }
+                                                            else if((int)item.ItemStatus == 0){
+                                                                <p class="badge badge-primary text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
+                                                            }else{
+                                                                <p class="badge badge-danger text-white" style="text-align: justify; font-size: 16px;">@item.ItemStatus</p>
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info"></i></a>
+                                                        @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Update)).Succeeded)
+                                                        {
+                                                        <a style="padding-left:10px; padding-right:10px" asp-action="Edit" asp-route-id="@item.Id"> <i class="fa fa-edit"></i></a>
+                                                        }
+                                                    
+                                                        @if((await AuthorizationService.AuthorizeAsync(User, item, ItemOperations.Delete)).Succeeded)
+                                                        {
+                                                        <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-close"></i></a>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                             @{
+                        var prevDisabled = !Model.ItemsPaging.HasPrevious ? "disabled" : "";
+                        var nextDisabled = !Model.ItemsPaging.HasNext ? "disabled" : "";
+                            }   
+                            @* Start Pagination *@
+                            <div class="col-lg-6 col-md-8 mt-5" style="text-align:center">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <nav aria-label="...">
+                                            <ul class="pagination" id="pagination_body">
+                                                <li class="page-item @prevDisabled">
+                                                    <a class="page-link"  tabindex="-1" id="num-page@(Model.ItemsPaging.PageIndex-1)">Previous</a>
+                                                </li>
+                                                @for(var i = 0;i<Model.ItemsPaging.TotalPages;i++){
+                                                    var pageIndex = i+1;
+                                                    var idpageIndex = "num-page" + pageIndex;
+                                                    if( pageIndex == Model.ItemsPaging.PageIndex){
+                                                        <li class="page-item active">
+                                                            <a class="page-link" id="@idpageIndex"  >@pageIndex <span class="sr-only">(current)</span></a>
+                                                        </li>
+                                                    }
+                                                    else{
+                                                        <li class="page-item"><a class="page-link" id="@idpageIndex"  >@pageIndex</a></li>
+                                                    }
+                                                }    
+                                                <li class="page-item @nextDisabled">
+                                                    <a class="page-link"   id="num-page@(Model.ItemsPaging.PageIndex+1)">Next</a>
+                                                </li>                                                                                              
+                                            </ul>     
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                            @* End Pagination *@
+                        </div>
+                        
+                    
+                    
+                       
                 </div>
             </div>
         </div>
@@ -164,11 +187,11 @@
     <script>
         $(document).ready(function(){
             var delay_time = 500;
-            function loadPage(searchString,category,pageNumber,minPrice,maxPrice){
+            function loadPage(searchString,category,pageNumber,minPrice,maxPrice,sortOrder,ownerId){
                 $.ajax({
                     method:'GET',
                     url: '@Url.Action("ItemPaging","Item")',
-                    data:{SearchString: searchString, ItemCategory: category, pageNumber: pageNumber, minPrice: minPrice, maxPrice: maxPrice},
+                    data:{SearchString: searchString, ItemCategory: category, pageNumber: pageNumber, minPrice: minPrice, maxPrice: maxPrice,sortOrder: sortOrder},
                     success:function(data){
                         html = '';
                         html_2 = '';     
@@ -180,7 +203,7 @@
                             html += '<td class="item"><img class="img_aspect" src="img/product/'+item.pictureUrl+'" /></td>';
                             html += '<td >'+item.name+'</td>';
                             html += '<td >'+item.category+'</td>';
-                            html += '<td>'+item.unitPrice+'</td>';
+                            html += '<td>$'+item.unitPrice+'</td>';
                             html += '<td>';
                             if(item.itemStatus == 1 ){
                                     html +='<p class="badge badge-success text-white" style="text-align: justify; font-size: 16px;">Approved</p>';
@@ -192,11 +215,11 @@
                             }
                             html += '</td>';
                             html += '<td>';
-                            html += '<a type="button" style="color:#000000" class="btn btn-rounded btn-primary mb-3" href="/Item/Details/'+item.id+'">Details</a><br>';
-                            if(data.ownerId == item.ownerId)
+                            html += '<a  href="/Item/Details/'+item.id+'"><i class="fa fa-info"></i></a><br>';
+                            if(ownerId == item.ownerId)
                             {
-                                html += '<a type="button" style="color:#000000" class="btn btn-rounded btn-success mb-3" asp-action="Edit" asp-route-id="'+item.id+'">Edit</a><br>';
-                                html += '<a type="button" style="color:#000000" class="btn btn-rounded btn-danger mb-3" asp-action="Delete" asp-route-id="'+item.id+'">Delete</a>';
+                                html += '<a style="padding-left:10px; padding-right:10px" asp-action="Edit" asp-route-id="'+item.id+'"><i class="fa fa-edit"></i></a><br>';
+                                html += '<a  asp-action="Delete" asp-route-id="'+item.id+'"><i class="fa fa-close"></i></a>';
                             }
                             html += '</td>';
                             
@@ -235,6 +258,23 @@
                 })
             }
             $(document).on('click','.search_item',function(){
+                var ownerId= $("#OwnerId").val();
+                var selectedSort= $(this).children("option:selected").val();
+                var searchString = $("#SearchString").val();
+                var selectedSort= $(this).children("option:selected").val();
+                var itemCategory = $("#ItemCategory").children("option:selected").val();
+                var minPrice = parseFloat($("#minPrice").val());
+                var maxPrice = parseFloat($("#maxPrice").val());
+                html = '<div class="preloder_item"><div class="loader_item"></div></div>';
+                html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
+                $('#item_body').html('');
+                $("#pagination_body").html('');
+                $("#item_body").html(html);
+                loadPage(searchString,itemCategory,1,minPrice,maxPrice,selectedSort,ownerId);
+            });
+            $(document).on('change','.select_sort_value',function(){
+                var ownerId= $("#OwnerId").val();
+                var selectedSort= $(this).children("option:selected").val();
                 var searchString = $("#SearchString").val();
                 var itemCategory = $("#ItemCategory").children("option:selected").val();
                 var minPrice = parseFloat($("#minPrice").val());
@@ -244,9 +284,11 @@
                 $('#item_body').html('');
                 $("#pagination_body").html('');
                 $("#item_body").html(html);
-                loadPage(searchString,itemCategory,1,minPrice,maxPrice);
-            });
+                loadPage(searchString,itemCategory,1,minPrice,maxPrice,selectedSort,ownerId);    
+            })
             $(document).on('click','.page-link',function(){
+                var ownerId= $("#OwnerId").val();
+                var selectedSort= $(this).children("option:selected").val();
                 var searchString = $("#SearchString").val();
                 var itemCategory = $("#ItemCategory").children("option:selected").val();
                 var minPrice = parseFloat($("#minPrice").val());
@@ -257,7 +299,7 @@
                 $('#item_body').html('');
                 $("#pagination_body").html('');
                 $("#item_body").html(html);
-                loadPage(searchString,itemCategory,pageNumber,minPrice,maxPrice);
+                loadPage(searchString,itemCategory,pageNumber,minPrice,maxPrice,selectedSort,ownerId);
 
             })
         })

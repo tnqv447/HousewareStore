@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using MvcClient.Models;
 
 namespace MvcClient.Infrastructure
 {
@@ -27,10 +28,12 @@ namespace MvcClient.Infrastructure
             await SetTokenForHttpClient();
 
             var responseString = await _httpClient.GetStringAsync(uri);
+            //Console.WriteLine(JsonConvert.DeserializeObject<IEnumerable<T>>(responseString));
 
             return JsonConvert.DeserializeObject<IEnumerable<T>>(responseString);
 
         }
+
 
         public async Task<T> GetAsync<T>(string uri) where T : class
         {

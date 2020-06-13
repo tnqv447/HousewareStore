@@ -7,6 +7,7 @@ using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace IdentityApi.Services
 {
@@ -22,15 +23,23 @@ namespace IdentityApi.Services
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var user = await _userManager.GetUserAsync(context.Subject);
-            var userClaims = await _userManager.GetClaimsAsync(user);
+            //var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
             {
                 new Claim("name", user.UserName),
-                new Claim("firstname", GetClaimValue(userClaims, "given_name")),
-                new Claim("lastname", GetClaimValue(userClaims, "family_name")),
-                new Claim("address", GetClaimValue(userClaims, "address"))
+                // new Claim("firstname", GetClaimValue(userClaims, "given_name")),
+                // new Claim("lastname", GetClaimValue(userClaims, "family_name")),
+                // new Claim("address", GetClaimValue(userClaims, "address"))
+                new Claim("firstname", user.GivenName),
+                new Claim("lastname", user.FamilyName),
+                new Claim("fullname", user.Name),
+                new Claim("email", user.Email),
+                new Claim("phonenumber", user.PhoneNumber),
+                new Claim("pictureurl", user.PictureUrl),
+                new Claim("website", user.Website),
+                new Claim("address", JsonConvert.SerializeObject(user.Address))
             };
 
             foreach (var role in roles)
@@ -49,9 +58,9 @@ namespace IdentityApi.Services
                 (!user.LockoutEnd.HasValue || user.LockoutEnd.Value <= DateTime.Now);
         }
 
-        private static string GetClaimValue(IList<Claim> userClaims, string claimType)
-        {
-            return userClaims.FirstOrDefault(c => c.Type == claimType).Value;
-        }
+        // private static string GetClaimValue(IList<Claim> userClaims, string claimType)
+        // {
+        //     return userClaims.FirstOrDefault(c => c.Type == claimType).Value;
+        // }
     }
 }

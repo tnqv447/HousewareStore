@@ -129,73 +129,101 @@ namespace IdentityApi
 
             if (!context.Users.Any())
             {
-                EnsureCreatedUser(services, "alice", "Users", new Claim[]{
-                    new Claim(JwtClaimTypes.Name, "Alice Smith"),
-                    new Claim(JwtClaimTypes.GivenName, "Alice"),
-                    new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                    new Claim(JwtClaimTypes.PhoneNumber, "0123456789"),
-                    new Claim(JwtClaimTypes.PhoneNumberVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
-                    new Claim(JwtClaimTypes.Picture, "default_avatar.png"),
-                    new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'city' : 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json)
+                EnsureCreatedUser(services, "alice", "Users", new ApplicationUser
+                {
+                    Name = "Alice Smith",
+                    GivenName = "Alice",
+                    FamilyName = "Smith",
+                    PhoneNumber = "0123456789",
+                    PhoneNumberConfirmed = true,
+                    Email = "AliceSmith@email.com",
+                    EmailConfirmed = true,
+                    PictureUrl = "default_avatar.png",
+                    Website = "http://alice.com",
+                    Address = new Address
+                    {
+                        StreetAddress = "One Hacker Way",
+                        Locality = "Heidelberg",
+                        City = "Heidelberg",
+                        Country = "Germany",
+                        PostalCode = "69118"
+                    }
                 });
 
-                EnsureCreatedUser(services, "ben", "Sales", new Claim[]{
-                    new Claim(JwtClaimTypes.Name, "Ben Smith"),
-                    new Claim(JwtClaimTypes.GivenName, "Ben"),
-                    new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                    new Claim(JwtClaimTypes.PhoneNumber, "0123456789"),
-                    new Claim(JwtClaimTypes.PhoneNumberVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.Email, "BenSmith@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.Picture, "default_avatar.png"),
-                    new Claim(JwtClaimTypes.WebSite, "http://ben.com"),
-                    new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'city' : 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json)
+                EnsureCreatedUser(services, "ben", "Sales", new ApplicationUser
+                {
+                    Name = "Ben Smith",
+                    GivenName = "Ben",
+                    FamilyName = "Smith",
+                    PhoneNumber = "0123456789",
+                    PhoneNumberConfirmed = true,
+                    Email = "BenSmith@email.com",
+                    EmailConfirmed = true,
+                    PictureUrl = "default_avatar.png",
+                    Website = "http://ben.com",
+                    Address = new Address
+                    {
+                        StreetAddress = "One Hacker Way",
+                        Locality = "Heidelberg",
+                        City = "Heidelberg",
+                        Country = "Germany",
+                        PostalCode = "69118"
+                    }
                 });
 
-                EnsureCreatedUser(services, "bob", "Managers", new Claim[]{
-                    new Claim(JwtClaimTypes.Name, "Bob Smith"),
-                    new Claim(JwtClaimTypes.GivenName, "Bob"),
-                    new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                    new Claim(JwtClaimTypes.PhoneNumber, "0123456789"),
-                    new Claim(JwtClaimTypes.PhoneNumberVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.Email, "BobSmith@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.Picture, "default_avatar.png"),
-                    new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                    new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'city' : 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json),
-
+                EnsureCreatedUser(services, "bob", "Managers", new ApplicationUser
+                {
+                    Name = "Bob Smith",
+                    GivenName = "Bob",
+                    FamilyName = "Smith",
+                    PhoneNumber = "0123456789",
+                    PhoneNumberConfirmed = true,
+                    Email = "BobSmith@email.com",
+                    EmailConfirmed = true,
+                    PictureUrl = "default_avatar.png",
+                    Website = "http://bob.com",
+                    Address = new Address
+                    {
+                        StreetAddress = "One Hacker Way",
+                        Locality = "Heidelberg",
+                        City = "Heidelberg",
+                        Country = "Germany",
+                        PostalCode = "69118"
+                    }
                 });
 
-                EnsureCreatedUser(services, "windy", "Administrators", new Claim[]{
-                    new Claim(JwtClaimTypes.Name, "Windy Smith"),
-                    new Claim(JwtClaimTypes.GivenName, "Windy"),
-                    new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                    new Claim(JwtClaimTypes.PhoneNumber, "0123456789"),
-                    new Claim(JwtClaimTypes.PhoneNumberVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.Email, "WindySmith@email.com"),
-                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                    new Claim(JwtClaimTypes.Picture, "default_avatar.png"),
-                    new Claim(JwtClaimTypes.WebSite, "http://windy.com"),
-                    new Claim(JwtClaimTypes.Address, @"{ 'street_address': 'One Hacker Way', 'locality': 'Heidelberg', 'city' : 'Heidelberg', 'postal_code': 69118, 'country': 'Germany' }", IdentityServer4.IdentityServerConstants.ClaimValueTypes.Json)
-                    //new Claim("location", "somewhere")
+                EnsureCreatedUser(services, "windy", "Administrators", new ApplicationUser
+                {
+                    Name = "Windy Smith",
+                    GivenName = "Windy",
+                    FamilyName = "Smith",
+                    PhoneNumber = "0123456789",
+                    PhoneNumberConfirmed = true,
+                    Email = "WindySmith@email.com",
+                    EmailConfirmed = true,
+                    PictureUrl = "default_avatar.png",
+                    Website = "http://windy.com",
+                    Address = new Address
+                    {
+                        StreetAddress = "One Hacker Way",
+                        Locality = "Heidelberg",
+                        City = "Heidelberg",
+                        Country = "Germany",
+                        PostalCode = "69118"
+                    }
                 });
             }
         }
 
-        private static void EnsureCreatedUser(IServiceProvider services, string username, string role, Claim[] claims)
+        private static void EnsureCreatedUser(IServiceProvider services, string username, string role, ApplicationUser dto)
         {
             var userMgr = services.GetRequiredService<UserManager<ApplicationUser>>();
 
             var user = userMgr.FindByNameAsync(username).Result;
             if (user == null)
             {
-                user = new ApplicationUser
-                {
-                    UserName = username
-                };
+                user = dto;
+                user.UserName = username;
                 var result = userMgr.CreateAsync(user, "Pass123$").Result;
                 if (!result.Succeeded)
                 {
@@ -208,11 +236,6 @@ namespace IdentityApi
                     throw new Exception(result.Errors.First().Description);
                 }
 
-                result = userMgr.AddClaimsAsync(user, claims).Result;
-                if (!result.Succeeded)
-                {
-                    throw new Exception(result.Errors.First().Description);
-                }
                 Log.Debug($"{username} created");
             }
             else

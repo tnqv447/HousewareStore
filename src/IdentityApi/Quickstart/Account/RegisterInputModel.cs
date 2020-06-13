@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using IdentityApi.Models;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -73,33 +74,33 @@ namespace IdentityServer4.Quickstart.UI
         }
     }
 
-    public class Address
-    {
-        [JsonProperty("street_address")]
-        [Display(Name = "Street address")]
-        public string StreetAddress { get; set; }
+    // public class Address
+    // {
+    //     [JsonProperty("street_address")]
+    //     [Display(Name = "Street address")]
+    //     public string StreetAddress { get; set; }
 
-        //phuong va quan,huyen
-        [Display(Name = "Locality/District")]
-        public string Locality { get; set; }
+    //     //phuong va quan,huyen
+    //     [Display(Name = "Locality/District")]
+    //     public string Locality { get; set; }
 
-        public string City { get; set; }
-        public string Country { get; set; }
+    //     public string City { get; set; }
+    //     public string Country { get; set; }
 
-        [JsonProperty("postal_code")]
-        [Display(Name = "Postal code")]
-        public string PostalCode { get; set; }
-        public Address()
-        {
+    //     [JsonProperty("postal_code")]
+    //     [Display(Name = "Postal code")]
+    //     public string PostalCode { get; set; }
+    //     public Address()
+    //     {
 
-        }
-        public Address(string StreetAddress, string Locality, string City, string Country, string PostalCode)
-        {
-            this.StreetAddress = StreetAddress;
-            this.Locality = Locality;
-            this.City = City;
-            this.Country = Country;
-            this.PostalCode = PostalCode;
-        }
-    }
+    //     }
+    //     public Address(string StreetAddress, string Locality, string City, string Country, string PostalCode)
+    //     {
+    //         this.StreetAddress = StreetAddress;
+    //         this.Locality = Locality;
+    //         this.City = City;
+    //         this.Country = Country;
+    //         this.PostalCode = PostalCode;
+    //     }
+    // }
 }

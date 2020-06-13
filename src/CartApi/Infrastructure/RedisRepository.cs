@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using StackExchange.Redis;
-
+using System;
 namespace CartApi.Infrastructure
 {
     public abstract class RedisRepository<T> : IRepository<T> where T : class
@@ -23,12 +23,16 @@ namespace CartApi.Infrastructure
         {
             var data = JsonConvert.SerializeObject(entity);
             var created = await database.StringSetAsync(key, data);
-            
+            TimeSpan time = new TimeSpan(0, 30, 0);
+            await database.KeyExpireAsync(key, time);
             return !created ? null : await GetByAsync(key);
         }
 
+
         public async Task<bool> DeleteAsync(string key)
         {
+
+            // database.KeyExpireAsync(RedisChannel,)
             return await database.KeyDeleteAsync(key);
         }
     }

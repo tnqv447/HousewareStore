@@ -1,9 +1,40 @@
 @model UserViewModel
+@using Microsoft.AspNetCore.Authorization
+@using MvcClient.Authorization
+@inject IAuthorizationService AuthorizationService
+
 @{
     ViewData["Title"] = "Manager - Item";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
+    @* var selectList = new SelectList(Model.RoleList); *@
     
 }
+<div class="row">
+    <div class="col-12 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <a  type="button" class="btn btn-outline-primary mb-3" asp-action="Create">Create New</a>
+                <br />
+                <div class="form-row align-items-center">
+                    <div class="col-md-5 my-1">
+                        <select class="custom-select"  asp-for="RoleList"  >
+                            <option value="">All roles </option><span class="arrow_carrot-down"></span>
+                        </select>                  
+                    </div> 
+                    <div class="col-md-5 my-1">                
+                        <input type="text" class="form-control" asp-for="SearchName"  placeholder="What do yo u need?">        
+                    </div>  
+                    <div class="col-auto my-1">
+                        <a style="cursor:pointer" class="site-btn search_item">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </a>            
+                    </div>               
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <!-- Primary table start -->
     <div class="col-12 mt-5">
@@ -23,7 +54,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach(var item in Model.UsersPaging){
+                            @foreach(var item in Model.Users)
+                            {
                                 <tr>
                                     <td>@item.getFullName()</td>
                                     <td>@item.Email</td>
@@ -31,14 +63,14 @@
                                     <td>@item.Address</td>
                                     <td>@item.Role</td>
                                     <td>
-                                        <a style="cursor:pointer">
+                                        <a style="cursor:pointer" asp-action="Edit" asp-route-id="@item.UserId">
                                             <i class="fa fa-edit"></i>
                                         </a>
+                                        <a asp-action="Delete" asp-route-id="@item.UserId"><i class="fa fa-close"></i></a>
+                                        
                                     </td>
                                 </tr>
-                            }
-                            
-                            
+                            } 
                         </tbody>
                     </table>
                 </div>

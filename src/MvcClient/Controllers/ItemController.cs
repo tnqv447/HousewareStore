@@ -8,12 +8,11 @@ using MvcClient.Models;
 using MvcClient.Services;
 using MvcClient.ViewModels;
 using System.IO;
-using System.Drawing;
 using Microsoft.AspNetCore.Hosting;
 
 namespace MvcClient.Controllers
 {
-    [Authorize(Roles = "Managers, Administrators")]
+    [Authorize(Roles = "Sales, Managers, Administrators")]
     public class ItemController : Controller
     {
         private readonly IItemService _itemService;
@@ -38,28 +37,16 @@ namespace MvcClient.Controllers
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);
             var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized);
-
-            if (User.IsInRole(Constants.AdministratorsRole))
-            {
-                catalog.UserRole = "administator";
-            }
-            else if (User.IsInRole(Constants.ManagersRole))
-            {
-                catalog.UserRole = "manager";
-            }
-            else
-            {
-                catalog.UserRole = "seller";
-            }
-
+            catalog.OwnerId = _identityService.Get(User).Id;
             if (!isAuthorized)
             {
                 var userId = _identityService.Get(User).Id;
                 catalog.Items = catalog.Items
                     .Where(m => m.ItemStatus == ItemStatus.Approved || m.OwnerId == userId)
+
                     .ToList();
-                catalog.OwnerId = userId;
             }
+            // Console.WriteLine("owner " + isAuthorized + " " + catalog.OwnerId);
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
             catalog.PageIndex = pageNumber;
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
@@ -70,22 +57,9 @@ namespace MvcClient.Controllers
             // string sortOrder = "Name"
             var pageSize = 6;
 
-
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);
-            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized);
-            if (User.IsInRole(Constants.AdministratorsRole))
-            {
-                catalog.UserRole = "administator";
-            }
-            else if (User.IsInRole(Constants.ManagersRole))
-            {
-                catalog.UserRole = "manager";
-            }
-            else
-            {
-                catalog.UserRole = "seller";
-            }
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, sortOrder, isAuthorized);
 
             if (!isAuthorized)
             {
@@ -123,6 +97,7 @@ namespace MvcClient.Controllers
         {
             string uniqueFileName = UploadedFile(viewModel);
             Item item = viewModel.Item;
+            item.PublishDate = DateTime.Today;
             item.PictureUrl = uniqueFileName;
             if (ModelState.IsValid)
             {

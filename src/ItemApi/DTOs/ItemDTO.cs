@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using ItemApi.Models;
 
 namespace ItemApi.DTOs
@@ -17,6 +18,10 @@ namespace ItemApi.DTOs
         public int CategoryId { get; set; }
         public string Category { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{dd/MM/yyyy}")]
+        public DateTime PublishDate { get; set; }
+
         public ItemDTO() { }
         public ItemDTO(Item i, string CategoryName)
         {
@@ -30,6 +35,7 @@ namespace ItemApi.DTOs
             DbStatus = i.DbStatus;
             CategoryId = i.CategoryId;
             Category = CategoryName;
+            PublishDate = i.PublishDate;
         }
 
     }
