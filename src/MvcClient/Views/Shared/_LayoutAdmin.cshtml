@@ -35,13 +35,18 @@
                 <a asp-action="Index" asp-controller="Home"><img src="~/img/logo.png" alt="logo"></a>
                 </div>
             </div>
+            @{
+                var isManager = User.IsInRole(Constants.ManagersRole);
+                var isAdmin = User.IsInRole(Constants.AdministratorsRole);
+            }
+            @if(isManager == true || isAdmin == true){
             <div class="main-menu">
                 <div class="menu-inner">
                     <nav>
                         <ul class="metismenu" id="menu">
-                            <li><a href="#"> <span>Dashboard</span></a></li>
+                            
+                            <li><a href="#"> <span>Dashboard</span></a></li>                         
                             <li>
-                                
                                 <a href="javascript:void(0)" aria-expanded="true">
                                     <i class="ti-layout-sidebar-left"></i>
                                     <span>
@@ -50,21 +55,18 @@
                                 </a>
                                     <ul class="collapse"> 
                                         <li><a asp-action="Index" asp-controller="Item"></i> <span>Items</span></a></li>
-                                        @{
-                                            var a = User.IsInRole(Constants.AdministratorsRole);
-                                        }
-                                        @if(a == true){
+                                        @if(isAdmin == true){
                                             <li><a asp-action="Index" asp-controller="User"> <span>Users</span></a></li>
-                                        }
-                                        
+                                        } 
                                     </ul>
-                                
                             </li>
                             <li><a href="#"> <span>Analysis</span></a></li>
+                            
                         </ul>
                     </nav>
                 </div>
-            </div>      
+            </div>  
+            }    
         </div>
          <div class="main-content">
         <div class="header-area">
