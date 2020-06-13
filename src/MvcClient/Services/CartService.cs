@@ -12,6 +12,7 @@ namespace MvcClient.Services
     {
         private readonly string _serviceBaseUrl;
         private readonly IHttpClient _httpClient;
+        
 
         public CartService(IHttpClient httpClient, IOptions<AppSettings> appSettings)
         {
@@ -24,6 +25,7 @@ namespace MvcClient.Services
             var uri = _serviceBaseUrl + $"/{buyer.Id}";
 
             var cart = await _httpClient.GetAsync<Cart>(uri);
+            
 
             return cart ?? new Cart { Id = buyer.Id };
         }
@@ -37,6 +39,7 @@ namespace MvcClient.Services
         public async Task RemoveItemCart(Buyer user, string id){
             var cart = await GetCart(user);
             var itemFound = cart.CartItems.Find(x => x.Id == id);
+            
             if(itemFound != null){
                 cart.CartItems.Remove(itemFound);
             }
