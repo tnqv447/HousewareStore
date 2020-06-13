@@ -1,7 +1,101 @@
-@model MvcClient.ViewModels.ItemCategoryViewModel
+@model User
 
 @{
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-<p>Edit</p>
+<div class="container">
+    <div class="row" style="text-align: justify;">
+        <h1>Edit</h1>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-8">
+            <form method="POST" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @* start input hidden *@
+                <input type="hidden" asp-for="UserId"/> 
+                <input type="hidden" asp-for="PictureUrl"/> 
+                @* end input hidden *@
+                <div class="form-group">
+                    <label asp-for="UserName" class="control-label"></label>
+                    <input asp-for="UserName" class="form-control"/> 
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FamilyName" class="control-label"></label>
+                    <input asp-for="FamilyName" class="form-control"/> 
+                    <span asp-validation-for="FamilyName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="GivenName" class="control-label"></label>
+                    <input asp-for="GivenName" class="form-control"/> 
+                    <span asp-validation-for="GivenName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" type="email"/> 
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Address.StreetAddress" class="control-label"></label>
+                            <input type="text" class="form-control" asp-for="Address.StreetAddress">
+                            <span asp-validation-for="Address.StreetAddress" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Address.Locality" class="control-label"></label>
+                            <input type="text" class="form-control" asp-for="Address.Locality">
+                            <span asp-validation-for="Address.Locality" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Address.City" class="control-label"></label>
+                            <input type="text" class="form-control" asp-for="Address.City">
+                            <span asp-validation-for="Address.City" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Address.Country" class="control-label"></label>
+                            <input type="text" class="form-control" asp-for="Address.Country">
+                            <span asp-validation-for="Address.Country" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Address.PostalCode" class="control-label"></label>
+                            <input type="text" class="form-control" asp-for="Address.PostalCode">
+                            <span asp-validation-for="Address.PostalCode" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" type="tel"/> 
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Website" class="control-label"></label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">https://</span>
+                        </div>
+                        <input asp-for="Website" class="form-control" type="text"/> 
+                    </div>
+                    <span asp-validation-for="Website" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Role" class="control-label"></label>
+                    <input asp-for="Role" class="form-control" type="text" disabled/> 
+                </div>      
+                <div class="form-group btn-group mb-xl-3">
+                    <a type="button" class="btn btn-outline-primary mb-3" asp-action="Index">Back</a>
+                    <input type="submit" value="Save" class="btn btn-primary mb-3"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
