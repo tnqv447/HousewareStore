@@ -22,6 +22,11 @@ namespace MvcClient.Models
         [RegularExpression(@"^[A-Z]+[a-zA-Z""'\s-]*$")]
         public string Category { get; set; }
         public int CategoryId { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{dd/MM/yyyy}")]
+        public DateTime PublishDate { get; set; }
+
         public string PictureUrl { get; set; }
         public string OwnerId { get; set; }
         public ItemStatus ItemStatus { get; set; }

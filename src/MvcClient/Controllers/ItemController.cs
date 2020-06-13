@@ -73,7 +73,7 @@ namespace MvcClient.Controllers
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole);
-            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized);
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, sortOrder, isAuthorized);
             if (User.IsInRole(Constants.AdministratorsRole))
             {
                 catalog.UserRole = "administator";

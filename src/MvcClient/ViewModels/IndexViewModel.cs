@@ -15,6 +15,7 @@ namespace MvcClient.ViewModels
         [Display(Name = "Max Price")]
         public double maxPrice { get; set; }
         public string SortOrder { get; set; }
+        public IList<Item> LatestItems { get; set; }
         public IEnumerable<string> Categories { get; set; }
         public PaginatedList<Item> ItemsPaging { get; set; }
         public string OwnerId { get; set; }

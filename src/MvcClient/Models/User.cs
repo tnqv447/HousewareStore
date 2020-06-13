@@ -5,7 +5,7 @@ namespace MvcClient.Models
 {
     public class User
     {
-        [JsonProperty("user_id")]
+        //[JsonProperty("user_id")]
         public string UserId { get; set; }
 
         //for claims
@@ -15,20 +15,20 @@ namespace MvcClient.Models
         public string UserName { get; set; }
 
         [Display(Name = "Family name")]
-        [JsonProperty("family_name")]
+        //[JsonProperty("family_name")]
         public string FamilyName { get; set; }
 
         [Display(Name = "Given name")]
-        [JsonProperty("give_name")]
+        // [JsonProperty("give_name")]
         public string GivenName { get; set; }
 
         public string Email { get; set; }
 
         [Display(Name = "Phone number")]
-        [JsonProperty("phone_number")]
+        //[JsonProperty("phone_number")]
         public string PhoneNumber { get; set; }
 
-        [JsonProperty("picture_url")]
+        //[JsonProperty("picture_url")]
         public string PictureUrl { get; set; }
 
         public string Website { get; set; }
@@ -49,7 +49,7 @@ namespace MvcClient.Models
 
     public class Address
     {
-        [JsonProperty("street_address")]
+        //[JsonProperty("street_address")]
         [Display(Name = "Street address")]
         public string StreetAddress { get; set; }
 
@@ -59,7 +59,7 @@ namespace MvcClient.Models
         public string City { get; set; }
         public string Country { get; set; }
 
-        [JsonProperty("postal_code")]
+        //[JsonProperty("postal_code")]
         [Display(Name = "Postal code")]
         public string PostalCode { get; set; }
 

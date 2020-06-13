@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityApi.Quickstart.User
 {
-    [Authorize(Roles = "Managers, Administrators")]
+    //[Authorize(Roles = "Managers, Administrators")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -58,7 +58,13 @@ namespace IdentityApi.Quickstart.User
                 users = await _userRepo.GetUsersByRole(role);
             }
 
-            return new List<ApplicationUserDTO>(toDtoRange(users));
+            var dtos = new List<ApplicationUserDTO>(toDtoRange(users));
+            if (!String.IsNullOrEmpty(role))
+            {
+                foreach (var dto in dtos)
+                    dto.Role = role;
+            }
+            return dtos;
         }
 
         [HttpPost]

@@ -9,5 +9,6 @@ namespace CartApi.Data
         public CartRepository(ConnectionMultiplexer redis) : base(redis.GetDatabase())
         {
         }
+
     }
 }

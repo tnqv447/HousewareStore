@@ -56,6 +56,9 @@ namespace MvcClient.Controllers
 
             }
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
+
+            DateTime oldDate = DateTime.Today.AddMonths(-1);
+            catalog.LatestItems = catalog.Items.Where(m => m.PublishDate > oldDate).ToList();
             ChangeUriPlaceholder(catalog.Items);
 
             return View(catalog);

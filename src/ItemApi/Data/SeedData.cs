@@ -62,7 +62,8 @@ namespace ItemApi.Data
                         OwnerId = "b682f90b-1157-4c36-bdf3-5099cbab02a7",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
-                        CategoryId = 2
+                        CategoryId = 2,
+                        PublishDate = DateTime.ParseExact("01/01/2020", "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture)
                     },
                     new Item {
                         //Id = 9,
@@ -73,7 +74,8 @@ namespace ItemApi.Data
                         OwnerId = "b682f90b-1157-4c36-bdf3-5099cbab02a7",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
-                        CategoryId = 4
+                        CategoryId = 4,
+                        PublishDate = DateTime.ParseExact("02/01/2020", "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture)
                     },
                     new Item {
                         //Id = 8,
@@ -84,7 +86,8 @@ namespace ItemApi.Data
                         OwnerId = "b682f90b-1157-4c36-bdf3-5099cbab02a7",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
-                        CategoryId = 4
+                        CategoryId = 4,
+                        PublishDate = DateTime.ParseExact("03/02/2020", "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture)
                     },
                     new Item {
                         //Id = 7,
@@ -95,7 +98,8 @@ namespace ItemApi.Data
                         OwnerId = "8ce6c08a-207b-48a4-85e2-741ad4041cd5",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
-                        CategoryId = 2
+                        CategoryId = 2,
+                        PublishDate = DateTime.ParseExact("01/03/2020", "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture)
                     },
                     new Item {
                         //Id = 6,
@@ -106,7 +110,8 @@ namespace ItemApi.Data
                         OwnerId = "6cbb393b-2043-4330-998f-032d5f0ea957",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
-                        CategoryId = 1
+                        CategoryId = 1,
+                        PublishDate = DateTime.ParseExact("20/03/2020", "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture)
                     },
                     new Item {
                         //Id = 5,
@@ -117,42 +122,46 @@ namespace ItemApi.Data
                         OwnerId = "6cbb393b-2043-4330-998f-032d5f0ea957",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
-                        CategoryId = 2
+                        CategoryId = 2,
+                        PublishDate = DateTime.ParseExact("01/04/2020", "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture)
                     },
                     new Item {
                         //Id = 4,
-                        Name = "Instant Pot Duo 7-in-1 Electric Pressure Cooker, Slow Cooker, Rice Cooker, Steamer, Saute, Yogurt Maker, and Warmer, 6 Quart, 14 One-Touch Programs",
+                        Name = "Instant Pot Duo 7-in-1 Electric Pressure Cooker",
                         UnitPrice = 79.00,
                         Description = "Best Selling Model: America’s most loved multi cooker, built with the latest 3rd generation technology, the microprocessor monitors pressure, temperature, keeps time, and adjusts heating intensity and duration to achieve desired results every time. Cooks Fast and Saves Time: The Instant Pot Duo multi-cooker combines 7 appliances in one: pressure cooker, slow cooker, rice cooker, steamer, sauté pan, yogurt maker and warmer – and cooks up to 70% faster. Consistently Delicious: 14 one-touch Smart Programs put cooking ribs, soups, beans, rice, poultry, yogurt, desserts and more on autopilot – with tasty results",
                         PictureUrl = "item_4.jpg",
                         OwnerId = "6cbb393b-2043-4330-998f-032d5f0ea957",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
-                        CategoryId = 1
+                        CategoryId = 1,
+                        PublishDate = DateTime.ParseExact("15/04/2020", "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture)
                     },
                     new Item
                     {
                         //Id = 3,
-                        Name = "Home Hero Kitchen Utensil Set - 23 Nylon Cooking Utensils - Kitchen Utensils with Spatula - Kitchen Gadgets Cookware Set - Best Kitchen Tool Set",
+                        Name = "Home Hero Kitchen Utensil Set ",
                         UnitPrice = 24.99,
                         Description = "23 NYLON COOKING UTENSILS - Utensil Set includes everything you need to cook that perfect dish. HIGH QUALITY THAT LASTS - These kitchen gadgets are made to stand the test of time. Top of the range 430 stainless steel handles provide greater durability than other plastic kitchen utensil sets. PERFECT FOR NON-STICK - Nylon heads prevent these kitchen tools from scratching and damaging expensive non-stick pots and pans. BEST VALUE FOR MONEY AROUND - this fully comprehensive high quality utensil set is available at an incredibly low price",
                         PictureUrl = "item_3.jpg",
                         OwnerId = "8ce6c08a-207b-48a4-85e2-741ad4041cd5",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
-                        CategoryId = 2
+                        CategoryId = 2,
+                        PublishDate = DateTime.ParseExact("04/05/2020", "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture)
                     },
                     new Item
                     {
                         //Id = 2,
-                        Name = "Wilton Icing Spatula, 13-Inch, Angled Cake Spatula",
+                        Name = "Wilton Icing Spatula",
                         UnitPrice = 3.84,
                         Description = "Angled spatula is great for frosting and smoothing icing on cakes without getting your fingers in the icing. Ergonomic handle is shaped for comfort and control. Material: Steel blade, plastic handle. 13 inches (33 centimeter).",
                         PictureUrl = "item_2.jpg",
                         OwnerId = "8ce6c08a-207b-48a4-85e2-741ad4041cd5",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
-                        CategoryId = 2
+                        CategoryId = 2,
+                        PublishDate = DateTime.ParseExact("30/05/2020", "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture)
                     },
                     new Item
                     {
@@ -164,7 +173,8 @@ namespace ItemApi.Data
                         OwnerId = "8ce6c08a-207b-48a4-85e2-741ad4041cd5",
                         ItemStatus = ItemStatus.Approved,
                         DbStatus = DbStatus.Active,
-                        CategoryId = 2
+                        CategoryId = 2,
+                        PublishDate = DateTime.ParseExact("06/06/2020", "dd/MM/yyyy",System.Globalization.CultureInfo.InvariantCulture)
                     }
 
                 };

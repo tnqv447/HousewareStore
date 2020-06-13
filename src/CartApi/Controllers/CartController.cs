@@ -39,6 +39,7 @@ namespace CartApi.Controllers
         [HttpDelete("{id}")]
         public async Task Delete(string id)
         {
+
             await _cartRepo.DeleteAsync(id);
         }
     }

@@ -17,6 +17,8 @@ namespace ItemApi.Models
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+
+        public DateTime PublishDate { get; set; }
         public Item() { }
         public Item(ItemDTO item)
         {

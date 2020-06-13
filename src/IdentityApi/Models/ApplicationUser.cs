@@ -31,7 +31,7 @@ namespace IdentityApi.Models
     [Owned]
     public class Address
     {
-        [JsonProperty("street_address")]
+        //[JsonProperty("street_address")]
         [Display(Name = "Street address")]
         public string StreetAddress { get; set; }
 
@@ -42,7 +42,7 @@ namespace IdentityApi.Models
 
         public string Country { get; set; }
 
-        [JsonProperty("postal_code")]
+        //[JsonProperty("postal_code")]
         [Display(Name = "Postal code")]
         public string PostalCode { get; set; }
 
