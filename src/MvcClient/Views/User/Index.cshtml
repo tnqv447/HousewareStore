@@ -4,7 +4,7 @@
 @inject IAuthorizationService AuthorizationService
 
 @{
-    ViewData["Title"] = "Manager - Item";
+    ViewData["Title"] = "Manager - User";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
     @* var selectList = new SelectList(Model.RoleList); *@
     
@@ -53,8 +53,8 @@
                                 <th width="15%">Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach(var item in Model.Users)
+                        <tbody id="item_body">
+                            @foreach(var item in Model.UsersPaging)
                             {
                                 <tr>
                                     <td>@item.Name</td>
@@ -74,9 +74,150 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="row">
+                        @{
+                        var prevDisabled = !Model.UsersPaging.HasPrevious ? "disabled" : "";
+                        var nextDisabled = !Model.UsersPaging.HasNext ? "disabled" : "";
+                    }   
+                    @* Start Pagination *@
+                    <div class="col-lg-6 col-md-8 mt-5" style="text-align:center">
+                        <div class="card">
+                            <div class="card-body">
+                                <nav aria-label="...">
+                                    <ul class="pagination" id="pagination_body">
+                                        <li class="page-item @prevDisabled">
+                                            <a class="page-link"  tabindex="-1" id="num-page@(Model.UsersPaging.PageIndex-1)">Previous</a>
+                                        </li>
+                                        @for(var i = 0;i<Model.UsersPaging.TotalPages;i++){
+                                            var pageIndex = i+1;
+                                            var idpageIndex = "num-page" + pageIndex;
+                                            if( pageIndex == Model.UsersPaging.PageIndex){
+                                                <li class="page-item active">
+                                                    <a class="page-link" id="@idpageIndex"  >@pageIndex <span class="sr-only">(current)</span></a>
+                                                </li>
+                                            }
+                                            else{
+                                                <li class="page-item"><a class="page-link" id="@idpageIndex"  >@pageIndex</a></li>
+                                            }
+                                        }    
+                                        <li class="page-item @nextDisabled">
+                                            <a class="page-link"   id="num-page@(Model.UsersPaging.PageIndex+1)">Next</a>
+                                        </li>                                                                                              
+                                    </ul>     
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    @* End Pagination *@
+                </div>
             </div>
         </div>
     </div>
     <!-- Primary table end -->
-    
 </div>
+
+@* Javascript *@
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            var delay_time = 500;
+            function loadPage(searchName,role,pageNumber,sortOrder){
+                $.ajax({
+                    method:'GET',
+                    url: '@Url.Action("UserPaging","User")',
+                    data:{searchName: searchName, itemRole: role, pageNumber: pageNumber, sortOrder: sortOrder},
+                    success:function(data){
+                        html = '';
+                        html_2 = '';     
+                        for(i=0; i<data.usersPaging.length;i++)
+                        {
+                            var item = data.usersPaging[i];
+                            var address = item.address.streetAddress +", "+item.address.locality +", "+item.address.city +", "+item.address.country +", "+item.address.postalCode; 
+                            html += '<tr>';
+                            html += '<td>'+item.name+'</td>';
+                            html += '<td>'+item.email+'</td>';
+                            html += '<td>'+item.phoneNumber+'</td>';
+                            html += '<td>'+address+'</td>';
+                            html += '<td>'+item.role+'</td>';
+                            html +='<td>'
+                            html +=' <a style="cursor:pointer" asp-action="Edit" href="User/Edit/'+item.userId+'"><i class="fa fa-edit"></i></a>';           
+                            html +='<a asp-action="Delete" href="User/Delete/'+item.userId+'"><i class="fa fa-close"></i></a>';            
+                            html += '</td>';
+                            html += '</tr>';
+                        }
+                        // html_2
+                        var prevDisabled = "";
+                        var nextDisabled = "";
+                        if( data.pageIndex <= 1 ) prevDisabled = "disabled";
+                        if( data.pageIndex >= data.pageTotal ) nextDisabled ="disabled";
+                        var idprev="num-page"+ (data.pageIndex-1);
+                        var idnext="num-page"+ (data.pageIndex+1);
+                        html_2 +='<li class="page-item '+ prevDisabled +'"><a class="page-link" id="'+idprev+'" asp-action="Index" asp-route-pageNumber="'+(data.pageIndex-1)+'" tabindex="-1">Previous</a></li>';
+                        for(var i = 0;i<data.pageTotal;i++){
+                            var pageIndex = i+1;
+                            var idpageIndex = "num-page" + pageIndex;
+                            if( pageIndex == data.pageIndex){
+                                html_2 +='<li class="page-item active"><a class="page-link" id="'+idpageIndex+'" asp-action="Index" asp-route-pageNumber="'+data.usersPaging.PageIndex+'">'+pageIndex+' <span class="sr-only">(current)</span></a></li>';
+                            }
+                            else{
+                                html_2 +='<li class="page-item"><a class="page-link" id="'+idpageIndex+'" asp-action="Index" asp-route-pageNumber="'+pageIndex+'">'+pageIndex+'</a></li>';
+                            }
+                        }    
+                        html_2 +='<li class="page-item '+nextDisabled+'"><a class="page-link" id="'+idnext+'" asp-action="Index" asp-route-pageNumber="'+(data.pageIndex+1)+'">Next</a></li>';                                                                                              
+                    },
+                    complete:function(){
+                        setTimeout(function(){
+                            $("#item_body").removeClass('preloder_item').html(html);
+                            $("#pagination_body").html(html_2);
+                        },delay_time)
+                    },
+                    error: function(xhr){
+                        alert(xhr);
+                    }
+                })
+            }
+           /* $(document).on('click','.search_item',function(){
+                var ownerId= $("#OwnerId").val();
+                var selectedSort= $(this).children("option:selected").val();
+                var searchString = $("#SearchString").val();
+                var selectedSort= $(this).children("option:selected").val();
+                var itemCategory = $("#ItemCategory").children("option:selected").val();
+                var minPrice = parseFloat($("#minPrice").val());
+                var maxPrice = parseFloat($("#maxPrice").val());
+                html = '<div class="preloder_item"><div class="loader_item"></div></div>';
+                html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
+                $('#item_body').html('');
+                $("#pagination_body").html('');
+                $("#item_body").html(html);
+                loadPage(searchString,itemCategory,1,minPrice,maxPrice,selectedSort,ownerId);
+            });
+            $(document).on('change','.select_sort_value',function(){
+                var ownerId= $("#OwnerId").val();
+                var selectedSort= $(this).children("option:selected").val();
+                var searchString = $("#SearchString").val();
+                var itemCategory = $("#ItemCategory").children("option:selected").val();
+                var minPrice = parseFloat($("#minPrice").val());
+                var maxPrice = parseFloat($("#maxPrice").val());
+                html = '<div class="preloder_item"><div class="loader_item"></div></div>';
+                html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
+                $('#item_body').html('');
+                $("#pagination_body").html('');
+                $("#item_body").html(html);
+                loadPage(searchString,itemCategory,1,minPrice,maxPrice,selectedSort,ownerId);    
+            })*/
+            $(document).on('click','.page-link',function(){
+               /* var selectedSort= $(this).children("option:selected").val();*/
+                var searchName = $("#SearchName").val();
+               /* var role = $("#ItemCategory").children("option:selected").val();*/
+                var pageNumber = $(this).attr("id").slice(8);
+                html = '<div class="preloder_item"><div class="loader_item"></div></div>';
+                html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
+                $('#item_body').html('');
+                $("#pagination_body").html('');
+                $("#item_body").html(html);
+                loadPage(searchName,null,pageNumber,null);
+
+            })
+        })
+    </script>
+}
