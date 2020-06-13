@@ -29,13 +29,25 @@ namespace MvcClient.Controllers
             _logger = logger;
             _authorizationService = authorizationService;
         }
-        public async Task<IActionResult> Index(int pageNumber = 1)
+        public async Task<IActionResult> Index(string searchName = null, string itemRole = null, int pageNumber = 1, string sortOrder = null)
         {
-            var pageSize = 6;
+            var pageSize = 3;
             UserViewModel viewModel = new UserViewModel();
             viewModel.Users = await _service.ManageUsers();
             viewModel.UsersPaging = PaginatedList<User>.Create(viewModel.Users, pageNumber, pageSize);
+            viewModel.PageIndex = pageNumber;
+            viewModel.PageTotal = viewModel.UsersPaging.TotalPages;
             return View(viewModel);
+        }
+        public async Task<IActionResult> UserPaging(string searchName, string itemRole, int pageNumber = 1, string sortOrder = null)
+        {
+            var pageSize = 3;
+            UserViewModel viewModel = new UserViewModel();
+            viewModel.Users = await _service.ManageUsers();
+            viewModel.UsersPaging = PaginatedList<User>.Create(viewModel.Users, pageNumber, pageSize);
+            viewModel.PageIndex = pageNumber;
+            viewModel.PageTotal = viewModel.UsersPaging.TotalPages;
+            return new JsonResult(viewModel);
         }
         public IActionResult Create()
         {

@@ -8,6 +8,9 @@ namespace MvcClient.ViewModels
     {
         public IEnumerable<User> Users { get; set; }
         public PaginatedList<User> UsersPaging { get; set; }
+        public int PageIndex { get; set; }
+        public int PageTotal { get; set; }
+        public string SortOrder { get; set; }
         //search
         public string SearchName { get; set; }
         public List<string> RoleList { get; set; }
