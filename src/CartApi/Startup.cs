@@ -31,6 +31,8 @@ namespace CartApi
                 var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);
                 configuration.ResolveDns = true;
                 configuration.AbortOnConnectFail = false;
+                configuration.ConnectTimeout = 5;
+                
                 return ConnectionMultiplexer.Connect(configuration);
             });
 

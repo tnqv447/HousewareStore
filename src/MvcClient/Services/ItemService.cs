@@ -21,12 +21,13 @@ namespace MvcClient.Services
 
         public async Task<IndexViewModel> GetCatalog(string category = null, string searchString = null, double minPrice = 0,
                                                      double maxPrice = 0, string sortOrder = null, bool isAdmin = false, string userId = null)
+
         {
             var uri = _baseUrl + $"/catalog?searchString={searchString}&category={category}&minPrice={minPrice}&maxPrice={maxPrice}&sortOrder={sortOrder}&isAdmin={isAdmin}&userId={userId}";
 
             return await _httpClient.GetAsync<IndexViewModel>(uri);
         }
-
+        
 
         public async Task<IList<Category>> GetCategories()
 

@@ -27,6 +27,10 @@
             <dd>
                 @Html.DisplayFor(model => model.UnitPrice)</dd>
             <dt>
+                @Html.DisplayNameFor(model => model.PublishDate)</dt>
+            <dd>
+                @Model.DisplayPublishDate()</dd>
+            <dt>
                 @Html.DisplayNameFor(model => model.Description)</dt>
             <dd>
                 @Html.DisplayFor(model => model.Description)</dd>

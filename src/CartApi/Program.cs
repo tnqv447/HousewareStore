@@ -20,7 +20,9 @@ namespace CartApi
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseShutdownTimeout(TimeSpan.FromSeconds(20));
                     webBuilder.UseStartup<Startup>();
+                    
                 });
     }
 }
