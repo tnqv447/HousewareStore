@@ -100,6 +100,15 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var item = await _service.GetItem(id);
+            var catalog = await _service.GetCatalog(item.Category);
+            catalog.item = item;
+            catalog.Items = catalog.Items.Where(m => m.Id != item.Id).ToList();
+            return View(catalog);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetDetail(int id)
+        {
+            var item = await _service.GetItem(id);
 
             return View(item);
         }
