@@ -37,19 +37,18 @@ namespace MvcClient.Controllers
             viewModel.UsersPaging = PaginatedList<User>.Create(viewModel.Users, pageNumber, pageSize);
             return View(viewModel);
         }
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            UserChildViewModel viewModel = new UserChildViewModel();
-            viewModel.User = null;
-            // viewModel.RoleList = _service.  
-            return View(viewModel);
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(UserChildViewModel viewModel)
+        public async Task<IActionResult> Create(User user)
         {
-            User user = viewModel.User;
-
+            user.Name = user.GivenName + " " + user.FamilyName;
+            user.Role = "Managers";
+            if (user.PictureUrl == null)
+                user.PictureUrl = "default_avatar.png";
             if (ModelState.IsValid)
             {
                 await _service.CreateUser(user);
@@ -61,19 +60,14 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _service.GetUser(id);
-            UserChildViewModel viewModel = new UserChildViewModel();
-            viewModel.User = user;
-            // viewModel.RoleList = _service. 
-            return View(viewModel);
+            return View(user);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, UserChildViewModel viewModel)
+        public async Task<IActionResult> Edit(string id, User user)
         {
-            var user = viewModel.User;
-
-
+            user.Name = user.GivenName + " " + user.FamilyName;
             if (id != user.UserId)
             {
                 return NotFound();

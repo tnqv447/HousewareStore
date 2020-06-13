@@ -8,7 +8,8 @@ namespace MvcClient.ViewModels
     public class UserChildViewModel
     {
         public User User { get; set; }
-        public List<string> RoleList { get; set; }
+        public IEnumerable<string> RoleList { get; set; }
+        public Address Address { get; set; }
 
     }
 }
