@@ -113,7 +113,7 @@ ol {
 .stick{
 	position: fixed;
 
-	background-color: rgba(59, 192, 50, 0.753);
+	background-color: rgba(59, 192, 50, 0.87);
 	/* color: #ffffff; */
 	top:0; left:0;
 	height: 50px;
@@ -722,7 +722,7 @@ ol {
 }
 
 .hero__search__form {
-	width: 610px;
+	width: 620px;
 	height: 50px;
 	border: 1px solid #ebebeb;
 	position: relative;
@@ -843,6 +843,7 @@ ol {
 .categories__item {
 	height: 270px;
 	position: relative;
+	background-size:contain;
 }
 
 .categories__item h5 {
@@ -850,18 +851,17 @@ ol {
 	left: 0;
 	width: 100%;
 	padding: 0 20px;
-	bottom: 20px;
+	bottom: 0px;
 	text-align: center;
 }
 
 .categories__item h5 a {
 	font-size: 18px;
-	color: #1c1c1c;
+	color: #000000;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	padding: 12px 0 10px;
-	background: #ffffff;
 	display: block;
 }
 
@@ -945,6 +945,7 @@ ol {
 	position: relative;
 	overflow: hidden;
 	background-position: center center;
+	background-size:contain;
 }
 
 .featured__item__pic__hover {
@@ -1369,7 +1370,8 @@ ol {
 }
 
 .product__discount__item__pic {
-	height: 270px;
+	height: 200px;
+	background-size: contain;
 	position: relative;
 	overflow: hidden;
 }

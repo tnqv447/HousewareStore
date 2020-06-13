@@ -56,9 +56,11 @@ namespace MvcClient.Controllers
 
             }
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
-
-            DateTime oldDate = DateTime.Today.AddMonths(-1);
-            catalog.LatestItems = catalog.Items.Where(m => m.PublishDate > oldDate).ToList();
+            
+            DateTime oldDate = DateTime.Today.AddMonths(-3);
+            
+            catalog.LatestItems = catalog.Items.Where(m => DateTime.Compare(m.PublishDate,oldDate) > 0).ToList();
+            
             ChangeUriPlaceholder(catalog.Items);
 
             return View(catalog);
@@ -94,6 +96,12 @@ namespace MvcClient.Controllers
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
             catalog.PageIndex = pageNumber;
             return new JsonResult(catalog);
+        }
+        public async Task<IActionResult> Details(int id)
+        {
+            var item = await _service.GetItem(id);
+
+            return View(item);
         }
 
         private void ChangeUriPlaceholder(IList<Item> items)

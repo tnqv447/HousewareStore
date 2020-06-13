@@ -34,13 +34,9 @@
                             <span>All departments</span>
                         </div>
                         <ul>
-                            <li><a href="#">Pots & Pans</a></li>
-                            <li><a href="#">Kitchen Utensils</a></li>
-                            <li><a href="#">Bowls, Cups, Forks</a></li>
-                            <li><a href="#">Cups, Jars, Bottles</a></li>
-                            <li><a href="#">Living Room Furniture</a></li>
-                            <li><a href="#">Toiletries</a></li>
-                            <li><a href="#">Other utensils</a></li>
+                            @foreach(var item in Model.Categories){
+                                <li><a asp-action="Index" asp-controller="Shop" asp-route-itemCategory="@item">@item</a></li>
+                            }
                         </ul>
                     </div>
                 </div>
@@ -90,9 +86,10 @@
         <div class="row">
             <div class="categories__slider owl-carousel">
                 @foreach(var item in Model.Categories){
+                    var categoryUrl = item.ToLower().Replace(","," ").Replace(" ","_")+".jpg";
                     <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="img/categories/cat-1.jpg">
-                            <h5><a href="#">@item</a></h5>
+                        <div class="categories__item set-bg" data-setbg="img/categories/@categoryUrl">
+                            <h5><a asp-action="Index" asp-controller="Shop" asp-route-itemCategory="@item">@item</a></h5>
                         </div>
                     </div>
                 }
