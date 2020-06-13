@@ -59,7 +59,7 @@ namespace MvcClient.Controllers
         {
             user.Name = user.GivenName + " " + user.FamilyName;
             user.Role = "Managers";
-            if (user.PictureUrl == null)
+            if (String.IsNullOrEmpty(user.PictureUrl))
                 user.PictureUrl = "default_avatar.png";
             if (ModelState.IsValid)
             {

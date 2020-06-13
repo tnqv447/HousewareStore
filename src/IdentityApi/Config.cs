@@ -21,7 +21,8 @@ namespace IdentityApi
         public static IEnumerable<ApiResource> Apis =>
             new List<ApiResource>
             {
-                new ApiResource("item", "Item API")
+                new ApiResource("item", "Item API"),
+                //new ApiResource("user", "User API")
             };
 
 
@@ -47,7 +48,9 @@ namespace IdentityApi
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        //"user",
                         "item"
+
                     },
 
                     AllowOfflineAccess = true

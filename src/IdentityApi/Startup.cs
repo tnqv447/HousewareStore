@@ -104,5 +104,16 @@ namespace IdentityApi
                 endpoints.MapDefaultControllerRoute();
             });
         }
+        // private static void ConfigureAuthentication(IServiceCollection services)
+        // {
+        //     services.AddAuthentication("Bearer")
+        //         .AddJwtBearer("Bearer", options =>
+        //         {
+        //             options.Authority = "http://localhost:5000";
+        //             options.RequireHttpsMetadata = false;
+
+        //             options.Audience = "user";
+        //         });
+        // }
     }
 }

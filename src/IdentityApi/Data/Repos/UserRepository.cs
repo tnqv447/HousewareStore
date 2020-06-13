@@ -58,7 +58,7 @@ namespace IdentityApi.Data.Repos
             return users;
         }
 
-        public async Task<bool> UpdateUser(ApplicationUserDTO dto)
+        public async Task UpdateUser(ApplicationUserDTO dto)
         {
             var user = this.TransferDataToUser(dto);
             var res = await _userManager.UpdateAsync(user);
@@ -68,9 +68,8 @@ namespace IdentityApi.Data.Repos
             }
             else
             {
-                Log.Debug($"Update {dto.UserName} failed. Some errors happned");
+                Log.Debug($"Update {dto.UserName} failed. Some errors happened");
             }
-            return res.Succeeded;
 
             // var claims = await .up.GetClaimsAsync(await _userManager.FindByIdAsync(user.Id));
             // var replace = this.TransferUserToClaims(user);
@@ -84,7 +83,7 @@ namespace IdentityApi.Data.Repos
             // }
 
         }
-        public async Task<bool> CreateUser(ApplicationUserDTO dto)
+        public async Task<ApplicationUser> CreateUser(ApplicationUserDTO dto)
         {
             var user = await _userManager.FindByNameAsync(dto.UserName);
             var success = true;
@@ -104,21 +103,26 @@ namespace IdentityApi.Data.Repos
                     success = false;
                     throw new Exception(result.Errors.First().Description);
                 }
+                if (success)
+                {
+                    Log.Debug($"{dto.UserName} created");
+                    return user;
+                }
+                else Log.Debug($"Update {dto.UserName} failed. Some errors happened");
 
-                Log.Debug($"{dto.UserName} created");
-                return success;
+                return null;
             }
             else
             {
                 Log.Debug($"{dto.UserName} already exists");
-                return false;
+                return null;
             }
         }
-        public async Task<bool> DeleteUser(ApplicationUser user)
+        public async Task DeleteUser(ApplicationUser user)
         {
             if (user != null)
             {
-                var claims = await _userManager.GetClaimsAsync(user);
+                // var claims = await _userManager.GetClaimsAsync(user);
                 var roles = await _userManager.GetRolesAsync(user);
                 var username = user.UserName;
                 var success = true;
@@ -130,12 +134,12 @@ namespace IdentityApi.Data.Repos
                     throw new Exception(res.Errors.First().Description);
                 }
 
-                res = await _userManager.RemoveClaimsAsync(user, claims);
-                if (!res.Succeeded)
-                {
-                    success = false;
-                    throw new Exception(res.Errors.First().Description);
-                }
+                // res = await _userManager.RemoveClaimsAsync(user, claims);
+                // if (!res.Succeeded)
+                // {
+                //     success = false;
+                //     throw new Exception(res.Errors.First().Description);
+                // }
 
                 res = await _userManager.DeleteAsync(user);
                 if (!res.Succeeded)
@@ -149,17 +153,15 @@ namespace IdentityApi.Data.Repos
                 }
                 Log.Debug($"Delete {username} failed. Some errors happened");
 
-                return success;
             }
 
             Log.Debug($"Application user doesn't exist. Delete failed");
-            return false;
 
         }
 
-        public async Task<bool> UserExists(string id)
+        public bool UserExists(string id)
         {
-            return (await _userManager.FindByIdAsync(id)) == null ? false : true;
+            return (_userManager.FindByIdAsync(id).Result) == null ? false : true;
         }
 
         //mapping support 

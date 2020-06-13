@@ -10,10 +10,11 @@ namespace IdentityApi.Data.Repos
         Task<ApplicationUser> GetUser(string id);
         Task<IList<ApplicationUser>> GetAllUser();
         Task<IList<ApplicationUser>> GetUsersByRole(string role);
-        Task<bool> UpdateUser(ApplicationUserDTO dto);
-        Task<bool> CreateUser(ApplicationUserDTO dto);
-        Task<bool> DeleteUser(ApplicationUser user);
-        Task<bool> UserExists(string id);
+
+        Task<ApplicationUser> CreateUser(ApplicationUserDTO dto);
+        Task DeleteUser(ApplicationUser user);
+        Task UpdateUser(ApplicationUserDTO dto);
+        bool UserExists(string id);
 
     }
 }

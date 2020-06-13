@@ -89,8 +89,8 @@ namespace IdentityApi.Quickstart.User
             }
 
             // var Item = await _itemRepos.GetBy(id);
-            var user = await _userRepo.GetUser(id);
-            if (user == null)
+            var isExisted = _userRepo.UserExists(id);
+            if (!isExisted)
             {
                 return NotFound();
             }
@@ -101,7 +101,7 @@ namespace IdentityApi.Quickstart.User
             {
                 await _userRepo.UpdateUser(dto);
             }
-            catch (DbUpdateConcurrencyException) when (!_userRepo.UserExists(id).Result)
+            catch (DbUpdateConcurrencyException) when (!_userRepo.UserExists(id))
             {
                 return NotFound();
             }
