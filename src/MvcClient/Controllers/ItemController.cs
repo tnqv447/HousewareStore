@@ -36,20 +36,26 @@ namespace MvcClient.Controllers
             var pageSize = 6;
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
-                                User.IsInRole(Constants.ManagersRole);
-            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized);
+                                User.IsInRole(Constants.ManagersRole) ||
+                                User.IsInRole(Constants.SalesRole);
+            var ownerId = User.IsInRole(Constants.SalesRole) ? _identityService.Get(User).Id : null;
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized, ownerId);
 
             if (User.IsInRole(Constants.AdministratorsRole))
             {
-                catalog.UserRole = "administator";
+                catalog.UserRole = Constants.AdministratorsRole;
             }
             else if (User.IsInRole(Constants.ManagersRole))
             {
-                catalog.UserRole = "manager";
+                catalog.UserRole = Constants.ManagersRole;
+            }
+            else if (User.IsInRole(Constants.SalesRole))
+            {
+                catalog.UserRole = Constants.SalesRole;
             }
             else
             {
-                catalog.UserRole = "seller";
+                catalog.UserRole = Constants.UsersRole;
             }
 
             if (!isAuthorized)
@@ -76,15 +82,19 @@ namespace MvcClient.Controllers
             var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, sortOrder, isAuthorized);
             if (User.IsInRole(Constants.AdministratorsRole))
             {
-                catalog.UserRole = "administator";
+                catalog.UserRole = Constants.AdministratorsRole;
             }
             else if (User.IsInRole(Constants.ManagersRole))
             {
-                catalog.UserRole = "manager";
+                catalog.UserRole = Constants.ManagersRole;
+            }
+            else if (User.IsInRole(Constants.SalesRole))
+            {
+                catalog.UserRole = Constants.SalesRole;
             }
             else
             {
-                catalog.UserRole = "seller";
+                catalog.UserRole = Constants.UsersRole;
             }
 
             if (!isAuthorized)

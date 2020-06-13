@@ -9,7 +9,7 @@ namespace MvcClient.Services
     public interface IItemService
     {
         Task<IndexViewModel> GetCatalog(string category = null, string searchString = null, double minPrice = 0,
-                                        double maxPrice = 0, string sortOrder = null, bool isAdmin = false);
+                                        double maxPrice = 0, string sortOrder = null, bool isAdmin = false, string userId = null);
         Task<IList<Category>> GetCategories();
         Task<Item> GetItem(int id);
         Task CreateItem(Item item);

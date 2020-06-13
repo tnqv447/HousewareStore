@@ -8,7 +8,8 @@ namespace ItemApi.Data.Repos
 {
     public interface IItemRepository : IRepository<Item>
     {
-        Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null, double minPrice = 0, double maxPrice = 0, string sortOrder = null, bool isAdmin = false, DbStatus dbStatus = DbStatus.All);
+        Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null, double minPrice = 0, double maxPrice = 0,
+                                            string sortOrder = null, bool isAdmin = false, string userId = null, DbStatus dbStatus = DbStatus.All);
         //Task<IEnumerable<ItemDTO>> GetItemsBySearch (List<Item> items, string category = null, string searchString = null);
         bool ItemExists(int id);
         Task Activate(int id);

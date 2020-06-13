@@ -24,5 +24,7 @@ namespace MvcClient.Authorization
 
         public static readonly string ManagersRole = "Managers";
         public static readonly string AdministratorsRole = "Administrators";
+        public static readonly string SalesRole = "Sales";
+        public static readonly string UsersRole = "Users";
     }
 }

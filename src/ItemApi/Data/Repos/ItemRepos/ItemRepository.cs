@@ -21,10 +21,11 @@ namespace ItemApi.Data.Repos
             _categoryRepos = categoryRepos;
         }
 
-        public async Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null, double minPrice = 0, double maxPrice = 0, string sortOrder = null, bool isAdmin = false, DbStatus dbStatus = DbStatus.Active)
+        public async Task<IEnumerable<ItemDTO>> GetItemsBySearch(string category = null, string searchString = null, double minPrice = 0, double maxPrice = 0, string sortOrder = null, bool isAdmin = false, string userId = null, DbStatus dbStatus = DbStatus.Active)
         {
 
             var Items = dbStatus == DbStatus.All ? _context.Items : _context.Items.Where(m => m.DbStatus.Equals(dbStatus));
+            if (!String.IsNullOrEmpty(userId)) Items = Items.Where(m => m.OwnerId.Equals(userId));
             if (!isAdmin)
             {
                 Items = Items.Where(m => m.ItemStatus == ItemStatus.Approved);
