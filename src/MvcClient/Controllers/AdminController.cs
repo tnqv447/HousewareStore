@@ -25,13 +25,15 @@ namespace MvcClient.Controllers
             _logger = logger;
             _itemService = itemService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             DashboardViewModel viewModel = new DashboardViewModel();
             viewModel.TotalRevenue = 9999;
             viewModel.CountApproved = 20;
             viewModel.CountRejected = 2;
             viewModel.CountSubmitted = 5;
+            var catalog = await _itemService.GetCatalog(null, null, 0, 0, null);
+            viewModel.CommonItems = catalog.Items;
             return View(viewModel);
         }
         public IActionResult Analysis()

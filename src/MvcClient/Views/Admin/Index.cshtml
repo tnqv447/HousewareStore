@@ -52,11 +52,11 @@
                 <div class="cripto-live mt-5">
                     <ul>
                         <li>
-                            <div><i class="fa fa-check"></i></div> Approved:<span> @Model.CountApproved </span></li>
+                            <div><i class="fa fa-check"></i>Approved:<span> @Model.CountApproved </span></div></li>
                         <li>
-                            <div><i class="fa fa-send"></i></div> Submitted:<span>@Model.CountSubmitted</span></li>
+                            <div><i class="fa fa-send"></i> Submitted:<span>@Model.CountSubmitted</span></div></li>
                         <li>
-                            <div><i class="fa fa-close"></i></div> Rejected:<span>@Model.CountRejected</span></li>
+                            <div><i class="fa fa-close"></i> Rejected:<span>@Model.CountRejected</span></div></li>
                     </ul>
                 </div>
             </div>
@@ -75,23 +75,21 @@
                         <div class="tab-pane fade show active">
                             <div class="table-responsive">
                                 <table class="dbkit-table">
-                                    <tr class="heading-td">
-                                        <td>Index</td>
-                                        <td>Name</td>
-                                        <td>Category</td>
-                                        <td>Unit Price</td>
-                                        <td>PublishDate</td>
+                                    <tr class="heading-td text-capitalize">
+                                        <td width="5%">Index</td>
+                                        <td width="60%">Name</td>
+                                        <td width="20%">Category</td>
+                                        <td width="15%">PublishDate</td>
                                     </tr>
-                                    @* @{var index =1;}
-                                    @foreach(var item in Model.CommonItems){
+                                    @for(var i= 0 ;i < 5; ++i){
+                                        var item = Model.CommonItems[i];
                                         <tr>
-                                            <td>@index</td>@{index++;}
+                                            <td>@(i+1)</td>
                                             <td>@item.Name</td>
                                             <td>@item.Category</td>
-                                            <td>@item.UnitPrice</td>
-                                            <td>@item.PublishDate</td>
+                                            <td>@item.DisplayPublishDate()</td>
                                         </tr>
-                                    } *@
+                                    }
                                 </table>
                             </div>
                         </div>
