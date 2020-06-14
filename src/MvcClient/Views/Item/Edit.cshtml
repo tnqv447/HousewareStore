@@ -21,10 +21,6 @@
                 <input asp-for="Item.DbStatus" type="hidden" > 
                 <input asp-for="Item.PictureUrl" type="hidden" > 
                 @* end input hidden *@
-                <div class="from-group">
-                     @{string PictureURLPath = @Url.Content("~/img/product/"+@Model.Item.PictureUrl);}
-                    <img src="@PictureURLPath" height="300px" width="300px"/>
-                </div>
                 <div class="form-group"> 
                     <label asp-for="ImageURL" class="control-label"></label>  
                     <div class="input-group mb-3">
@@ -33,11 +29,15 @@
                         </div>
                         <div class="custom-file"> 
                             <input asp-for="ImageURL" class="custom-file-input" >  
-                            <label class="custom-file-label" for="customFile">Choose file</label>  
+                            <label class="custom-file-label" for="customFile">@Model.Item.PictureUrl</label>  
                         </div>
                     </div>
                     <span asp-validation-for="ImageURL" class="text-danger"></span>  
                 </div> 
+                <div class="from-group">
+                     @{string PictureURLPath = @Url.Content("~/img/product/"+@Model.Item.PictureUrl);}
+                    <img src="@PictureURLPath" id="displayImage" height="300px" width="300px"/>
+                </div>
                 <div class="form-group">
                     <label asp-for="Item.Name" class="control-label"></label>
                     <input asp-for="Item.Name" class="form-control"/> 
@@ -83,11 +83,25 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script type="text/javascript">  
-        // Add the following code if you want the name of the file appear on select  
-        $(".custom-file-input").on("change", function () {  
-            var fileName = $(this).val().split("\\").pop();  
-            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);  
-        });  
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            $(".custom-file-input").on("change", function () {  
+                var fileName = $(this).val().split("\\").pop();  
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);  
+            });  
+        });   
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function (e) {
+                    $('#displayImage').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#ImageURL").change(function(){
+            readURL(this);
+        });
     </script> 
 }

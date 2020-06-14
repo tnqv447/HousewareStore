@@ -27,6 +27,7 @@
                     </div>
                     <span asp-validation-for="ImageURL" class="text-danger"></span>  
                 </div> 
+                <img src="" id="displayImage" height="300px" width="300px"/>
                 <div class="form-group">
                     <label asp-for="Item.Name" class="control-label"></label>
                     <input asp-for="Item.Name" class="form-control"/> 
@@ -77,5 +78,18 @@
             var fileName = $(this).val().split("\\").pop();  
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);  
         });  
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function (e) {
+                    $('#displayImage').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#ImageURL").change(function(){
+            readURL(this);
+        });
     </script>  
 }
