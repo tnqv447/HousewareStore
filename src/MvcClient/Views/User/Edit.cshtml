@@ -14,8 +14,8 @@
             <form method="POST" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 @* start input hidden *@
-                <input  asp-for="UserId"/> 
-                <input  asp-for="PictureUrl"/>  
+                <input type="hidden" asp-for="UserId"/> 
+                <input type="hidden" asp-for="PictureUrl"/>  
                 @* end input hidden *@
                 <h3>Account</h3>
                 <div class="form-group">
@@ -24,7 +24,6 @@
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input class="form-check-input" type="checkbox" value="Change pasword" id="invalidCheck" >
                     <div class="form-group">
                         <label asp-for="Password" class="control-label"></label>
                         <input asp-for="Password" class="form-control" type="password"/> 
