@@ -191,14 +191,13 @@
     <script src="~/js/main.js" asp-append-version="true"></script>
     <script>
         (function ($) {
-            var add_cart_dela = 1000;
             $(document).on('click','.add_to_cart',function(){
                 var item_id = $(this).attr('id');
                 var item_name = $('#item_name_'+item_id).text();
                 var item_price = $('#item_price_'+item_id).val();
                 var item_category_id = $('#item_category_id_'+item_id).val();
                 var item_picture_url = $('#item_picture_uri_'+item_id).val();
-                
+                var quantity = parseInt($('#quantity_' + item_id).val());
                 var item = new Object()
                 item.Id = parseInt(item_id);
                 item.Name = item_name;
@@ -210,7 +209,7 @@
                     type: 'POST',
                     
                     
-                    data: item ,
+                    data: {item,quantity:quantity} ,
                     url: '@Url.Action("AddToCart","Cart")',
                     success:function(data){
                         var total_quantities = 0;
@@ -221,7 +220,7 @@
                             
                         }
                         $("#loadCart").text(total_quantities);
-                        $("#loadTotal").text("$ " + $.number(total_price,2));    
+                        $("#loadTotal").text("$" + $.number(total_price,2));    
                     
                     },
                     error: function(xhr){

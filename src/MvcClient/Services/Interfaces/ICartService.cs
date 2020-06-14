@@ -11,6 +11,7 @@ namespace MvcClient.Services
         Task RemoveItemCart(Buyer buyer, string id);
         Task<Cart> SetQuantities(Buyer user, Dictionary<string, int> quantities);
         Task<Cart> UpdateCart(Cart cart);
+        Task CheckQuantitiesCart( Cart cart);
         Task ClearCart(Buyer user);
         Order MapCartToOrder(Cart cart);
     }

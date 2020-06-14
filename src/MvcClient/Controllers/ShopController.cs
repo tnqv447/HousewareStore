@@ -97,6 +97,7 @@ namespace MvcClient.Controllers
             catalog.PageIndex = pageNumber;
             return new JsonResult(catalog);
         }
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var item = await _service.GetItem(id);

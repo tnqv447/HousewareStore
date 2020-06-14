@@ -65,34 +65,35 @@ namespace MvcClient.Controllers
             else if(action=="[ Update ]"){
                 var buyer = _identitySvc.Get(User);
                 Cart upCart = await _cartSvc.GetCart(buyer);
-                for(int i=0;i<upCart.CartItems.Count;i++){
-                    var item = upCart.CartItems[i];
-                    item.Quantity = quantities[item.Id];
+                foreach(var item in upCart.CartItems){
+                    if(quantities[item.Id] != item.Quantity)
+                    {
+                        item.Quantity = quantities[item.Id];
+                    }
                 }
                 await _cartSvc.UpdateCart(upCart);
+                await _cartSvc.CheckQuantitiesCart(upCart);
+                msg="Succesfull";
             }
             return new JsonResult(msg);
         }
         [HttpPost]
-        public async Task<IActionResult> AddToCart(Item item)
+        public async Task<IActionResult> AddToCart(Item item, int quantity)
         {
-
-
-            var cartItem = new CartItem
-            {
-                Id = Guid.NewGuid().ToString(),
-                ItemId = item.Id.ToString(),
-                ItemName = item.Name,
-                UnitPrice = item.UnitPrice,
-                Quantity = 1,
-                PictureUrl = item.PictureUrl
-            };
-
-
-
             var buyer = _identitySvc.Get(User);
-
-            await _cartSvc.AddItemToCart(buyer, cartItem);
+            if(quantity != 0){
+                var cartItem = new CartItem
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ItemId = item.Id.ToString(),
+                    ItemName = item.Name,
+                    UnitPrice = item.UnitPrice,
+                    Quantity = quantity,
+                    PictureUrl = item.PictureUrl
+                };
+                await _cartSvc.AddItemToCart(buyer, cartItem);
+            }
+            
 
             var listCart = await _cartSvc.GetCart(buyer);
 
