@@ -12,12 +12,12 @@
         @if(User.IsInRole("Sales") || User.IsInRole("Managers") || User.IsInRole("Administrators"))
         {
             <ul class="header__menu__dropdown"> 
-                <li>
-                    <a  asp-action="Index" asp-controller="Item" class="dropdown-item">Management
-                    </a>
-                </li>
+                @if( User.IsInRole("Sales") ){
+                    <li><a asp-action="Index" asp-controller="Item" class="dropdown-item">Management</a></li>
+                }else{
+                    <li><a asp-action="Index" asp-controller="Admin" class="dropdown-item">Management</a></li>
+                } 
                 <li><a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a></li>
-
             </ul>
         }
         else{
@@ -26,10 +26,7 @@
                 <li><a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a></li>
             </ul>
         }
-        
         @* <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            
-            
         </div> *@
     </li>
     @await Component.InvokeAsync("Basket", new { user = identityService.Get(User) })

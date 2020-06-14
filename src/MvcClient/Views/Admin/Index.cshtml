@@ -1,3 +1,105 @@
+@model MvcClient.ViewModels.DashboardViewModel;
 @{
     ViewData["Title"] = "Admin - Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
 }
+<h1> Dashboard</h1>
+<div class="row">
+    <div class="col-xl-6 col-lg-4 " style="margin: auto;">
+            <div class="card h-full">
+                <div class="card-body">
+                    <div class="single-report mb-xs-30">
+                        <div class="s-report-inner pr--20 pt--30 mb-3">
+                            <div class="icon"><i class="fa fa-btc"></i></div>
+                            <div class="s-report-title d-flex justify-content-between">
+                                <h2 class="header-title mb-0">Total Revenue</h2>
+                            </div>
+                            <div class="d-flex justify-content-between pb-2">
+                                <h2>$@Model.TotalRevenue</h2>
+                            </div>
+                        </div>
+                        <canvas id="coin_sales1" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-xl-12 col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="header-title mb-0">Overview</h4>
+                    <select class="custome-select border-0 pr-3">
+                        <option selected>Last 24 Hours</option>
+                        <option value="0">01 July 2018</option>
+                    </select>
+                </div>
+                <div id="verview-shart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <!-- Item Status area start -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="header-title">Item Status</h4>
+                <div class="cripto-live mt-5">
+                    <ul>
+                        <li>
+                            <div><i class="fa fa-check"></i></div> Approved:<span> @Model.CountApproved </span></li>
+                        <li>
+                            <div><i class="fa fa-send"></i></div> Submitted:<span>@Model.CountSubmitted</span></li>
+                        <li>
+                            <div><i class="fa fa-close"></i></div> Rejected:<span>@Model.CountRejected</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Item Status area end -->
+    <!-- Top Item area start -->
+    <div class="col-lg-8 mt-sm-30 mt-xs-30">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-sm-flex justify-content-between align-items-center">
+                    <h4 class="header-title">Top Common Items</h4>
+                </div>
+                <div class="trad-history mt-4">
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active">
+                            <div class="table-responsive">
+                                <table class="dbkit-table">
+                                    <tr class="heading-td">
+                                        <td>Index</td>
+                                        <td>Name</td>
+                                        <td>Category</td>
+                                        <td>Unit Price</td>
+                                        <td>PublishDate</td>
+                                    </tr>
+                                    @* @{var index =1;}
+                                    @foreach(var item in Model.CommonItems){
+                                        <tr>
+                                            <td>@index</td>@{index++;}
+                                            <td>@item.Name</td>
+                                            <td>@item.Category</td>
+                                            <td>@item.UnitPrice</td>
+                                            <td>@item.PublishDate</td>
+                                        </tr>
+                                    } *@
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Top Item  area end -->
+</div>
+<br />
