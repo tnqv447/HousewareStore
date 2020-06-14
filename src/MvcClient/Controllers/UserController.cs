@@ -94,7 +94,7 @@ namespace MvcClient.Controllers
                     return NotFound();
                 }
 
-                var isAuthorize = await _authorizationService.AuthorizeAsync(User, userToUpdate, ItemOperations.Update);
+                var isAuthorize = await _authorizationService.AuthorizeAsync(User, userToUpdate, Operations.Update);
                 if (!isAuthorize.Succeeded)
                 {
                     return Forbid();
@@ -126,7 +126,7 @@ namespace MvcClient.Controllers
         {
             var user = await _service.GetUser(id);
 
-            var isAuthorize = await _authorizationService.AuthorizeAsync(User, user, ItemOperations.Delete);
+            var isAuthorize = await _authorizationService.AuthorizeAsync(User, user, Operations.Delete);
             if (!isAuthorize.Succeeded)
             {
                 return Forbid();

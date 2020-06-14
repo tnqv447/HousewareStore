@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization.Infrastructure;
 
 namespace MvcClient.Authorization
 {
-    public class ItemOperations
+    public class Operations
     {
         public static readonly OperationAuthorizationRequirement Create = new OperationAuthorizationRequirement { Name = "Create" };
         public static readonly OperationAuthorizationRequirement Read = new OperationAuthorizationRequirement { Name = "Read" };

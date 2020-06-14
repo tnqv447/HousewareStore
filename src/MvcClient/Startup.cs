@@ -53,9 +53,11 @@ namespace MvcClient
 
             ConfigAuthentication(services);
 
-            services.AddScoped<IAuthorizationHandler, OwnerAuthorizationHandler>();
-            services.AddScoped<IAuthorizationHandler, ManagersAuthorizationHandler>();
-            services.AddScoped<IAuthorizationHandler, AdministratorsAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, ItemsAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, UsersAuthorizationHandler>();
+            // services.AddScoped<IAuthorizationHandler, OwnerAuthorizationHandler>();
+            // services.AddScoped<IAuthorizationHandler, ManagersAuthorizationHandler>();
+            // services.AddScoped<IAuthorizationHandler, AdministratorsAuthorizationHandler>();
 
         }
 
@@ -83,7 +85,6 @@ namespace MvcClient
                     options.SaveTokens = true;
 
                     options.Scope.Add("item");
-                    // options.Scope.Add("user");
                     options.Scope.Add("offline_access");
 
                     options.TokenValidationParameters = new TokenValidationParameters()

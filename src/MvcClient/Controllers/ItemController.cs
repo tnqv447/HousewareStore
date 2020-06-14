@@ -143,7 +143,7 @@ namespace MvcClient.Controllers
             {
                 item.OwnerId = _identityService.Get(User).Id;
 
-                var isAuthorize = await _authorizationService.AuthorizeAsync(User, item, ItemOperations.Create);
+                var isAuthorize = await _authorizationService.AuthorizeAsync(User, item, Operations.Create);
                 if (!isAuthorize.Succeeded)
                 {
                     return Forbid();
@@ -220,7 +220,7 @@ namespace MvcClient.Controllers
                     return NotFound();
                 }
 
-                var isAuthorize = await _authorizationService.AuthorizeAsync(User, itemToUpdate, ItemOperations.Update);
+                var isAuthorize = await _authorizationService.AuthorizeAsync(User, itemToUpdate, Operations.Update);
                 if (!isAuthorize.Succeeded)
                 {
                     return Forbid();
@@ -253,7 +253,7 @@ namespace MvcClient.Controllers
         {
             var item = await _itemService.GetItem(id);
 
-            var isAuthorize = await _authorizationService.AuthorizeAsync(User, item, ItemOperations.Delete);
+            var isAuthorize = await _authorizationService.AuthorizeAsync(User, item, Operations.Delete);
             if (!isAuthorize.Succeeded)
             {
                 return Forbid();
@@ -269,7 +269,7 @@ namespace MvcClient.Controllers
         {
             var item = await _itemService.GetItem(id);
 
-            var isAuthorize = await _authorizationService.AuthorizeAsync(User, item, ItemOperations.Approve);
+            var isAuthorize = await _authorizationService.AuthorizeAsync(User, item, Operations.Approve);
             if (!isAuthorize.Succeeded)
             {
                 return Forbid();
@@ -286,7 +286,7 @@ namespace MvcClient.Controllers
         {
             var item = await _itemService.GetItem(id);
 
-            var isAuthorize = await _authorizationService.AuthorizeAsync(User, item, ItemOperations.Reject);
+            var isAuthorize = await _authorizationService.AuthorizeAsync(User, item, Operations.Reject);
             if (!isAuthorize.Succeeded)
             {
                 return Forbid();
