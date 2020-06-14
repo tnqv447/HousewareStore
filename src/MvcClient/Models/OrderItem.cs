@@ -9,6 +9,7 @@ namespace MvcClient.Models
         public string OwnerId { get; set; }
         public OrderItemStatus Status { get; set; }
         public int Units { get; set; }
+        public int OrderId { get; set; }
     }
     public enum OrderItemStatus
     {

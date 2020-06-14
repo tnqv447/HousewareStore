@@ -8,7 +8,9 @@ namespace MvcClient.Services
     {
         Task<IEnumerable<Order>> GetOrders();
         Task<IEnumerable<Order>> GetOrders(string userId);
+        Task<IEnumerable<OrderItemForSales>> GetOrderItemsForSales(string salesId);
         Task<int> CreateOrder(Order order);
         Task<Order> GetOrder(int id);
+        Task UpdateOrderItem(int orderId, OrderItem item);
     }
 }

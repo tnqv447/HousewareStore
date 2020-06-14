@@ -20,6 +20,13 @@ namespace OrderApi.Data.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<OrderItem>> GetBySalesAsync(string salesId)
+        {
+            return await Context.OrderItems
+                .Where(o => o.OwnerId.Equals(salesId))
+                .ToListAsync();
+        }
+
         private OrderContext Context => Database as OrderContext;
     }
 }

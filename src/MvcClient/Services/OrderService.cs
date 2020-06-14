@@ -41,9 +41,22 @@ namespace MvcClient.Services
 
         public async Task<IEnumerable<Order>> GetOrders(string userId)
         {
-            var uri = _serviceBaseUrl + $"/buyerid/{userId}"; ;
+            var uri = _serviceBaseUrl + $"/buyerId/{userId}"; ;
 
             return await _httpClient.GetListAsync<Order>(uri);
+        }
+
+        public async Task<IEnumerable<OrderItemForSales>> GetOrderItemsForSales(string salesId)
+        {
+            var uri = _serviceBaseUrl + $"/salesId/{salesId}"; ;
+
+            return await _httpClient.GetListAsync<OrderItemForSales>(uri);
+        }
+        public async Task UpdateOrderItem(int orderId, OrderItem item)
+        {
+            var uri = _serviceBaseUrl + $"/orderItem?orderId={orderId}&itemId{item.ItemId}";
+
+            await _httpClient.PutAsync<OrderItem>(uri, item);
         }
     }
 }

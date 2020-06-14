@@ -9,6 +9,9 @@ namespace OrderApi.DTOs
         {
             CreateMap<OrderItemDTO, OrderItem>();
             CreateMap<OrderItem, OrderItemDTO>();
+            CreateMap<OrderItem, OrderItemForSalesDTO>();
+            CreateMap<OrderItemForSalesDTO, OrderItem>();
+
             CreateMap<OrderDTO, Order>();
             CreateMap<Order, OrderDTO>();
         }
