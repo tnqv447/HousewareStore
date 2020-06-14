@@ -38,6 +38,7 @@ namespace OrderApi
             });
 
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
             services.AddSwaggerGen(c =>
             {

@@ -22,10 +22,11 @@ namespace OrderApi.Controllers
         private readonly IOrderItemRepository _orderItemRepo;
         private readonly IMapper _mapper;
 
-        public OrdersController(IOrderRepository orderRepo, IOptions<AppSettings> settings, IMapper mapper)
+        public OrdersController(IOrderRepository orderRepo, IOrderItemRepository orderItemRepo, IOptions<AppSettings> settings, IMapper mapper)
         {
             _settings = settings.Value;
             _orderRepo = orderRepo;
+            _orderItemRepo = orderItemRepo;
             _mapper = mapper;
         }
 
