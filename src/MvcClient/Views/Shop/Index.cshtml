@@ -101,18 +101,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="sidebar__item">
-                        <div class="latest-product__text">
-                            <h4>Latest Products</h4>
-                            <div class="latest-product__slider owl-carousel">
-                                @{
-                                    var ItemSize = 3;
-                                    var TotalItem = (int)Math.Ceiling(Model.LatestItems.Count / (double)ItemSize);
-                                }
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="col-lg-9 col-md-7">
@@ -153,7 +141,8 @@
                                     </div>
                                     <input type="hidden" value="@item.CategoryId" id="item_category_id_@item.Id">
                                     <input type="hidden" value="@item.PictureUrl" id="item_picture_uri_@item.Id"/>
-                                    <input type="hidden" value="@item.UnitPrice" id="item_price_@item.Id"/>
+                                    <input type="hidden" value="@item.UnitPrice" id="item_price_@item.Id">
+                                    <input type="hidden" value="1" id="quantity_@item.Id"/>
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a asp-action="Details" asp-controller="Shop" asp-route-Id = "@item.Id"><i class="fa fa-info"></i></a></li>
@@ -197,8 +186,11 @@
                                             data-setbg="img/product/@item.PictureUrl">
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                                <li><a asp-action="Details" asp-controller="Shop" asp-route-Id = "@item.Id"><i class="fa fa-info"></i></a></li>
+                                                @if(User.Identity.IsAuthenticated){
+                                                    <li><a style="cursor:pointer" class="add_to_cart" id="@item.Id"><i class="fa fa-shopping-cart"></i></a></li>
+                                    
+                                                }
                                             </ul>
                                         </div>
                                         <div class="product__discount__item__text">
@@ -246,6 +238,7 @@
                             html += '           <input type="hidden" value="'+data.itemsPaging[i].categoryId+'" id="item_category_id_'+ data.itemsPaging[i].id+'">';        
                             html += '           <input type="hidden" value="'+data.itemsPaging[i].pictureUrl+'" id="item_picture_uri_'+data.itemsPaging[i].id+'"/>';        
                             html += '           <input type="hidden" value="'+data.itemsPaging[i].unitPrice+'" id="item_price_'+data.itemsPaging[i].id+'"/>';        
+                            html += '           <input type="hidden" value="1" id="quantity_'+data.itemsPaging[i].id+'"/>';
                             html += '           <ul class="product__item__pic__hover">';
                             html += '               <li><a href="#"><i class="fa fa-heart"></i></a></li>';
                             html += '                   <li><a href="#"><i class="fa fa-info"></i></a></li>';

@@ -79,9 +79,10 @@
                     method: 'GET',
                     url: '@Url.Action("Cart","Cart")',
                     success: function(data){
+                        var count = 0;
                         html = '';
-                        html +='<input type="hidden" id="length_cart" value="'+data.cartItems.length+'">';
                         for(i=0; i<data.cartItems.length;i++){
+                            count += 1;
                             html += '<tr>';
                             html += '   <td class="shoping__cart__item">';
                             html += '      <img class="item_picture" src="img/product/'+data.cartItems[i].pictureUrl+'"/></td>';
@@ -91,7 +92,7 @@
                             html += '   <td class="shoping__cart__quantity">';
                             html += '       <div class="quantity">';
                             html += '           <div class="pro-qty">';
-                            html += '               <input min="1" type="number" data-val="true" data-val-required="The Quantity field is required." id="item_Quantity" name="item.Quantity" value="'+data.cartItems[i].quantity+'"/>';
+                            html += '               <input min="1" disabled type="number" data-val="true" data-val-required="The Quantity field is required." id="item_Quantity_'+i+'" name="item.Quantity" value="'+data.cartItems[i].quantity+'"/>';
                             html += '           </div>';
                             html += '       </div>';
                             html += '       <input type="hidden" name="quantities[' + i + '].Key" value="'+data.cartItems[i].id+'" />';
@@ -109,6 +110,8 @@
                                     html += '</div>';
                                 }
                             }
+                        html +='<input type="hidden" id="length_cart" value="'+count+'">';
+
                         $("#cart_body").html('');
                         $("#cart_body").html(html);
                         var proQty = $('.pro-qty');

@@ -62,7 +62,7 @@
                     <div class="breadcrumb__option">
                         <a asp-action="Index" asp-controller="Home">Home</a>
                         <a asp-action="Index" asp-controller="Shop" asp-route-itemCategory="@Model.item.Category">@Model.item.Category</a>
-                        <span>@Model.item.Name</span>
+                        <span id="item_name_@Model.item.Id">@Model.item.Name</span>
                     </div>
                 </div>
             </div>
@@ -79,51 +79,54 @@
                             src="/img/product/details/details_@Model.item.PictureUrl" alt="">
                     </div>
                     <div class="product__details__pic__slider owl-carousel">
-                        <img data-imgbigurl="img/product/details/product-details-2.jpg"
-                            src="img/product/details/thumb-1.jpg" alt="">
-                        <img data-imgbigurl="img/product/details/product-details-3.jpg"
-                            src="img/product/details/thumb-2.jpg" alt="">
-                        <img data-imgbigurl="img/product/details/product-details-5.jpg"
-                            src="img/product/details/thumb-3.jpg" alt="">
-                        <img data-imgbigurl="img/product/details/product-details-4.jpg"
-                            src="img/product/details/thumb-4.jpg" alt="">
+                        <img data-imgbigurl="/img/product/details/details_@Model.item.PictureUrl"
+                            src="/img/product/details/details_@Model.item.PictureUrl" alt="">
+                        <img data-imgbigurl="/img/product/details/details_@Model.item.PictureUrl"
+                            src="/img/product/details/details_@Model.item.PictureUrl" alt="">
+                        <img data-imgbigurl="/img/product/details/details_@Model.item.PictureUrl"
+                            src="/img/product/details/details_@Model.item.PictureUrl" alt="">
+                        <img data-imgbigurl="/img/product/details/details_@Model.item.PictureUrl"
+                            src="/img/product/details/details_@Model.item.PictureUrl" alt="">
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <div class="product__details__text">
                     <h3>@Model.item.Name</h3>
-                    <div class="product__details__rating">
+                    @* <div class="product__details__rating">
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star-half-o"></i>
-                        @* <span>(18 reviews)</span> *@
-                    </div>
-                    <div class="product__details__price">@Model.item.UnitPrice</div>
+                        <span>(18 reviews)</span>
+                    </div> *@
+                    <div class="product__details__price">$@Model.item.UnitPrice</div>
                     <p>@Model.item.Description</p>
                     <div class="product__details__quantity">
                         <div class="quantity">
                             <div class="pro-qty">
-                                <input type="text" value="1">
+                                <input id="quantity_@Model.item.Id" type="number" disabled value="1">
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="primary-btn">ADD TO CARD</a>
+                    <input type="hidden" value="@Model.item.CategoryId" id="item_category_id_@Model.item.Id">
+                    <input type="hidden" value="@Model.item.PictureUrl" id="item_picture_uri_@Model.item.Id"/>
+                    <input type="hidden" value="@Model.item.UnitPrice" id="item_price_@Model.item.Id">
+                    <div style="cursor:pointer" class="primary-btn add_to_cart" id="@Model.item.Id">ADD TO CARD</div>
                     <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                     <ul>
                         <li><b>Availability</b> <span>In Stock</span></li>
-                        @* <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li> *@
-                        @* <li><b>Weight</b> <span>0.5 kg</span></li> *@
-                        @* <li><b>Share on</b> *@
-                            @* <div class="share"> *@
-                                @* <a href="#"><i class="fa fa-facebook"></i></a> *@
-                                @* <a href="#"><i class="fa fa-twitter"></i></a> *@
-                                @* <a href="#"><i class="fa fa-instagram"></i></a> *@
-                                @* <a href="#"><i class="fa fa-pinterest"></i></a> *@
-                            @* </div> *@
-                        @* </li> *@
+                        @* <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
+                        <li><b>Weight</b> <span>0.5 kg</span></li>
+                        <li><b>Share on</b>
+                            <div class="share">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </div>
+                        </li> *@
                     </ul>
                 </div>
             </div>
@@ -137,8 +140,8 @@
                         @* <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
                                 aria-selected="false">Information</a>
-                        </li> *@
-                        @* <li class="nav-item">
+                        </li> 
+                        <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
                                 aria-selected="false">Reviews <span>(1)</span></a>
                         </li> *@

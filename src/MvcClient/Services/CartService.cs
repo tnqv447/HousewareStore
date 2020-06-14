@@ -45,6 +45,13 @@ namespace MvcClient.Services
             }
             await UpdateCart(cart);
         }
+        public async Task CheckQuantitiesCart(Cart cart){
+            var itemFound = cart.CartItems.FindAll(m => m.Quantity == 0);
+            foreach(var item in itemFound){
+                cart.CartItems.Remove(item);
+            }
+            await UpdateCart(cart);
+        }
         public async Task AddItemToCart(Buyer user, CartItem item)
         {
             var cart = await GetCart(user);
