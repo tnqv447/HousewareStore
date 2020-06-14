@@ -14,15 +14,30 @@ using MvcClient.ViewModels;
 
 namespace MvcClient.Controllers
 {
+    [Authorize(Roles = "Managers, Administrators")]
     public class AdminController : Controller
     {
-        private readonly ILogger<UserController> _logger;
-        private readonly AppSettings _settings;
+        private readonly ILogger<AdminController> _logger;
+        private readonly IItemService _itemService;
 
-        public AdminController(ILogger<UserController> logger, AppSettings settings)
+        public AdminController(ILogger<AdminController> logger, IItemService itemService)
         {
             _logger = logger;
-            _settings = settings;
+            _itemService = itemService;
         }
+        public IActionResult Index()
+        {
+            DashboardViewModel viewModel = new DashboardViewModel();
+            viewModel.TotalRevenue = 9999;
+            viewModel.CountApproved = 20;
+            viewModel.CountRejected = 2;
+            viewModel.CountSubmitted = 5;
+            return View(viewModel);
+        }
+        public IActionResult Analysis()
+        {
+            return View();
+        }
+
     }
 }

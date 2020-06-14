@@ -31,7 +31,6 @@ namespace MvcClient.Controllers
 
         public async Task<IActionResult> Index(double minPrice, double maxPrice, int pageNumber = 1, string ItemCategory = null, string SearchString = null)
         {
-            // double minPrice = 0, double maxPrice = 999999, string sortOrder = "Name"
             var pageSize = 6;
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
@@ -40,35 +39,10 @@ namespace MvcClient.Controllers
             var ownerId = User.IsInRole(Constants.SalesRole) ? _identityService.Get(User).Id : null;
             var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized, ownerId);
 
-            if (User.IsInRole(Constants.AdministratorsRole))
-            {
-                catalog.UserRole = Constants.AdministratorsRole;
-            }
-            else if (User.IsInRole(Constants.ManagersRole))
-            {
-                catalog.UserRole = Constants.ManagersRole;
-            }
-            else if (User.IsInRole(Constants.SalesRole))
-            {
-                catalog.UserRole = Constants.SalesRole;
-            }
-            else
-            {
-                catalog.UserRole = Constants.UsersRole;
-            }
+            if (ownerId != null)
+                catalog.IsSale = true;
+            else catalog.IsSale = false;
 
-
-            catalog.OwnerId = _identityService.Get(User).Id;
-
-            if (!isAuthorized)
-            {
-                var userId = _identityService.Get(User).Id;
-                catalog.Items = catalog.Items
-                    .Where(m => m.ItemStatus == ItemStatus.Approved || m.OwnerId == userId)
-
-                    .ToList();
-            }
-            // Console.WriteLine("owner " + isAuthorized + " " + catalog.OwnerId);
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
             catalog.PageIndex = pageNumber;
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
@@ -76,45 +50,23 @@ namespace MvcClient.Controllers
         }
         public async Task<IActionResult> ItemPaging(double minPrice, double maxPrice, string sortOrder, int pageNumber = 1, string ItemCategory = null, string SearchString = null)
         {
-            // string sortOrder = "Name"
             var pageSize = 6;
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
-                                User.IsInRole(Constants.ManagersRole);
-            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, sortOrder, isAuthorized);
+                                User.IsInRole(Constants.ManagersRole) ||
+                                User.IsInRole(Constants.SalesRole);
+            var ownerId = User.IsInRole(Constants.SalesRole) ? _identityService.Get(User).Id : null;
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized, ownerId);
 
-            if (User.IsInRole(Constants.AdministratorsRole))
-            {
-                catalog.UserRole = Constants.AdministratorsRole;
-            }
-            else if (User.IsInRole(Constants.ManagersRole))
-            {
-                catalog.UserRole = Constants.ManagersRole;
-            }
-            else if (User.IsInRole(Constants.SalesRole))
-            {
-                catalog.UserRole = Constants.SalesRole;
-            }
-            else
-            {
-                catalog.UserRole = Constants.UsersRole;
-            }
+            if (ownerId != null)
+                catalog.IsSale = true;
+            else catalog.IsSale = false;
 
-
-            if (!isAuthorized)
-            {
-                var userId = _identityService.Get(User).Id;
-                catalog.Items = catalog.Items
-                    .Where(m => m.ItemStatus == ItemStatus.Approved || m.OwnerId == userId)
-                    .ToList();
-                catalog.OwnerId = userId;
-            }
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
             catalog.PageIndex = pageNumber;
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
             return new JsonResult(catalog);
         }
-
 
         public async Task<IActionResult> Details(int id)
         {
