@@ -79,7 +79,11 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, User user)
         {
+            if (String.IsNullOrEmpty(user.PictureUrl))
+                user.PictureUrl = "default_avatar.png";
+            user.Role = "Managers";
             user.Name = user.GivenName + " " + user.FamilyName;
+            Console.WriteLine("Hemmll" + user.ToString());
             if (id != user.UserId)
             {
                 return NotFound();

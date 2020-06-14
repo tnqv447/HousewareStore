@@ -45,6 +45,7 @@
                         <ul class="metismenu" id="menu">
                             @if( isManager || isAdmin){
                                 <li><a asp-action="Index" asp-controller="Admin"> <span>Dashboard</span></a></li> 
+                                <li><a asp-action="Analysis" asp-controller="Admin"> <span>Analysis</span></a></li>
                             }                       
                             <li>
                                 <a href="javascript:void(0)" aria-expanded="true">
@@ -63,9 +64,6 @@
                                         }
                                     </ul>
                             </li>
-                             @if( isManager || isAdmin){
-                                <li><a asp-action="Analysis" asp-controller="Admin"> <span>Analysis</span></a></li>
-                            }
                         </ul>
                     </nav>
                 </div>
