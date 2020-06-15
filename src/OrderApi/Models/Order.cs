@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-namespace OrderApi.Models
-{
-    public class Order
-    {
+using Microsoft.EntityFrameworkCore;
+
+namespace OrderApi.Models {
+    public class Order {
         public int OrderId { get; set; }
         public string BuyerId { get; set; }
         public string FirstName { get; set; }
@@ -15,44 +15,41 @@ namespace OrderApi.Models
         public string PaymentAuthCode { get; set; }
         public string Note { get; set; }
         public decimal Total { get; set; }
-        public virtual IEnumerable<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public virtual IEnumerable<OrderItem> OrderItems { get; set; } = new List<OrderItem> ();
     }
 
-    public enum OrderStatus
-    {
+    public enum OrderStatus {
         Preparing = 0,
         Shipped = 1,
         Delivered = 2
     }
-    public class Address
-    {
+
+    [Owned]
+    public class Address {
         //[JsonProperty("street_address")]
-        [Display(Name = "Street address")]
+        [Display (Name = "Street address")]
         public string StreetAddress { get; set; }
 
-        [Display(Name = "Locality/District")]
+        [Display (Name = "Locality/District")]
         public string Locality { get; set; }
 
         public string City { get; set; }
         public string Country { get; set; }
 
         //[JsonProperty("postal_code")]
-        [Display(Name = "Postal code")]
+        [Display (Name = "Postal code")]
         public string PostalCode { get; set; }
-        public Address()
-        {
+        public Address () {
 
         }
-        public Address(string StreetAddress, string Locality, string City, string Country, string PostalCode)
-        {
+        public Address (string StreetAddress, string Locality, string City, string Country, string PostalCode) {
             this.StreetAddress = StreetAddress;
             this.Locality = Locality;
             this.City = City;
             this.Country = Country;
             this.PostalCode = PostalCode;
         }
-        public override string ToString()
-        {
+        public override string ToString () {
             return $"{StreetAddress}, {Locality}, {City}, {Country}, {PostalCode}";
         }
     }
