@@ -125,6 +125,34 @@ namespace OrderApi.Controllers
                 return NotFound();
             }
 
+            //update order status
+            var order = await _orderRepo.GetByAsync(item.OrderId);
+            var list = order.OrderItems;
+            var count = list.Count();
+            var res = OrderStatus.Preparing;
+            int isRejected = 0;
+            int isAccepted = 0;
+            int isShipping = 0;
+            int isDelivered = 0;
+            foreach (var temp in list)
+            {
+                switch (temp.Status)
+                {
+                    case (OrderItemStatus.Rejected): isRejected++; break;
+                    case (OrderItemStatus.Shipping): isShipping++; break;
+                    case (OrderItemStatus.Accepted): isAccepted++; break;
+                    case (OrderItemStatus.Delivered): isDelivered++; break;
+                    default: break;
+                }
+            }
+            if (isRejected.Equals(count)) res = OrderStatus.Rejected;
+            else if (isDelivered.Equals(count)) res = OrderStatus.Delivered;
+            else if (isShipping == count - isDelivered) res = OrderStatus.Shipping;
+            else if (isAccepted == count - isDelivered - isShipping) res = OrderStatus.Accepted;
+
+            order.Status = res;
+            await _orderRepo.UpdateAsync(order);
+
             return NoContent();
 
         }

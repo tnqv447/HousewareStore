@@ -22,13 +22,13 @@ namespace MvcClient.Models
         public double Total { get; set; }
         [Required]
         [Display(Name = "Phone number")]
-        [RegularExpression(@"^[0-9]{10}$", ErrorMessage="Your phone is invalid")]
+        [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Your phone is invalid")]
         public string PhoneNumber { get; set; }
         [Required]
         [Display(Name = "Email")]
         [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Your email is invalid")]
         public string Email { get; set; }
-        
+
         public string CardNumber { get; set; }
         public string CardHolderName { get; set; }
         public DateTime CardExpiration { get; set; }
@@ -42,8 +42,10 @@ namespace MvcClient.Models
 
     public enum OrderStatus
     {
-        Preparing = 1,
-        Shipped = 2,
-        Delivered = 3
+        Preparing = 0,
+        Shipping = 1,
+        Delivered = 2,
+        Accepted = 3,
+        Rejected = 4
     }
 }

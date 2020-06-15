@@ -53,7 +53,9 @@ namespace OrderApi.Models
     public enum OrderItemStatus
     {
         Preparing = 0,
-        Shipped = 1,
-        Delivered = 2
+        Shipping = 1,
+        Delivered = 2,
+        Accepted = 3,
+        Rejected = 4
     }
 }
