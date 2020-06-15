@@ -13,6 +13,7 @@ namespace OrderApi.Models
         public OrderStatus Status { get; set; }
         public string Address { get; set; }
         public string PaymentAuthCode { get; set; }
+        public string Note { get; set; }
         public decimal Total { get; set; }
         public virtual IEnumerable<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }

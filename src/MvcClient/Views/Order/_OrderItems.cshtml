@@ -1,55 +1,48 @@
 @model Order
-
-<section class="esh-orders_new-section">
-    <article class="esh-orders_new-titles row">
-        <section class="esh-orders_new-title col-xs-12">Order details</section>
-    </article>
-    <table style="width: 90%;">
-    @for (int i = 0; i < Model.OrderItems.Count; i++)
-    {
-        var item = Model.OrderItems[i];
-        <tr>
-            <td>
-                <img class="esh-basket-image" src="@item.PictureUrl"/>
+<div class="col-lg-6 col-md-6">
+    <div class="checkout__order">
+        <h4>Your Order</h4>
+        <div class="checkout__order__products">Products <span>Total</span></div>
+        <ul>
+            @for (int i = 0; i < Model.OrderItems.Count; i++)
+            {
+                var item = Model.OrderItems[i];
+                <li>
+                    <p style="font-weight:700;margin:10px 0" class="item__units">@item.Units</p>
+                    <p style="width:350px;float:left;margin-left:20px">@item.ItemName</p> 
+                    <span>$@Math.Round(@item.Units * @item.UnitPrice,2)</span>
+                    <div style="clear:both"></div>
+                </li>
                 <input type="hidden" value="@item.PictureUrl" name=@("OrderItems[" + i + "].PictureUrl") />
-            </td>
-            <td>
-                @item.ItemName
                 <input type="hidden" value="@item.ItemName" name=@("OrderItems[" + i + "].ItemName") />
-            </td>
-            <td>
-                $ @item.UnitPrice
                 <input type="hidden" value="@item.UnitPrice" name=@("OrderItems[" + i + "].UnitPrice") />
-            </td>
-            <td>
-                @item.Units
                 <input type="hidden" value="@item.Units" name=@("OrderItems[" + i + "].Units") />
-            </td>
-            <td>
-                $ @Math.Round(@item.Units * @item.UnitPrice,2)
                 <input type="hidden" value="@item.ItemId" name=@("OrderItems[" + i + "].ItemId") />
-            </td>
-        </tr>
-    }
-        <tr>
-            <td colspan="3"></td>
-            <td colspan="2">
-                <section class="esh-orders_new-section esh-orders_new-section--right">
-                    <article class="esh-orders_new-titles row">
-                        <section class="esh-orders_new-title col-xs-9"></section>
-                        <section class="esh-orders_new-title col-xs-2">Total</section>
-                    </article>
-
-                    <article class="esh-orders_new-items row">
-                        <section class="esh-orders_new-item col-xs-9"></section>
-                        <section class="esh-orders_new-item esh-orders_new-item--mark col-xs-2">
-                            $@Model.Total
-                            <input type="hidden" value="@Model.Total" name="Total"/>
-                        </section>
-                    </article>
-                </section>
-            </td>
-        </tr>
-    </table>
-</section>
+            }
+        </ul>
+        <div class="checkout__order__subtotal">Subtotal <span>$@Model.Total.ToString("N2")</span></div>
+        <div class="checkout__order__total">Total <span>$@Model.Total.ToString("N2")</span></div>
+        <input type="hidden" value="@Model.Total" name="Total"/>
+        <div class="checkout__input__checkbox">
+            <label for="payment">
+                Check Payment
+                <input type="checkbox" id="payment">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div class="checkout__input__checkbox">
+            <label for="paypal">
+                Paypal
+                <input type="checkbox" id="paypal">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        @if(Model.OrderItems.Count == 0){
+            <a asp-action="Index" asp-controller="Shop" class="primary-btn cart-btn">Go back to shop</a>
+        }
+        else{
+            <input type="submit" class="site-btn" value="[ Place Order ]">
+        }
+    </div>
+</div>
 

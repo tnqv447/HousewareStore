@@ -1,5 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Mvc;
+﻿@using Microsoft.AspNetCore.Mvc;
+@using System.Web;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,6 +89,7 @@
                 <div class="col-lg-5">
                     <nav class="header__menu">
                         <ul>
+                            
                             <li id="url_Home" class="active"><a asp-action="Index" asp-controller="Home">Home</a></li>
                             <li id="url_Shop"><a asp-action="Index" asp-controller="Shop">Shop</a></li>
                             <li id="url_Contact"><a asp-action="Contact" asp-controller="Home">Contact</a></li>

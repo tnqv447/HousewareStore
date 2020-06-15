@@ -11,5 +11,6 @@ namespace OrderApi.DTOs
         public DateTime OrderDate { get; set; }
         public string Address { get; set; }
         public string PaymentAuthCode { get; set; }
+        public string Note { get; set; }
     }
 }

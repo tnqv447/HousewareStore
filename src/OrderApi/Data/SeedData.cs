@@ -23,6 +23,7 @@ namespace OrderApi.Data
                     Address = "Address",
                     PaymentAuthCode = "Code",
                     Total = 99.9M,
+                    Note = "a",
                     OrderItems = new List<OrderItem>{
                         new OrderItem(1, "Muỗng basic",99.9M, "PictureUrl",null, OrderItemStatus.Preparing)
                     }

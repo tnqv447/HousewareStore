@@ -7,6 +7,8 @@ namespace MvcClient.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Address Address { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
     }
 
     // look into class Address in class User

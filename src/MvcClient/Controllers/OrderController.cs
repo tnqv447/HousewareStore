@@ -4,6 +4,8 @@ using Microsoft.Extensions.Options;
 using MvcClient.Models;
 using MvcClient.Services;
 using System;
+using Microsoft.AspNetCore.Authorization;
+
 namespace MvcClient.Controllers
 {
     public class OrderController : Controller
@@ -29,21 +31,17 @@ namespace MvcClient.Controllers
 
             return View(orders);
         }
-
+        // [Authorize]
         public async Task<IActionResult> Create()
         {
             var user = _identitySvc.Get(User);
             var cart = await _cartSvc.GetCart(user);
-            Console.WriteLine("cart null: " + cart != null ? "false" : "true");
-            Console.WriteLine("cart count: " + cart != null ? cart.CartItems.Count : 0);
 
             var order = _cartSvc.MapCartToOrder(cart);
-            Console.WriteLine("order null: " + order != null ? "false" : "true");
-            Console.WriteLine("order count: " + order != null ? order.OrderItems.Count : 0);
-
             order.FirstName = user.FirstName;
             order.LastName = user.LastName;
-            order.Address = user.Address.ToString();
+            
+            order.Address = user.Address;
 
             return View(order);
         }
@@ -55,15 +53,13 @@ namespace MvcClient.Controllers
             {
                 return View(frmOrder);
             }
-            Console.WriteLine("form null: " + frmOrder == null ? "true" : "false");
-            Console.WriteLine("form cus name: " + frmOrder.FirstName);
-            Console.WriteLine("form total: " + frmOrder.Total);
+            
             var user = _identitySvc.Get(User);
             var order = frmOrder;
-            Console.WriteLine("order id: " + order.OrderId);
+            
             order.BuyerId = user.Id;
             
-            Console.WriteLine("orderitem count: " + frmOrder.OrderItems.Count);
+            
             // var chargeSvc = new ChargeService();
             // var charge = chargeSvc.Create(new ChargeCreateOptions
             // {

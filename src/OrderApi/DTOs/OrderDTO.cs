@@ -15,6 +15,7 @@ namespace OrderApi.DTOs
         public string Address { get; set; }
         public string PaymentAuthCode { get; set; }
         public decimal Total { get; set; }
+        public string Note { get; set; }
         public IEnumerable<OrderItemDTO> OrderItems { get; set; } = new List<OrderItemDTO>();
     }
 }

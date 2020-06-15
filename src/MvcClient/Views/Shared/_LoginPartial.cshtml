@@ -22,6 +22,8 @@
         }
         else{
             <ul class="header__menu__dropdown">
+                <li><a class="dropdown-item">Account</a></li>
+                <li><a class="dropdown-item">Profiles</a></li>
                 <li><a asp-action="Index" asp-controller="Order" class="dropdown-item">Orders</a></li>
                 <li><a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a></li>
             </ul>
@@ -29,7 +31,11 @@
         @* <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         </div> *@
     </li>
-    @await Component.InvokeAsync("Basket", new { user = identityService.Get(User) })
+        var check = Url.Action();
+    
+    @if(check != "/Cart" && check != "/Order/Create"){
+        @await Component.InvokeAsync("Basket", new { user = identityService.Get(User) })
+    }
 } 
 else 
 {

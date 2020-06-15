@@ -125,9 +125,10 @@
                         <div class="featured__item__pic set-bg" data-setbg="img/product/@Model.Items[i].PictureUrl">
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                <li><a asp-action="Details" asp-controller="Shop" asp-route-Id="@Model.Items[i].Id"><i class="fa fa-info"></i></a></li>
                                 <input type="hidden" value="@Model.Items[i].CategoryId" id="item_category_id_@Model.Items[i].Id">
                                 <input type="hidden" value="@Model.Items[i].PictureUrl" id="item_picture_uri_@Model.Items[i].Id"/>
+                                <input type="hidden" value="1" id="quantity_@Model.Items[i].Id" />
                                 <input type="hidden" value="@Model.Items[i].UnitPrice" id="item_price_@Model.Items[i].Id"/>
                                 @if(User.Identity.IsAuthenticated){
                                     <li><a style="cursor:pointer" class="add_to_cart" id="@Model.Items[i].Id"><i class="fa fa-shopping-cart"></i></a></li>
@@ -137,7 +138,7 @@
                         </div>
                         <div class="featured__item__text">
                             <h6 id="item_name_@Model.Items[i].Id">@Model.Items[i].Name</h6>
-                            <h5 >@Model.Items[i].UnitPrice.ToString("N2")</h5>
+                            <h5>$@Model.Items[i].UnitPrice.ToString("N2")</h5>
                         </div>
                     </div>
                 </div>
