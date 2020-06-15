@@ -13,7 +13,7 @@ namespace IdentityServer4.Quickstart.UI
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "The Password cannot be empty.")]
         [DisplayName("Password")]
-        [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
+        [RegularExpression(@"^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]))).{8,32}$", ErrorMessage = "At least one uppercase character,one lowercase character, one number, one special character and between 8 to 32 characters in length")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
@@ -53,6 +53,7 @@ namespace IdentityServer4.Quickstart.UI
         public string PhoneNumber { get; set; }
 
         [Required]
+        [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Your email is invalid")]
         public string Email { get; set; }
 
         [Display(Name = "Picture")]
