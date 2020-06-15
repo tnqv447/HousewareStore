@@ -27,48 +27,57 @@
             <div class="col-lg-9">
                 <div class="card-body">
                     <h4>Order List</h4>
-                    <table class="text-center table table-hover text-center">
+                    <table class="text-center table">
                         <thead>
                             <th>@Html.DisplayNameFor(model => model.OrderId)</th>
                             <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
                             <th>@Html.DisplayNameFor(model => model.Total)</th>
                             <th>@Html.DisplayNameFor(model => model.Status)</th>
-                            <th></th>
+                            <th>Detail</th>
                         </thead>
                         <tbody>
-                        @foreach (var order in Model)
-                        {
+                        @foreach (var order in Model){
                             <tr>
                                 <td>@Html.DisplayFor(model => order.OrderId)</td>
-                                <td><p>@order.OrderDate.ToString("dd/mm/yyyy")</p></td>
+                                <td><p>@order.OrderDate.ToString("dd/MM/yyyy")</p></td>
                                 <td>@Html.DisplayFor(model => order.Total)</td>
-                                <td>
-                                    @if(order.Status.Equals(0)){
-                                        <p>Prepraing</p>
-                                    }
-                                    else if(order.Status.Equals(1)){
-                                        <p>Shipping</p>
-                                    }
-                                    else{
-                                        <p>Delivered</p>
-                                    }
+                                <td>@order.Status
                                     
                                 </td>
                                 <td>
-                                    <a href="#"><i class="fa fa-arrow-left"></i></a>
+                                    <a style="cursor:pointer" id="@order.OrderId"  class="show"><i id="icon_action" class="fa fa-arrow-left"></i></a>
                                     @* <a asp-action="Details" asp-route-orderId="@order.OrderId">Details</a> *@
                                 </td>
-                                <table class="text-center table table-hover text-center">
-                                    <thead>
-                                        <th>@Html.DisplayNameFor(model => model.OrderId)</th>
-                                        <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
-                                        <th>@Html.DisplayNameFor(model => model.Total)</th>
-                                        <th>@Html.DisplayNameFor(model => model.Status)</th>
-                                        <th></th>
-                                    </thead>
-                                </table>
                             </tr>
+                            <tr style="display:none" id="action_@order.OrderId" >
+                                <td colspan="5">
+                                    <table>
+                                        <thead>
+                                            <th width="40%">@Html.DisplayNameFor(model => model.OrderItems[0].ItemName)</th>
+                                            <th>@Html.DisplayNameFor(model => model.OrderItems[0].Units)</th>
+                                            <th>@Html.DisplayNameFor(model => model.OrderItems[0].UnitPrice)</th>
+                                            <th>Total</th>
+                                            <th>Status</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach(var item in order.OrderItems)
+                                            {
+                                                <tr>
+                                                    <td>@item.ItemName</td>
+                                                    <td>@item.Units</td>
+                                                    <td>$@item.UnitPrice.ToString("N2")</td>
+                                                    <td>$@Math.Round(@item.Units * @item.UnitPrice,2)</td>
+                                                    <td>@item.Status</td>
+                                                </tr>
+                                            }
+                                            
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            
                         }
+                        
                         </tbody>
                     </table>
                 </div>
@@ -78,3 +87,25 @@
     
 </section>
 
+@section Scripts{
+    <script>
+    $(document).ready(function(){
+        $(document).on('click','.show',function(){
+            var id = $(this).attr('id');
+            $('#action_' + id).show(600);
+            html='';
+            html+='<i class="fa fa-arrow-down"></i>';
+            $('#' + id).html('').html(html);
+            $('#' + id).addClass('close_order_detail');
+        })
+        $(document).on('click','.close_order_detail',function(){
+            var id = $(this).attr('id');
+            $('#action_' + id).hide(600);
+            html='';
+            html+='<i class="fa fa-arrow-left"></i>';
+            $("#"+id).html('').html(html);
+            $('#'+id).removeClass('close_order_detail');
+        })
+    })
+    </script>                            
+}
