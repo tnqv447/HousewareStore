@@ -18,4 +18,9 @@ namespace MvcClient
         public string ClientSecret { get; set; }
         public string Scope { get; set; }
     }
+    public class StripeSettings
+    {
+        public string SecretKey { get; set; }
+        public string PublishableKey { get; set; }
+    }
 }

@@ -38,6 +38,7 @@ namespace MvcClient
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration);
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
             services.AddHttpContextAccessor();
             services.AddHttpClient<IHttpClient, CustomHttpClient>();
             services.AddScoped<IItemService, ItemService>();
