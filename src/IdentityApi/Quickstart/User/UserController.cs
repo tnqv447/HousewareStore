@@ -81,8 +81,7 @@ namespace IdentityApi.Quickstart.User
                     dto.Role = await _userRepo.GetRoleByUser(dto.UserId);
                 }
             }
-
-            this.SortUser(dtos, sortType, sortOrder);
+            dtos = this.SortUser(dtos, sortType, sortOrder);
 
             return dtos;
         }
@@ -147,7 +146,7 @@ namespace IdentityApi.Quickstart.User
         //
         //support functions
         //
-        private void SortUser(List<ApplicationUserDTO> dtos, SortType sortType, SortOrder sortOrder)
+        private List<ApplicationUserDTO> SortUser(List<ApplicationUserDTO> dtos, SortType sortType, SortOrder sortOrder)
         {
             switch (sortOrder)
             {
@@ -189,7 +188,9 @@ namespace IdentityApi.Quickstart.User
                         }
                         break;
                     }
+
             }
+            return dtos;
         }
 
         //
