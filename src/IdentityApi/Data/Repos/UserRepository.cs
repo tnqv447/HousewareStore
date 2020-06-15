@@ -60,7 +60,8 @@ namespace IdentityApi.Data.Repos
 
         public async Task UpdateUser(ApplicationUserDTO dto)
         {
-            var user = this.TransferDataToUser(dto);
+            var user = await _userManager.FindByIdAsync(dto.UserId);
+            this.TransferDataToUser(dto, user);
             var res = await _userManager.UpdateAsync(user);
             if (res.Succeeded)
             {
@@ -89,7 +90,8 @@ namespace IdentityApi.Data.Repos
             var success = true;
             if (user == null)
             {
-                user = this.TransferDataToUser(dto);
+                user = new ApplicationUser();
+                this.TransferDataToUser(dto, user);
                 var result = _userManager.CreateAsync(user, dto.Password).Result;
                 if (!result.Succeeded)
                 {
@@ -193,25 +195,21 @@ namespace IdentityApi.Data.Repos
         //         new Claim("address", user.Address)
         //     };
         // }
-        private ApplicationUser TransferDataToUser(ApplicationUserDTO dto)
+        private void TransferDataToUser(ApplicationUserDTO dto, ApplicationUser user)
         {
-            var user = new ApplicationUser
-            {
-                UserName = dto.UserName,
-                Name = dto.Name,
-                GivenName = dto.GivenName,
-                FamilyName = dto.FamilyName,
-                Email = dto.Email,
-                EmailConfirmed = true,
-                PhoneNumber = dto.PhoneNumber,
-                PhoneNumberConfirmed = true,
-                PictureUrl = dto.PictureUrl,
-                Website = dto.Website,
-                Address = dto.Address
-            };
-            if (!String.IsNullOrEmpty(dto.UserId))
+            if (String.IsNullOrEmpty(user.Id) && !String.IsNullOrEmpty(dto.UserId))
                 user.Id = dto.UserId;
-            return user;
+            user.UserName = dto.UserName;
+            user.Name = dto.Name;
+            user.GivenName = dto.GivenName;
+            user.FamilyName = dto.FamilyName;
+            user.Email = dto.Email;
+            user.EmailConfirmed = true;
+            user.PhoneNumber = dto.PhoneNumber;
+            user.PhoneNumberConfirmed = true;
+            user.PictureUrl = dto.PictureUrl;
+            user.Website = dto.Website;
+            user.Address = dto.Address;
         }
 
         private static string GetClaimValue(IList<Claim> userClaims, string claimType)

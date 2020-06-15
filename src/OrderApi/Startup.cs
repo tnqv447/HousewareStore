@@ -27,7 +27,7 @@ namespace OrderApi
         {
             services.AddControllers(options =>
                 options.Filters.Add(typeof(HttpGlobalExceptionFilter)));
-            
+
             services.Configure<AppSettings>(Configuration);
             services.AddAutoMapper(typeof(MappingProfile));
 
