@@ -3,38 +3,78 @@
 @{
     ViewData["Title"] = "Order List";
 }
-
-<div class="row">
-    <div>
-        <div class="card-body">
-            <h4 class="esh-orders_new-title">Order List</h4>
-            <table class="text-center table table-hover table-striped text-center">
-                <thead>
-                    <th>@Html.DisplayNameFor(model => model.OrderId)</th>
-                    <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
-                    <th>@Html.DisplayNameFor(model => model.Total)</th>
-                    <th>@Html.DisplayNameFor(model => model.Status)</th>
-                    <th></th>
-                </thead>
-                <tbody>
-                @foreach (var order in Model)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(model => order.OrderId)</td>
-                        <td>@Html.DisplayFor(model => order.OrderDate)</td>
-                        <td>@Html.DisplayFor(model => order.Total)</td>
-                        <td>@Html.DisplayFor(model => order.Status)</td>
-                        <td>
-                            <a asp-action="Details" asp-route-orderId="@order.OrderId">Details</a>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="breadcrumb__text">
+                    <h2>Order</h2>
+                    <div class="breadcrumb__option">
+                        <a asp-action="Index" asp-controller="Home">Home</a>
+                        <span>Order</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="hero" style="margin-top:110px">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <partial name="_MenuBar"/>
+            </div>
+            <div class="col-lg-9">
+                <div class="card-body">
+                    <h4>Order List</h4>
+                    <table class="text-center table table-hover text-center">
+                        <thead>
+                            <th>@Html.DisplayNameFor(model => model.OrderId)</th>
+                            <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.Total)</th>
+                            <th>@Html.DisplayNameFor(model => model.Status)</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(model => order.OrderId)</td>
+                                <td><p>@order.OrderDate.ToString("dd/mm/yyyy")</p></td>
+                                <td>@Html.DisplayFor(model => order.Total)</td>
+                                <td>
+                                    @if(order.Status.Equals(0)){
+                                        <p>Prepraing</p>
+                                    }
+                                    else if(order.Status.Equals(1)){
+                                        <p>Shipping</p>
+                                    }
+                                    else{
+                                        <p>Delivered</p>
+                                    }
+                                    
+                                </td>
+                                <td>
+                                    <a href="#"><i class="fa fa-arrow-left"></i></a>
+                                    @* <a asp-action="Details" asp-route-orderId="@order.OrderId">Details</a> *@
+                                </td>
+                                <table class="text-center table table-hover text-center">
+                                    <thead>
+                                        <th>@Html.DisplayNameFor(model => model.OrderId)</th>
+                                        <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
+                                        <th>@Html.DisplayNameFor(model => model.Total)</th>
+                                        <th>@Html.DisplayNameFor(model => model.Status)</th>
+                                        <th></th>
+                                    </thead>
+                                </table>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     
-    
-</div>
-
+</section>
 

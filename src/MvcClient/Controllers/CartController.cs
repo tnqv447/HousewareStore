@@ -89,6 +89,7 @@ namespace MvcClient.Controllers
                     ItemName = item.Name,
                     UnitPrice = item.UnitPrice,
                     Quantity = quantity,
+                    OwnerId = item.OwnerId,
                     PictureUrl = item.PictureUrl
                 };
                 await _cartSvc.AddItemToCart(buyer, cartItem);
