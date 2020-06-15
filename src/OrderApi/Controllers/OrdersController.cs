@@ -50,11 +50,17 @@ namespace OrderApi.Controllers
         public async Task<IEnumerable<OrderItemForSalesDTO>> GetOrdersBySales(string salesId)
         {
             var orderItems = await _orderRepo.GetBySalesAsync(salesId);
-            var order = await _orderRepo.GetByAsync(orderItems.ElementAt(0).OrderId);
-
-            var res = _mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemForSalesDTO>>(orderItems);
-            this.TranferAdditionalInfo(order, res);
-            return res;
+            if (orderItems == null || orderItems.Count() == 0)
+            {
+                return null;
+            }
+            else
+            {
+                var order = await _orderRepo.GetByAsync(orderItems.ElementAt(0).OrderId);
+                var res = _mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemForSalesDTO>>(orderItems);
+                this.TranferAdditionalInfo(order, res);
+                return res;
+            }
         }
 
         [HttpGet("{id}")]
