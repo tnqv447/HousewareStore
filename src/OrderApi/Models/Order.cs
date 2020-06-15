@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+
 namespace OrderApi.Models
 {
     public class Order
@@ -11,7 +13,7 @@ namespace OrderApi.Models
         public string LastName { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; }
-        public Address Address { get; set; }
+        public virtual Address Address { get; set; }
         public string PaymentAuthCode { get; set; }
         public string Note { get; set; }
         public decimal Total { get; set; }
@@ -24,6 +26,8 @@ namespace OrderApi.Models
         Shipped = 1,
         Delivered = 2
     }
+
+    [Owned]
     public class Address
     {
         //[JsonProperty("street_address")]
