@@ -17,42 +17,48 @@ namespace OrderApi.Models
         public string PaymentAuthCode { get; set; }
         public string Note { get; set; }
         public decimal Total { get; set; }
-        public virtual IEnumerable<OrderItem> OrderItems { get; set; } = new List<OrderItem> ();
+        public virtual IEnumerable<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 
-    public enum OrderStatus {
+    public enum OrderStatus
+    {
         Preparing = 0,
-        Shipped = 1,
-        Delivered = 2
+        Shipping = 1,
+        Delivered = 2,
+        Accepted = 3,
+        Rejected = 4
     }
 
     [Owned]
     public class Address
     {
         //[JsonProperty("street_address")]
-        [Display (Name = "Street address")]
+        [Display(Name = "Street address")]
         public string StreetAddress { get; set; }
 
-        [Display (Name = "Locality/District")]
+        [Display(Name = "Locality/District")]
         public string Locality { get; set; }
 
         public string City { get; set; }
         public string Country { get; set; }
 
         //[JsonProperty("postal_code")]
-        [Display (Name = "Postal code")]
+        [Display(Name = "Postal code")]
         public string PostalCode { get; set; }
-        public Address () {
+        public Address()
+        {
 
         }
-        public Address (string StreetAddress, string Locality, string City, string Country, string PostalCode) {
+        public Address(string StreetAddress, string Locality, string City, string Country, string PostalCode)
+        {
             this.StreetAddress = StreetAddress;
             this.Locality = Locality;
             this.City = City;
             this.Country = Country;
             this.PostalCode = PostalCode;
         }
-        public override string ToString () {
+        public override string ToString()
+        {
             return $"{StreetAddress}, {Locality}, {City}, {Country}, {PostalCode}";
         }
     }

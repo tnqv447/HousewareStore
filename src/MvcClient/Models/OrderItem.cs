@@ -14,8 +14,9 @@ namespace MvcClient.Models
     public enum OrderItemStatus
     {
         Preparing = 0,
-        Shipped = 1,
+        Shipping = 1,
         Delivered = 2,
-        Rejected = 3
+        Accepted = 3,
+        Rejected = 4
     }
 }
