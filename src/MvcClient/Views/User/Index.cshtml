@@ -48,12 +48,21 @@
                 <div class="data-tables datatable-primary">
                     <div class="form-row align-items-center">
                         <div class="col-md-1 my-1">
+                            <label>Sort Order:</label>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="select_sort_order" class="select_sort_value custom-select">
+                                <option value="Ascending" selected>Ascending </option><span class="arrow_carrot-down"></span>
+                                <option value="Descending">Descending</option>
+                            </select>   
+                        </div>
+                        <div class="col-md-1 my-1">
                             <label>Sort By:</label>
                         </div>
                         <div class="col-md-2">
-                            <select id="select_sort" class="select_sort_value custom-select">
-                                <option value="" selected>Name </option><span class="arrow_carrot-down"></span>
-                                <option value="name_desc">Name Descending</option>
+                            <select id="select_sort_by" class="select_sort_value custom-select">
+                                <option value="FullName" selected>Name </option><span class="arrow_carrot-down"></span>
+                                <option value="Role">Role</option>
                             </select>   
                         </div>
                     </div>
@@ -80,11 +89,14 @@
                                         <td>@item.Address</td>
                                         <td>@item.Role</td>
                                         <td>
-                                            <a style="cursor:pointer" asp-action="Edit" asp-route-id="@item.UserId">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <a asp-action="Delete" asp-route-id="@item.UserId"><i class="fa fa-close"></i></a>
-                                            
+                                            @if(item.Role.Equals("Managers")){
+                                                <a style="cursor:pointer" asp-action="Edit" asp-route-id="@item.UserId">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            }
+                                            @if(!item.Role.Equals("Administrators")){
+                                                <a asp-action="Delete" asp-route-id="@item.UserId"><i class="fa fa-close"></i></a>
+                                            }   
                                         </td>
                                     </tr>
                                 } 
@@ -145,11 +157,11 @@
     <script>
         $(document).ready(function(){
             var delay_time = 500;
-            function loadPage(searchName,role,pageNumber,sortOrder){
+            function loadPage(searchName,role,pageNumber,sortOrder,sortBy){
                 $.ajax({
                     method:'GET',
                     url: '@Url.Action("UserPaging","User")',
-                    data:{searchName: searchName, itemRole: role, pageNumber: pageNumber, sortOrder: sortOrder},
+                    data:{searchName: searchName, itemRole: role, pageNumber: pageNumber, sortOrder: sortOrder, sortBy: sortBy},
                     success:function(data){
                         html = '';
                         html_2 = '';     
@@ -226,33 +238,37 @@
                 })
             }
             $(document).on('click','.search_item',function(){
-                var selectedSort= $("#select_sort").children("option:selected").val();
+                var sortOrder= $("#select_sort_order").children("option:selected").val();
+                var sortBy= $("#select_sort_by").children("option:selected").val();
                 var searchName = $("#SearchName").val();
                 var role = $("#role-select").children("option:selected").val();
                 WaitingSearch();
-                loadPage(searchName,role,1,selectedSort);
-            });/*
-            $(document).on('change','.select_sort_value',function(){
-                var ownerId= $("#OwnerId").val();
-                var selectedSort= $(this).children("option:selected").val();
-                var searchString = $("#SearchString").val();
-                var itemCategory = $("#ItemCategory").children("option:selected").val();
-                var minPrice = parseFloat($("#minPrice").val());
-                var maxPrice = parseFloat($("#maxPrice").val());
-                html = '<div class="preloder_item"><div class="loader_item"></div></div>';
-                html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
-                $('#item_body').html('');
-                $("#pagination_body").html('');
-                $("#item_body").html(html);
-                loadPage(searchString,itemCategory,1,minPrice,maxPrice,selectedSort,ownerId);    
-            })*/
+                loadPage(searchName,role,1,sortOrder,sortBy);
+            });
+            $(document).on('change','#select_sort_by',function(){
+                var sortOrder= $("#select_sort_order").children("option:selected").val();
+                var sortBy= $("#select_sort_by").children("option:selected").val();
+                var searchName = $("#SearchName").val();
+                var role = $("#role-select").children("option:selected").val();
+                WaitingSearch();
+                loadPage(searchName,role,1,sortOrder,sortBy);    
+            });
+            $(document).on('change','#select_sort_order',function(){
+                var sortOrder= $("#select_sort_order").children("option:selected").val();
+                var sortBy= $("#select_sort_by").children("option:selected").val();
+                var searchName = $("#SearchName").val();
+                var role = $("#role-select").children("option:selected").val();
+                WaitingSearch();
+                loadPage(searchName,role,1,sortOrder,sortBy);    
+            })
             $(document).on('click','.page-link',function(){
-                var selectedSort= $("#select_sort").children("option:selected").val();
+                var sortOrder= $("#select_sort_order").children("option:selected").val();
+                var sortBy= $("#select_sort_by").children("option:selected").val();
                 var searchName = $("#SearchName").val();
                 var role = $("#role-select").children("option:selected").val();
                 var pageNumber = $(this).attr("id").slice(8);
                 WaitingSearch();
-                loadPage(searchName,role,pageNumber,selectedSort);
+                loadPage(searchName,role,pageNumber,sortOrder,sortBy);
             });
             function WaitingSearch(){
                 html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';

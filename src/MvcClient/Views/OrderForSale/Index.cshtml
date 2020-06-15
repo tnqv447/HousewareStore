@@ -48,7 +48,7 @@
                             </select>   
                         </div>
                     </div>
-                    @if(@Model.OrderItemsPaging == null){
+                    @if(@Model.OrderItemsPaging.Count() <= 0){
                         <div style="text-align:center">
                             <h3 style="font-weight:600;margin:auto;">@ViewData["Error Message"]</h3>
                         </div>
@@ -77,7 +77,7 @@
                     }
                     
                 </div>
-                @if(@Model.OrderItemsPaging != null){
+                @if(@Model.OrderItemsPaging.Count() >0){
                     <div class="row">
                             @{
                             var prevDisabled = !Model.OrderItemsPaging.HasPrevious ? "disabled" : "";

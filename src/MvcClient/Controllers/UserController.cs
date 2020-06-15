@@ -33,10 +33,48 @@ namespace MvcClient.Controllers
             _identityService = identityService;
         }
         [Authorize(Roles = "Administrators")]
-        public async Task<IActionResult> Index(string searchName = null, string itemRole = null, int pageNumber = 1, string sortOrder = null)
+        public async Task<IActionResult> Index(string searchName = null, string itemRole = null, int pageNumber = 1, string sortOrder = null, string sortBy = null)
         {
-            var viewModel = await GetViewModel(searchName, itemRole, pageNumber, sortOrder);
+            var viewModel = await GetViewModel(searchName, itemRole, pageNumber, sortOrder, sortBy);
             return View(viewModel);
+        }
+        [Authorize(Roles = "Administrators")]
+        public async Task<IActionResult> UserPaging(string searchName = null, string itemRole = null, int pageNumber = 1, string sortOrder = null, string sortBy = null)
+        {
+            var viewModel = await GetViewModel(searchName, itemRole, pageNumber, sortOrder, sortBy);
+            return new JsonResult(viewModel);
+        }
+        [Authorize(Roles = "Administrators")]
+        private async Task<UserViewModel> GetViewModel(string searchName = null, string itemRole = null, int pageNumber = 1, string sortOrder = null, string sortBy = null)
+        {
+            SortOrder SortOrder1 = SortOrder.Ascending;
+            switch (sortOrder)
+            {
+                case "Ascending": SortOrder1 = SortOrder.Ascending; break;
+                case "Descending": SortOrder1 = SortOrder.Descending; break;
+                default: SortOrder1 = SortOrder.Ascending; break;
+            }
+            SortType SortType1 = SortType.FullName;
+            switch (sortBy)
+            {
+                case "FullName": SortType1 = SortType.FullName; break;
+                case "Role": SortType1 = SortType.Role; break;
+                default: SortType1 = SortType.FullName; break;
+            }
+            var pageSize = 6;
+            UserViewModel viewModel = new UserViewModel();
+            viewModel.Users = await _service.ManageUsers(itemRole, searchName, null, SortType1, SortOrder1);
+            if (viewModel.Users == null)
+            {
+                viewModel.UsersPaging = null;
+            }
+            else
+            {
+                viewModel.UsersPaging = PaginatedList<User>.Create(viewModel.Users, pageNumber, pageSize);
+                viewModel.PageIndex = pageNumber;
+                viewModel.PageTotal = viewModel.UsersPaging.TotalPages;
+            }
+            return viewModel;
         }
         [Authorize(Roles = "Users")]
         public async Task<IActionResult> Account()
@@ -52,23 +90,7 @@ namespace MvcClient.Controllers
             var user = await _service.GetUser(buyer.Id);
             return View(user);
         }
-        [Authorize(Roles = "Administrators")]
-        public async Task<IActionResult> UserPaging(string searchName, string itemRole, int pageNumber = 1, string sortOrder = null)
-        {
-            var viewModel = await GetViewModel(searchName, itemRole, pageNumber, sortOrder);
-            return new JsonResult(viewModel);
-        }
-        [Authorize(Roles = "Administrators")]
-        private async Task<UserViewModel> GetViewModel(string searchName, string itemRole, int pageNumber = 1, string sortOrder = null)
-        {
-            var pageSize = 6;
-            UserViewModel viewModel = new UserViewModel();
-            viewModel.Users = await _service.ManageUsers(itemRole);
-            viewModel.UsersPaging = PaginatedList<User>.Create(viewModel.Users, pageNumber, pageSize);
-            viewModel.PageIndex = pageNumber;
-            viewModel.PageTotal = viewModel.UsersPaging.TotalPages;
-            return viewModel;
-        }
+
         [Authorize(Roles = "Administrators")]
         public IActionResult Create()
         {
