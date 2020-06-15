@@ -24,7 +24,7 @@ namespace OrderApi
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError("Error in seeding database.", ex);
+                    logger.LogError("Error in seeding database." + ex.Message, ex);
                 }
             }
 

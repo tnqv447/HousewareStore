@@ -39,7 +39,18 @@ namespace OrderApi.Models
         //[JsonProperty("postal_code")]
         [Display(Name = "Postal code")]
         public string PostalCode { get; set; }
+        public Address()
+        {
 
+        }
+        public Address(string StreetAddress, string Locality, string City, string Country, string PostalCode)
+        {
+            this.StreetAddress = StreetAddress;
+            this.Locality = Locality;
+            this.City = City;
+            this.Country = Country;
+            this.PostalCode = PostalCode;
+        }
         public override string ToString()
         {
             return $"{StreetAddress}, {Locality}, {City}, {Country}, {PostalCode}";
