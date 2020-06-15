@@ -61,7 +61,7 @@
                             <label>Sort By:</label>
                         </div>
                         <div class="col-md-2">
-                            <select class="select_sort_value custom-select">
+                            <select id="select_sort" class="select_sort_value custom-select">
                                 <option value="" selected>Name </option><span class="arrow_carrot-down"></span>
                                 <option value="name_desc">Name Descending</option>
                                 <option value="price">Price</option>
@@ -246,15 +246,11 @@
             }
             $(document).on('click','.search_item',function(){
                 var searchString = $("#SearchString").val();
-                var selectedSort= $(this).children("option:selected").val();
+                var selectedSort= $("#select_sort").children("option:selected").val()
                 var itemCategory = $("#ItemCategory").children("option:selected").val();
                 var minPrice = parseFloat($("#minPrice").val());
                 var maxPrice = parseFloat($("#maxPrice").val());
-                html = '<div class="preloder_item"><div class="loader_item"></div></div>';
-                html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
-                $('#item_body').html('');
-                $("#pagination_body").html('');
-                $("#item_body").html(html);
+                WaitingSearch();
                 loadPage(searchString,itemCategory,1,minPrice,maxPrice,selectedSort);
             });
             $(document).on('change','.select_sort_value',function(){
@@ -263,27 +259,26 @@
                 var itemCategory = $("#ItemCategory").children("option:selected").val();
                 var minPrice = parseFloat($("#minPrice").val());
                 var maxPrice = parseFloat($("#maxPrice").val());
-                html = '<div class="preloder_item"><div class="loader_item"></div></div>';
-                html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
-                $('#item_body').html('');
-                $("#pagination_body").html('');
-                $("#item_body").html(html);
+                WaitingSearch();
                 loadPage(searchString,itemCategory,1,minPrice,maxPrice,selectedSort);    
             })
             $(document).on('click','.page-link',function(){
-                var selectedSort= $(this).children("option:selected").val();
+                var selectedSort= $("#select_sort").children("option:selected").val()
                 var searchString = $("#SearchString").val();
                 var itemCategory = $("#ItemCategory").children("option:selected").val();
                 var minPrice = parseFloat($("#minPrice").val());
                 var maxPrice = parseFloat($("#maxPrice").val());
                 var pageNumber = $(this).attr("id").slice(8);
+                WaitingSearch();
+                loadPage(searchString,itemCategory,pageNumber,minPrice,maxPrice,selectedSort);
+            });
+            function WaitingSearch(){
                 html = '<div class="preloder_item"><div class="loader_item"></div></div>';
                 html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
                 $('#item_body').html('');
                 $("#pagination_body").html('');
                 $("#item_body").html(html);
-                loadPage(searchString,itemCategory,pageNumber,minPrice,maxPrice,selectedSort);
-            })
+            }
         })
     </script>
 }

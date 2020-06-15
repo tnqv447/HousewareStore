@@ -40,7 +40,21 @@ namespace MvcClient.Models
 
         //for add,update user
         //public string UserNameStr { get; set; }
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "The Password cannot be empty.")]
+        [Display(Name = "Password")]
+        [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
         public string Password { get; set; }
+
+        // [DataType(DataType.Password)]
+        // [Display(Name = "Confirm Password")]
+        // [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
+        // [Compare("Password", ErrorMessage = "The entered passwords do not match.")]
+        // public string ConfirmPassword { get; set; }
+        public override string ToString()
+        {
+            return $"{UserId}, {UserName}, {this.Password}, {this.Name}, {this.Email}, {this.PhoneNumber}, {this.PictureUrl}, {this.Address.ToString()}, {this.Website}, {this.Role}";
+        }
     }
 
     public class Address

@@ -11,42 +11,34 @@
     <br />
     <h3>Are you sure you want to delete this item?</h3>
     <hr/>
-    <div class="row">
-        <dl>
-            <dt>
-                @Html.DisplayNameFor(model => model.UserName)</dt>
-            <dd>
-                @Html.DisplayFor(model => model.UserName)</dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.FamilyName)</dt>
-            <dd>
-                @Html.DisplayFor(model => model.FamilyName)</dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.GivenName)</dt>
-            <dd>
-                @Html.DisplayFor(model => model.GivenName)</dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Email)</dt>
-            <dd>
-                @Html.DisplayFor(model => model.Email)</dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.PhoneNumber)</dt>
-            <dd>
-                @Html.DisplayFor(model => model.PhoneNumber)</dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Website)</dt>
-            <dd>
-                @Html.DisplayFor(model => model.Website)</dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Address)</dt>
-            <dd>
-                @Model.Address.ToString()</dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Role)</dt>
-            <dd>
-                @Html.DisplayFor(model => model.Role)</dd>
-        </dl>
-    </div>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.UserName)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.UserName)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Email)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Email)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Address)</dt>
+        <dd class="col-sm-10">@Model.Address.ToString()</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Website)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Website)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Role)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Role)</dd>
+    </dl>
     <div class="row">
         <div class="form-group btn-group mb-xl-3">
             <a type="button" class="btn btn-outline-primary mb-3" asp-action="Index">Back</a>

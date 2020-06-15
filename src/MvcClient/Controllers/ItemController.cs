@@ -29,34 +29,25 @@ namespace MvcClient.Controllers
             webHostEnvironment = hostEnvironment;
         }
 
-        public async Task<IActionResult> Index(double minPrice, double maxPrice, int pageNumber = 1, string ItemCategory = null, string SearchString = null)
+        public async Task<IActionResult> Index(double minPrice, double maxPrice, string sortOrder, int pageNumber = 1, string ItemCategory = null, string SearchString = null)
         {
-            var pageSize = 6;
-
-            var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
-                                User.IsInRole(Constants.ManagersRole) ||
-                                User.IsInRole(Constants.SalesRole);
-            var ownerId = User.IsInRole(Constants.SalesRole) ? _identityService.Get(User).Id : null;
-            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized, ownerId);
-
-            if (ownerId != null)
-                catalog.IsSale = true;
-            else catalog.IsSale = false;
-
-            catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
-            catalog.PageIndex = pageNumber;
-            catalog.PageTotal = catalog.ItemsPaging.TotalPages;
+            var catalog = await GetViewModel(minPrice, maxPrice, sortOrder, pageNumber, ItemCategory, SearchString);
             return View(catalog);
         }
         public async Task<IActionResult> ItemPaging(double minPrice, double maxPrice, string sortOrder, int pageNumber = 1, string ItemCategory = null, string SearchString = null)
         {
+            var catalog = await GetViewModel(minPrice, maxPrice, sortOrder, pageNumber, ItemCategory, SearchString);
+            return new JsonResult(catalog);
+        }
+        private async Task<IndexViewModel> GetViewModel(double minPrice, double maxPrice, string sortOrder, int pageNumber = 1, string ItemCategory = null, string SearchString = null)
+        {
             var pageSize = 6;
 
             var isAuthorized = User.IsInRole(Constants.AdministratorsRole) ||
                                 User.IsInRole(Constants.ManagersRole) ||
                                 User.IsInRole(Constants.SalesRole);
             var ownerId = User.IsInRole(Constants.SalesRole) ? _identityService.Get(User).Id : null;
-            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, null, isAuthorized, ownerId);
+            var catalog = await _itemService.GetCatalog(ItemCategory, SearchString, minPrice, maxPrice, sortOrder, isAuthorized, ownerId);
 
             if (ownerId != null)
                 catalog.IsSale = true;
@@ -65,7 +56,7 @@ namespace MvcClient.Controllers
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
             catalog.PageIndex = pageNumber;
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
-            return new JsonResult(catalog);
+            return catalog;
         }
 
         public async Task<IActionResult> Details(int id)

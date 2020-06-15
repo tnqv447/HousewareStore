@@ -31,15 +31,15 @@ namespace MvcClient.Controllers
         }
         public async Task<IActionResult> Index(string searchName = null, string itemRole = null, int pageNumber = 1, string sortOrder = null)
         {
-            var pageSize = 3;
-            UserViewModel viewModel = new UserViewModel();
-            viewModel.Users = await _service.ManageUsers();
-            viewModel.UsersPaging = PaginatedList<User>.Create(viewModel.Users, pageNumber, pageSize);
-            viewModel.PageIndex = pageNumber;
-            viewModel.PageTotal = viewModel.UsersPaging.TotalPages;
+            var viewModel = await GetViewModel(searchName, itemRole, pageNumber, sortOrder);
             return View(viewModel);
         }
         public async Task<IActionResult> UserPaging(string searchName, string itemRole, int pageNumber = 1, string sortOrder = null)
+        {
+            var viewModel = await GetViewModel(searchName, itemRole, pageNumber, sortOrder);
+            return new JsonResult(viewModel);
+        }
+        private async Task<UserViewModel> GetViewModel(string searchName, string itemRole, int pageNumber = 1, string sortOrder = null)
         {
             var pageSize = 3;
             UserViewModel viewModel = new UserViewModel();
@@ -47,7 +47,7 @@ namespace MvcClient.Controllers
             viewModel.UsersPaging = PaginatedList<User>.Create(viewModel.Users, pageNumber, pageSize);
             viewModel.PageIndex = pageNumber;
             viewModel.PageTotal = viewModel.UsersPaging.TotalPages;
-            return new JsonResult(viewModel);
+            return viewModel;
         }
         public IActionResult Create()
         {
@@ -79,7 +79,11 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, User user)
         {
+            if (String.IsNullOrEmpty(user.PictureUrl))
+                user.PictureUrl = "default_avatar.png";
+            user.Role = "Managers";
             user.Name = user.GivenName + " " + user.FamilyName;
+            Console.WriteLine("Hemmll" + user.ToString());
             if (id != user.UserId)
             {
                 return NotFound();
