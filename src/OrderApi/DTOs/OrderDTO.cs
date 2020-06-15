@@ -12,7 +12,7 @@ namespace OrderApi.DTOs
         public string LastName { get; set; }
         public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; }
-        public string Address { get; set; }
+        public Address Address { get; set; }
         public string PaymentAuthCode { get; set; }
         public decimal Total { get; set; }
         public string Note { get; set; }

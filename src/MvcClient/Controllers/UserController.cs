@@ -14,31 +14,51 @@ using MvcClient.ViewModels;
 
 namespace MvcClient.Controllers
 {
-    [Authorize(Roles = "Administrators")]
+    
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
         private readonly AppSettings _settings;
         private readonly IUserService _service;
         private readonly IAuthorizationService _authorizationService;
+        private readonly IIdentityService<Buyer> _identityService;
 
-        public UserController(ILogger<UserController> logger, IOptions<AppSettings> settings, IUserService service, IAuthorizationService authorizationService)
+        public UserController(ILogger<UserController> logger, IOptions<AppSettings> settings, IUserService service, 
+                            IAuthorizationService authorizationService,IIdentityService<Buyer> identityService)
         {
             _settings = settings.Value;
             _service = service;
             _logger = logger;
             _authorizationService = authorizationService;
+            _identityService = identityService;
         }
+        [Authorize(Roles = "Administrators")]
         public async Task<IActionResult> Index(string searchName = null, string itemRole = null, int pageNumber = 1, string sortOrder = null)
         {
             var viewModel = await GetViewModel(searchName, itemRole, pageNumber, sortOrder);
             return View(viewModel);
         }
+        [Authorize(Roles = "Users")]
+        public async Task<IActionResult> Account()
+        {
+            var buyer = _identityService.Get(User);
+            var user = await _service.GetUser(buyer.Id);
+            return View(user);
+        }
+        [Authorize(Roles = "Users")]
+        public async Task<IActionResult> Profile()
+        {
+            var buyer = _identityService.Get(User);
+            var user = await _service.GetUser(buyer.Id);
+            return View(user);
+        }
+        [Authorize(Roles = "Administrators")]
         public async Task<IActionResult> UserPaging(string searchName, string itemRole, int pageNumber = 1, string sortOrder = null)
         {
             var viewModel = await GetViewModel(searchName, itemRole, pageNumber, sortOrder);
             return new JsonResult(viewModel);
         }
+        [Authorize(Roles = "Administrators")]
         private async Task<UserViewModel> GetViewModel(string searchName, string itemRole, int pageNumber = 1, string sortOrder = null)
         {
             var pageSize = 3;
@@ -49,10 +69,12 @@ namespace MvcClient.Controllers
             viewModel.PageTotal = viewModel.UsersPaging.TotalPages;
             return viewModel;
         }
+        [Authorize(Roles = "Administrators")]
         public IActionResult Create()
         {
             return View();
         }
+        [Authorize(Roles = "Administrators")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(User user)
@@ -68,13 +90,14 @@ namespace MvcClient.Controllers
             }
             return View();
         }
+        [Authorize(Roles = "Administrators")]
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             var user = await _service.GetUser(id);
             return View(user);
         }
-
+        [Authorize(Roles = "Administrators")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, User user)
@@ -111,6 +134,7 @@ namespace MvcClient.Controllers
 
             return View();
         }
+        [Authorize(Roles = "Administrators")]
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
@@ -123,7 +147,7 @@ namespace MvcClient.Controllers
 
             return View(user);
         }
-
+        [Authorize(Roles = "Administrators")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

@@ -57,7 +57,9 @@ namespace MvcClient.Infrastructure
             {
                 throw new Exception($"Error in Creating {entity.GetType().Name}, try later");
             }
-
+            if(response.StatusCode == HttpStatusCode.BadRequest){
+                throw new Exception($"Error {response.Content.ReadAsStringAsync().Result}");
+            }
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();

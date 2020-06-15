@@ -36,7 +36,7 @@ namespace MvcClient.Controllers
         {
             var user = _identitySvc.Get(User);
             var cart = await _cartSvc.GetCart(user);
-
+            Console.WriteLine("\n"+cart.CartItems[0].ItemName);
             var order = _cartSvc.MapCartToOrder(cart);
             order.FirstName = user.FirstName;
             order.LastName = user.LastName;
@@ -56,7 +56,7 @@ namespace MvcClient.Controllers
             
             var user = _identitySvc.Get(User);
             var order = frmOrder;
-            
+            Console.WriteLine("\n" + order.OrderItems[0].ItemName);
             order.BuyerId = user.Id;
             
             

@@ -20,15 +20,21 @@ namespace OrderApi.Data
                     LastName = "Smith",
                     OrderDate = DateTime.Now,
                     Status = OrderStatus.Preparing,
-                    Address = "Address",
+                    Address = new Address
+                    {
+                        StreetAddress = "One Hacker Way",
+                        Locality = "Heidelberg",
+                        City = "Heidelberg",
+                        Country = "Germany",
+                        PostalCode = "69118"
+                    },
                     PaymentAuthCode = "Code",
                     Total = 99.9M,
                     Note = "a",
                     OrderItems = new List<OrderItem>{
-                        new OrderItem(1, "Muỗng basic",99.9M, "PictureUrl",null, OrderItemStatus.Preparing)
+                        new OrderItem(1, "Instant Pot Duo 7-in-1 Electric Pressure Cooker",79M, "item_4.jpg","6cbb393b-2043-4330-998f-032d5f0ea957", OrderItemStatus.Preparing)
                     }
                 });
-
                 await context.SaveChangesAsync();
             }
         }

@@ -22,8 +22,8 @@
         }
         else{
             <ul class="header__menu__dropdown">
-                <li><a class="dropdown-item">Account</a></li>
-                <li><a class="dropdown-item">Profiles</a></li>
+                <li><a asp-action="Profile" asp-controller="User" class="dropdown-item">Account</a></li>
+                <li><a asp-action="Account" asp-controller="User" class="dropdown-item">Profiles</a></li>
                 <li><a asp-action="Index" asp-controller="Order" class="dropdown-item">Orders</a></li>
                 <li><a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a></li>
             </ul>
