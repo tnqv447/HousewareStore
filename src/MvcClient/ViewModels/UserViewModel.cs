@@ -13,8 +13,5 @@ namespace MvcClient.ViewModels
         public string SortOrder { get; set; }
         //search
         public string SearchName { get; set; }
-        public List<string> RoleList { get; set; }
-
-
     }
 }

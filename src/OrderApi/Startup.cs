@@ -26,7 +26,8 @@ namespace OrderApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(options =>
-                options.Filters.Add(typeof(HttpGlobalExceptionFilter)));
+                options.Filters.Add(typeof(HttpGlobalExceptionFilter))).AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.Configure<AppSettings>(Configuration);
             services.AddAutoMapper(typeof(MappingProfile));

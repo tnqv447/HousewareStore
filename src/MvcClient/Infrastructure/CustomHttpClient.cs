@@ -28,7 +28,7 @@ namespace MvcClient.Infrastructure
             await SetTokenForHttpClient();
 
             var responseString = await _httpClient.GetStringAsync(uri);
-            //Console.WriteLine(JsonConvert.DeserializeObject<IEnumerable<T>>(responseString));
+            Console.WriteLine(JsonConvert.DeserializeObject<IEnumerable<T>>(responseString));
 
             return JsonConvert.DeserializeObject<IEnumerable<T>>(responseString);
 
@@ -57,7 +57,8 @@ namespace MvcClient.Infrastructure
             {
                 throw new Exception($"Error in Creating {entity.GetType().Name}, try later");
             }
-            if(response.StatusCode == HttpStatusCode.BadRequest){
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
                 throw new Exception($"Error {response.Content.ReadAsStringAsync().Result}");
             }
             response.EnsureSuccessStatusCode();
