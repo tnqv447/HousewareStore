@@ -4,29 +4,37 @@
     ViewData["Title"] = "Order List";
 }
 
-<h4 class="esh-orders_new-title">Order List</h4>
+<div class="row">
+    <div>
+        <div class="card-body">
+            <h4 class="esh-orders_new-title">Order List</h4>
+            <table class="text-center table table-hover table-striped text-center">
+                <thead>
+                    <th>@Html.DisplayNameFor(model => model.OrderId)</th>
+                    <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.Total)</th>
+                    <th>@Html.DisplayNameFor(model => model.Status)</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => order.OrderId)</td>
+                        <td>@Html.DisplayFor(model => order.OrderDate)</td>
+                        <td>@Html.DisplayFor(model => order.Total)</td>
+                        <td>@Html.DisplayFor(model => order.Status)</td>
+                        <td>
+                            <a asp-action="Details" asp-route-orderId="@order.OrderId">Details</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+</div>
 
-<table class="table">
-    <thead>
-        <th>@Html.DisplayNameFor(model => model.OrderId)</th>
-        <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
-        <th>@Html.DisplayNameFor(model => model.Total)</th>
-        <th>@Html.DisplayNameFor(model => model.Status)</th>
-        <th></th>
-    </thead>
-    <tbody>
-    @foreach (var order in Model)
-    {
-        <tr>
-            <td>@Html.DisplayFor(model => order.OrderId)</td>
-            <td>@Html.DisplayFor(model => order.OrderDate)</td>
-            <td>@Html.DisplayFor(model => order.Total)</td>
-            <td>@Html.DisplayFor(model => order.Status)</td>
-            <td>
-                <a asp-action="Details" asp-route-orderId="@order.OrderId">Details</a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
 
