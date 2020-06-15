@@ -63,7 +63,7 @@
                                             <li><a asp-action="Index" asp-controller="User"> <span>Users</span></a></li>
                                         } 
                                         @if(!isManager && !isAdmin){
-                                            <li><a href="#"> <span>Orders</span></a></li>
+                                            <li><a asp-action="Index" asp-controller="OrderForSale"> <span>Orders</span></a></li>
                                         }
                                     </ul>
                             </li>

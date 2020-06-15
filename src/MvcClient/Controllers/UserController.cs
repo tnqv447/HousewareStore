@@ -14,7 +14,7 @@ using MvcClient.ViewModels;
 
 namespace MvcClient.Controllers
 {
-    
+
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
@@ -23,8 +23,8 @@ namespace MvcClient.Controllers
         private readonly IAuthorizationService _authorizationService;
         private readonly IIdentityService<Buyer> _identityService;
 
-        public UserController(ILogger<UserController> logger, IOptions<AppSettings> settings, IUserService service, 
-                            IAuthorizationService authorizationService,IIdentityService<Buyer> identityService)
+        public UserController(ILogger<UserController> logger, IOptions<AppSettings> settings, IUserService service,
+                            IAuthorizationService authorizationService, IIdentityService<Buyer> identityService)
         {
             _settings = settings.Value;
             _service = service;
@@ -61,9 +61,9 @@ namespace MvcClient.Controllers
         [Authorize(Roles = "Administrators")]
         private async Task<UserViewModel> GetViewModel(string searchName, string itemRole, int pageNumber = 1, string sortOrder = null)
         {
-            var pageSize = 3;
+            var pageSize = 6;
             UserViewModel viewModel = new UserViewModel();
-            viewModel.Users = await _service.ManageUsers();
+            viewModel.Users = await _service.ManageUsers(itemRole);
             viewModel.UsersPaging = PaginatedList<User>.Create(viewModel.Users, pageNumber, pageSize);
             viewModel.PageIndex = pageNumber;
             viewModel.PageTotal = viewModel.UsersPaging.TotalPages;
@@ -107,9 +107,10 @@ namespace MvcClient.Controllers
             user.Role = "Managers";
             user.Name = user.GivenName + " " + user.FamilyName;
             Console.WriteLine("Hemmll" + user.ToString());
-            if (id != user.UserId)
+            if (!id.Equals(user.UserId))
             {
-                return NotFound();
+                return BadRequest("Ids is not match");
+                // return NotFound();
             }
 
             if (ModelState.IsValid)
@@ -118,13 +119,15 @@ namespace MvcClient.Controllers
 
                 if (userToUpdate == null)
                 {
-                    return NotFound();
+                    return BadRequest("ModelState is inValid");
+                    // return NotFound();
                 }
 
                 var isAuthorize = await _authorizationService.AuthorizeAsync(User, userToUpdate, Operations.Update);
                 if (!isAuthorize.Succeeded)
                 {
-                    return Forbid();
+                    return BadRequest("Not isAuthorize");
+                    // return Forbid();
                 }
 
                 await _service.UpdateUser(id, user);
