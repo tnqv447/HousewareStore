@@ -150,6 +150,27 @@ namespace IdentityApi
                     }
                 });
 
+                EnsureCreatedUser(services, "elizabeth", "Users", new ApplicationUser
+                {
+                    Name = "Elizabeth England",
+                    GivenName = "Elizabeth",
+                    FamilyName = "England",
+                    PhoneNumber = "0222456789",
+                    PhoneNumberConfirmed = true,
+                    Email = "ElizabethEng@email.com",
+                    EmailConfirmed = true,
+                    PictureUrl = "default_avatar.png",
+                    Website = "http://elizabeth.com",
+                    Address = new Address
+                    {
+                        StreetAddress = "One Hash Table",
+                        Locality = "BaDoan",
+                        City = "New City",
+                        Country = "England",
+                        PostalCode = "225588"
+                    }
+                });
+
                 EnsureCreatedUser(services, "ben", "Sales", new ApplicationUser
                 {
                     Name = "Ben Smith",
@@ -168,6 +189,27 @@ namespace IdentityApi
                         City = "Heidelberg",
                         Country = "Germany",
                         PostalCode = "69118"
+                    }
+                });
+
+                EnsureCreatedUser(services, "meliodas", "Sales", new ApplicationUser
+                {
+                    Name = "Meliodas Love",
+                    GivenName = "Meliodas",
+                    FamilyName = "Love",
+                    PhoneNumber = "0333666999",
+                    PhoneNumberConfirmed = true,
+                    Email = "MeliodasL@email.com",
+                    EmailConfirmed = true,
+                    PictureUrl = "default_avatar.png",
+                    Website = "https://the-gioi-anime-anime-world.fandom.com/vi/wiki/Meliodas",
+                    Address = new Address
+                    {
+                        StreetAddress = "7 Crime",
+                        Locality = "Photon",
+                        City = "JoDes",
+                        Country = "France",
+                        PostalCode = "884477"
                     }
                 });
 

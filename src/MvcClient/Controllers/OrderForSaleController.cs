@@ -28,10 +28,20 @@ namespace MvcClient.Controllers
             _authorizationService = authorizationService;
             _identityService = identityService;
         }
-        public async Task<IActionResult> Index(string searchItemName, int pageNumber = 1)
+        public async Task<IActionResult> Index(string searchItemName, int pageNumber = 1, string status = null, string sortOrder = null)
+        {
+            var viewModel = await getViewModel(searchItemName, pageNumber, status, sortOrder);
+            return View(viewModel);
+        }
+        public async Task<IActionResult> OrderForSalePaging(string searchItemName, int pageNumber = 1, string status = null, string sortOrder = null)
+        {
+            var viewModel = await getViewModel(searchItemName, pageNumber, status, sortOrder);
+            return new JsonResult(viewModel);
+        }
+        public async Task<OrderForSaleViewModel> getViewModel(string searchItemName, int pageNumber = 1, string status = null, string sortOrder = null)
         {
             OrderForSaleViewModel viewModel = new OrderForSaleViewModel();
-            var pageSize = 5;
+            var pageSize = 1;
             var saleId = User.IsInRole(Constants.SalesRole) ? _identityService.Get(User).Id : null;
             viewModel.OrderItems = await _orderService.GetOrderItemsForSales(saleId);
             if (viewModel.OrderItems != null)
@@ -43,9 +53,8 @@ namespace MvcClient.Controllers
             else
             {
                 viewModel.OrderItemsPaging = null;
-                ViewData["Error Message"] = "No orders found";
             }
-            return View(viewModel);
+            return viewModel;
         }
 
     }
