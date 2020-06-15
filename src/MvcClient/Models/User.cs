@@ -78,4 +78,19 @@ namespace MvcClient.Models
             return $"{StreetAddress}, {Locality}, {City}, {Country}, {PostalCode}";
         }
     }
+
+    public enum SortOrder
+    {
+        Descending = 0,
+        Ascending = 1,
+    }
+    public enum SortType
+    {
+        UserId = 0,
+        FullName = 1,
+        GivenName = 2,
+        FamilyName = 3,
+        Role = 4,
+        Username = 5
+    }
 }

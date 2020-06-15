@@ -15,6 +15,7 @@ namespace MvcClient.Models
     {
         Preparing = 0,
         Shipped = 1,
-        Delivered = 2
+        Delivered = 2,
+        Rejected = 3
     }
 }

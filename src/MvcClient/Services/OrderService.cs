@@ -42,7 +42,7 @@ namespace MvcClient.Services
         public async Task<IEnumerable<Order>> GetOrders(string userId)
         {
             var uri = _serviceBaseUrl + $"/buyerId/{userId}"; ;
-
+            Console.WriteLine(uri);
             return await _httpClient.GetListAsync<Order>(uri);
         }
 
