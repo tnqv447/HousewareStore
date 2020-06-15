@@ -53,6 +53,7 @@ namespace MvcClient.Models
         [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
         [Compare("Password", ErrorMessage = "The entered passwords do not match.")]
         public string ConfirmPassword { get; set; }
+
         public override string ToString()
         {
             return $"{UserId}, {UserName}, {this.Password}, {this.Name}, {this.Email}, {this.PhoneNumber}, {this.PictureUrl}, {this.Address.ToString()}, {this.Website}, {this.Role}";
@@ -74,6 +75,16 @@ namespace MvcClient.Models
         //[JsonProperty("postal_code")]
         [Display(Name = "Postal code")]
         public string PostalCode { get; set; }
+
+        public Address() { }
+        public Address(Address a)
+        {
+            this.StreetAddress = a.StreetAddress;
+            this.Locality = a.Locality;
+            this.City = a.City;
+            this.Country = a.Country;
+            this.PostalCode = a.PostalCode;
+        }
 
         public override string ToString()
         {
