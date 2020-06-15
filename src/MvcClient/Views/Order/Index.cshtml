@@ -27,7 +27,7 @@
             <div class="col-lg-9">
                 <div class="card-body">
                     <h4>Order List</h4>
-                    <table class="text-center table table-hover text-center">
+                    <table class="text-center table">
                         <thead>
                             <th>@Html.DisplayNameFor(model => model.OrderId)</th>
                             <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
@@ -45,32 +45,37 @@
                                     
                                 </td>
                                 <td>
-                                    <a style="cursor:pointer" class="show"><i id="icon_action" class="fa fa-arrow-left"></i></a>
+                                    <a style="cursor:pointer" id="@order.OrderId"  class="show"><i id="icon_action" class="fa fa-arrow-left"></i></a>
                                     @* <a asp-action="Details" asp-route-orderId="@order.OrderId">Details</a> *@
                                 </td>
                             </tr>
-                            <table style="display:none" class="text-center table table-hover order_detail">
-                                <thead>
-                                    <th width="40%">@Html.DisplayNameFor(model => model.OrderItems[0].ItemName)</th>
-                                    <th>@Html.DisplayNameFor(model => model.OrderItems[0].Units)</th>
-                                    <th>@Html.DisplayNameFor(model => model.OrderItems[0].UnitPrice)</th>
-                                    <th>Total</th>
-                                    <th>Status</th>
-                                </thead>
-                                <tbody>
-                                    @foreach(var item in order.OrderItems)
-                                    {
-                                        <tr>
-                                            <td>@item.ItemName</td>
-                                            <td>@item.Units</td>
-                                            <td>$@item.UnitPrice.ToString("N2")</td>
-                                            <td>$@Math.Round(@item.Units * @item.UnitPrice,2)</td>
-                                            <td>@item.Status</td>
-                                        </tr>
-                                    }
-                                    
-                                </tbody>
-                            </table>
+                            <tr style="display:none" id="action_@order.OrderId" >
+                                <td colspan="5">
+                                    <table>
+                                        <thead>
+                                            <th width="40%">@Html.DisplayNameFor(model => model.OrderItems[0].ItemName)</th>
+                                            <th>@Html.DisplayNameFor(model => model.OrderItems[0].Units)</th>
+                                            <th>@Html.DisplayNameFor(model => model.OrderItems[0].UnitPrice)</th>
+                                            <th>Total</th>
+                                            <th>Status</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach(var item in order.OrderItems)
+                                            {
+                                                <tr>
+                                                    <td>@item.ItemName</td>
+                                                    <td>@item.Units</td>
+                                                    <td>$@item.UnitPrice.ToString("N2")</td>
+                                                    <td>$@Math.Round(@item.Units * @item.UnitPrice,2)</td>
+                                                    <td>@item.Status</td>
+                                                </tr>
+                                            }
+                                            
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            
                         }
                         
                         </tbody>
@@ -86,18 +91,20 @@
     <script>
     $(document).ready(function(){
         $(document).on('click','.show',function(){
-            $('.order_detail').show(600);
+            var id = $(this).attr('id');
+            $('#action_' + id).show(600);
             html='';
             html+='<i class="fa fa-arrow-down"></i>';
-            $('.show').html('').html(html);
-            $('.show').addClass('close_order_detail');
+            $('#' + id).html('').html(html);
+            $('#' + id).addClass('close_order_detail');
         })
         $(document).on('click','.close_order_detail',function(){
-            $('.order_detail').hide(600);
+            var id = $(this).attr('id');
+            $('#action_' + id).hide(600);
             html='';
             html+='<i class="fa fa-arrow-left"></i>';
-            $('.show').html('').html(html);
-            $('.show').removeClass('close_order_detail');
+            $("#"+id).html('').html(html);
+            $('#'+id).removeClass('close_order_detail');
         })
     })
     </script>                            
