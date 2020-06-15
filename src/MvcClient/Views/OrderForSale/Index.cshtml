@@ -4,7 +4,6 @@
     ViewData["Title"] = "Sale - Order";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
 }
-<h1>Index orderforsale</h1>
 
 <div class="row">
     <div class="col-12 mt-5">
@@ -12,7 +11,7 @@
             <div class="card-body">
                 <div class="form-row align-items-center">
                     <div class="col-md-5 my-1">
-                        <select class="custom-select" >
+                        <select class="custom-select" id="ItemStatus" >
                             <option value="">All Satus </option><span class="arrow_carrot-down"></span>
                         </select>                  
                     </div> 
@@ -48,28 +47,40 @@
                             </select>   
                         </div>
                     </div>
-                    @if(@Model.OrderItemsPaging.Count() <= 0){
+                    <br />
+                    @if(@Model.OrderItemsPaging == null){
                         <div style="text-align:center">
-                            <h3 style="font-weight:600;margin:auto;">@ViewData["Error Message"]</h3>
+                            <h3 style="font-weight:600;margin:auto;">No orders found</h3>
                         </div>
                     }else{
                         <table id="dataTable2" class="text-center">
                             <thead class="text-capitalize">
                                 <tr>
-                                    <th width="15%">Order Id</th>
+                                    <th width="10%">Order Id</th>
                                     <th width="20%">Order Date</th>
-                                    <th width="10%">Name (f l)</th>//detail
-                                    <th width="30%">Item Name</th>
-                                    <th width="10%">Price</th>
+                                    <th width="20%">Buyer Name</th>
+                                    <th width="25%">Item Name</th>
+                                    <th width="10%">Unit Price</th>
+                                    <th width="5%">Units</th>
                                     <th width="10%">Status</th>
-                                    <th width="15%">Actions</th>//
+                                    <th width="10%">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="item_body">
                                 @foreach(var item in Model.OrderItemsPaging)
                                 {
                                     <tr>
-                                        
+                                        <td>@item.OrderId</td>
+                                        <td>@item.OrderDate</td>
+                                        <td>@item.FirstName @item.LastName</td>
+                                        <td>@item.ItemName</td>
+                                        <td>@item.UnitPrice</td>
+                                        <td>@item.Units</td>
+                                        <td>@item.Status</td>
+                                        <td>
+                                            <a href="#"><i class="fa fa-info"></i></a>
+                                            <a href="#"> <i class="fa fa-edit"></i></a>
+                                        </td>
                                     </tr>
                                 } 
                             </tbody>
@@ -77,7 +88,7 @@
                     }
                     
                 </div>
-                @if(@Model.OrderItemsPaging.Count() >0){
+                @if(@Model.OrderItemsPaging != null){
                     <div class="row">
                             @{
                             var prevDisabled = !Model.OrderItemsPaging.HasPrevious ? "disabled" : "";
@@ -137,16 +148,31 @@
                         for(i=0; i<data.orderItemsPaging.length;i++)
                         {
                             var item = data.orderItemsPaging[i];
-                            var address = item.address.streetAddress +", "+item.address.locality +", "+item.address.city +", "+item.address.country +", "+item.address.postalCode; 
+                            var fullname= item.firstName + " " + item.lastName;
+                            // DateTime
+                            var hour = parseInt(item.orderDate.slice(11,13));
+                            var tt="AM";
+                            if(hour>12) {hour=hour-12; tt="PM";}
+                            var OrderDate = item.orderDate.slice(5,7)+"/"+item.orderDate.slice(8,10)+"/"+item.orderDate.slice(0,4)+" "+hour+":"+item.orderDate.slice(14,16)+":"+item.orderDate.slice(17,19)+" "+tt;
+                            // Status
+                            var Status= "";
+                            if(item.status == 0 ) Status ="Preparing";
+                            else if(item.status == 1 ) Status ="Shipped";
+                            else if(item.status == 2 ) Status ="Delivered";
+                            else if(item.status == 3 ) Status ="Rejected";
+
                             html += '<tr>';
-                            html += '<td>'+item.name+'</td>';
-                            html += '<td>'+item.email+'</td>';
-                            html += '<td>'+item.phoneNumber+'</td>';
-                            html += '<td>'+address+'</td>';
-                            html += '<td>'+item.role+'</td>';
+                            html += '<td>'+item.orderId+'</td>';
+                            html += '<td>'+OrderDate+'</td>';
+                            html += '<td>'+fullname+'</td>';
+                            html += '<td>'+item.itemName+'</td>';
+                            html += '<td>'+item.unitPrice+'</td>';
+                            html += '<td>'+item.units+'</td>';
+                            html += '<td>'+Status+'</td>';
                             html +='<td>'
-                            html +=' <a style="cursor:pointer" asp-action="Edit" href="User/Edit/'+item.userId+'"><i class="fa fa-edit"></i></a>';           
-                            html +='<a asp-action="Delete" href="User/Delete/'+item.userId+'"><i class="fa fa-close"></i></a>';            
+                            html +=' <a href="#"><i class="fa fa-info"></i></a>';           
+                            //html +='<a asp-action="Delete" href="User/Delete/'+item.userId+'"><i class="fa fa-close"></i></a>';  
+                            html +='<a href="#"> <i class="fa fa-edit"></i></a>';          
                             html += '</td>';
                             html += '</tr>';
                         }
@@ -211,12 +237,12 @@
                 loadPage(searchString,itemCategory,1,minPrice,maxPrice,selectedSort,ownerId);    
             })*/
             $(document).on('click','.page-link',function(){
-                var selectedSort= $("#select_sort").children("option:selected").val();
+                //var selectedSort= $("#select_sort").children("option:selected").val();
                 var searchItemName = $("#SearchItemName").val();
-                var status = $("#Status").children("option:selected").val();
+                var status = $("#ItemStatus").children("option:selected").val();
                 var pageNumber = $(this).attr("id").slice(8);
                 WaitingSearch();
-                loadPage(searchName,status,pageNumber,selectedSort);
+                loadPage(searchItemName,status,pageNumber,null);
             });
             function WaitingSearch(){
                 html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
