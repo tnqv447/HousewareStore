@@ -89,12 +89,10 @@
                                         <td>@item.Address</td>
                                         <td>@item.Role</td>
                                         <td>
-                                            @if(item.Role.Equals("Managers")){
-                                                <a style="cursor:pointer" asp-action="Edit" asp-route-id="@item.UserId">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
+                                            @if(item.Role.Equals("Managers") || item.Role.Equals("Administrators")){
+                                                <a style="cursor:pointer" asp-action="Edit" asp-route-id="@item.UserId"><i class="fa fa-edit"></i></a>
                                             }
-                                            @if(!item.Role.Equals("Administrators")){
+                                            @if(item.Role.Equals("Administrators") == false){
                                                 <a asp-action="Delete" asp-route-id="@item.UserId"><i class="fa fa-close"></i></a>
                                             }   
                                         </td>
@@ -201,8 +199,11 @@
                             html += '<td>'+address+'</td>';
                             html += '<td>'+item.role+'</td>';
                             html +='<td>'
-                            html +=' <a style="cursor:pointer" asp-action="Edit" href="User/Edit/'+item.userId+'"><i class="fa fa-edit"></i></a>';           
-                            html +='<a asp-action="Delete" href="User/Delete/'+item.userId+'"><i class="fa fa-close"></i></a>';            
+                            if(item.role == "Managers" || item.role == "Administrators"){
+                                html +=' <a style="cursor:pointer" asp-action="Edit" href="User/Edit/'+item.userId+'"><i class="fa fa-edit"></i></a>';           
+                            }
+                            if(item.role != "Administrators")
+                                html +='<a asp-action="Delete" href="User/Delete/'+item.userId+'"><i class="fa fa-close"></i></a>';            
                             html += '</td>';
                             html += '</tr>';
                         }

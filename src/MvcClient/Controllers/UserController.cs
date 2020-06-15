@@ -128,11 +128,9 @@ namespace MvcClient.Controllers
                 user.PictureUrl = "default_avatar.png";
             user.Role = "Managers";
             user.Name = user.GivenName + " " + user.FamilyName;
-            Console.WriteLine("Hemmll" + user.ToString());
             if (!id.Equals(user.UserId))
             {
-                return BadRequest("Ids is not match");
-                // return NotFound();
+                return NotFound();
             }
 
             if (ModelState.IsValid)
@@ -141,15 +139,13 @@ namespace MvcClient.Controllers
 
                 if (userToUpdate == null)
                 {
-                    return BadRequest("ModelState is inValid");
-                    // return NotFound();
+                    return NotFound();
                 }
 
                 var isAuthorize = await _authorizationService.AuthorizeAsync(User, userToUpdate, Operations.Update);
                 if (!isAuthorize.Succeeded)
                 {
-                    return BadRequest("Not isAuthorize");
-                    // return Forbid();
+                    return Forbid();
                 }
 
                 await _service.UpdateUser(id, user);
