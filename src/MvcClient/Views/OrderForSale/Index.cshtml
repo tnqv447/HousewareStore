@@ -48,74 +48,73 @@
                             </select>   
                         </div>
                     </div>
-                    @* <table id="dataTable2" class="text-center">
-                        <thead class="text-capitalize">
-                            <tr>
-                                <th width="15%">Name</th>
-                                <th width="20%">Email</th>
-                                <th width="10%">Phone Number</th>
-                                <th width="30%">Address</th>
-                                <th width="10%">Role</th>
-                                <th width="15%">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="item_body">
-                            @foreach(var item in Model.OrderItemPaging)
-                            {
-                                <tr>
-                                    <td>@item.Name</td>
-                                    <td>@item.Email</td>
-                                    <td>@item.PhoneNumber</td>
-                                    <td>@item.Address</td>
-                                    <td>@item.Role</td>
-                                    <td>
-                                        <a style="cursor:pointer" asp-action="Edit" asp-route-id="@item.UserId">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a asp-action="Delete" asp-route-id="@item.UserId"><i class="fa fa-close"></i></a>
-                                        
-                                    </td>
-                                </tr>
-                            } 
-                        </tbody>
-                    </table> *@
-                </div>
-                <div class="row">
-                        @{
-                        var prevDisabled = !Model.OrderItemsPaging.HasPrevious ? "disabled" : "";
-                        var nextDisabled = !Model.OrderItemsPaging.HasNext ? "disabled" : "";
-                    }   
-                    @* Start Pagination *@
-                    <div class="col-lg-6 col-md-8 mt-5" style="text-align:center">
-                        <div class="card">
-                            <div class="card-body">
-                                <nav aria-label="...">
-                                    <ul class="pagination" id="pagination_body">
-                                        <li class="page-item @prevDisabled">
-                                            <a class="page-link"  tabindex="-1" id="num-page@(Model.OrderItemsPaging.PageIndex-1)">Previous</a>
-                                        </li>
-                                        @for(var i = 0;i<Model.OrderItemsPaging.TotalPages;i++){
-                                            var pageIndex = i+1;
-                                            var idpageIndex = "num-page" + pageIndex;
-                                            if( pageIndex == Model.OrderItemsPaging.PageIndex){
-                                                <li class="page-item active">
-                                                    <a class="page-link" id="@idpageIndex"  >@pageIndex <span class="sr-only">(current)</span></a>
-                                                </li>
-                                            }
-                                            else{
-                                                <li class="page-item"><a class="page-link" id="@idpageIndex"  >@pageIndex</a></li>
-                                            }
-                                        }    
-                                        <li class="page-item @nextDisabled">
-                                            <a class="page-link"   id="num-page@(Model.OrderItemsPaging.PageIndex+1)">Next</a>
-                                        </li>                                                                                              
-                                    </ul>     
-                                </nav>
-                            </div>
+                    @if(@Model.OrderItemsPaging == null){
+                        <div style="text-align:center">
+                            <h3 style="font-weight:600;margin:auto;">@ViewData["Error Message"]</h3>
                         </div>
-                    </div> 
-                    @* End Pagination *@
+                    }else{
+                        <table id="dataTable2" class="text-center">
+                            <thead class="text-capitalize">
+                                <tr>
+                                    <th width="15%">Order Id</th>
+                                    <th width="20%">Order Date</th>
+                                    <th width="10%">Name (f l)</th>//detail
+                                    <th width="30%">Item Name</th>
+                                    <th width="10%">Price</th>
+                                    <th width="10%">Status</th>
+                                    <th width="15%">Actions</th>//
+                                </tr>
+                            </thead>
+                            <tbody id="item_body">
+                                @foreach(var item in Model.OrderItemsPaging)
+                                {
+                                    <tr>
+                                        
+                                    </tr>
+                                } 
+                            </tbody>
+                        </table>
+                    }
+                    
                 </div>
+                @if(@Model.OrderItemsPaging != null){
+                    <div class="row">
+                            @{
+                            var prevDisabled = !Model.OrderItemsPaging.HasPrevious ? "disabled" : "";
+                            var nextDisabled = !Model.OrderItemsPaging.HasNext ? "disabled" : "";
+                        }   
+                        @* Start Pagination *@
+                        <div class="col-lg-6 col-md-8 mt-5" style="text-align:center">
+                            <div class="card">
+                                <div class="card-body">
+                                    <nav aria-label="...">
+                                        <ul class="pagination" id="pagination_body">
+                                            <li class="page-item @prevDisabled">
+                                                <a class="page-link"  tabindex="-1" id="num-page@(Model.OrderItemsPaging.PageIndex-1)">Previous</a>
+                                            </li>
+                                            @for(var i = 0;i<Model.OrderItemsPaging.TotalPages;i++){
+                                                var pageIndex = i+1;
+                                                var idpageIndex = "num-page" + pageIndex;
+                                                if( pageIndex == Model.OrderItemsPaging.PageIndex){
+                                                    <li class="page-item active">
+                                                        <a class="page-link" id="@idpageIndex"  >@pageIndex <span class="sr-only">(current)</span></a>
+                                                    </li>
+                                                }
+                                                else{
+                                                    <li class="page-item"><a class="page-link" id="@idpageIndex"  >@pageIndex</a></li>
+                                                }
+                                            }    
+                                            <li class="page-item @nextDisabled">
+                                                <a class="page-link"   id="num-page@(Model.OrderItemsPaging.PageIndex+1)">Next</a>
+                                            </li>                                                                                              
+                                        </ul>     
+                                    </nav>
+                                </div>
+                            </div>
+                        </div> 
+                        @* End Pagination *@
+                    </div>
+                }
             </div>
         </div>
     </div>

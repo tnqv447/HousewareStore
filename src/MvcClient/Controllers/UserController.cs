@@ -76,7 +76,7 @@ namespace MvcClient.Controllers
         }
         [Authorize(Roles = "Administrators")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Create(User user)
         {
             user.Name = user.GivenName + " " + user.FamilyName;

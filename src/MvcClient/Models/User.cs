@@ -11,21 +11,23 @@ namespace MvcClient.Models
         //for claims
         public string Name { get; set; }
 
+        [Required]
         [Display(Name = "Username")]
         public string UserName { get; set; }
-
         [Display(Name = "Family name")]
         //[JsonProperty("family_name")]
         public string FamilyName { get; set; }
 
+        [Required]
         [Display(Name = "Given name")]
         // [JsonProperty("give_name")]
         public string GivenName { get; set; }
-
+        [Required]
+        [RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Your email is invalid")]
         public string Email { get; set; }
-
+        [Required]
         [Display(Name = "Phone number")]
-        //[JsonProperty("phone_number")]
+        [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Your phone is invalid")]
         public string PhoneNumber { get; set; }
 
         //[JsonProperty("picture_url")]
@@ -41,16 +43,16 @@ namespace MvcClient.Models
         //for add,update user
         //public string UserNameStr { get; set; }
         [DataType(DataType.Password)]
-        [Required(ErrorMessage = "The Password cannot be empty.")]
+        [Required]
         [Display(Name = "Password")]
-        [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
+        [RegularExpression(@"^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]))).{8,32}$", ErrorMessage = "At least one uppercase character,one lowercase character, one number, one special character and between 8 to 32 characters in length")]
         public string Password { get; set; }
 
-        // [DataType(DataType.Password)]
-        // [Display(Name = "Confirm Password")]
-        // [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
-        // [Compare("Password", ErrorMessage = "The entered passwords do not match.")]
-        // public string ConfirmPassword { get; set; }
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm Password")]
+        [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
+        [Compare("Password", ErrorMessage = "The entered passwords do not match.")]
+        public string ConfirmPassword { get; set; }
         public override string ToString()
         {
             return $"{UserId}, {UserName}, {this.Password}, {this.Name}, {this.Email}, {this.PhoneNumber}, {this.PictureUrl}, {this.Address.ToString()}, {this.Website}, {this.Role}";

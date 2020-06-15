@@ -34,10 +34,17 @@ namespace MvcClient.Controllers
             var pageSize = 5;
             var saleId = User.IsInRole(Constants.SalesRole) ? _identityService.Get(User).Id : null;
             viewModel.OrderItems = await _orderService.GetOrderItemsForSales(saleId);
-
-            viewModel.OrderItemsPaging = PaginatedList<OrderItemForSales>.Create(viewModel.OrderItems, pageNumber, pageSize);
-            viewModel.PageIndex = pageNumber;
-            viewModel.PageTotal = viewModel.OrderItemsPaging.TotalPages;
+            if (viewModel.OrderItems != null)
+            {
+                viewModel.OrderItemsPaging = PaginatedList<OrderItemForSales>.Create(viewModel.OrderItems, pageNumber, pageSize);
+                viewModel.PageIndex = pageNumber;
+                viewModel.PageTotal = viewModel.OrderItemsPaging.TotalPages;
+            }
+            else
+            {
+                viewModel.OrderItemsPaging = null;
+                ViewData["Error Message"] = "No orders found";
+            }
             return View(viewModel);
         }
 
