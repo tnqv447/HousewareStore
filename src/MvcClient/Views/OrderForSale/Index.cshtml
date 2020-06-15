@@ -148,8 +148,19 @@
                         for(i=0; i<data.orderItemsPaging.length;i++)
                         {
                             var item = data.orderItemsPaging[i];
-                            var fullname= item.firsttName + " " + item.lastName;
-                            var OrderDate = item.orderDate;
+                            var fullname= item.firstName + " " + item.lastName;
+                            // DateTime
+                            var hour = parseInt(item.orderDate.slice(11,13));
+                            var tt="AM";
+                            if(hour>12) {hour=hour-12; tt="PM";}
+                            var OrderDate = item.orderDate.slice(5,7)+"/"+item.orderDate.slice(8,10)+"/"+item.orderDate.slice(0,4)+" "+hour+":"+item.orderDate.slice(14,16)+":"+item.orderDate.slice(17,19)+" "+tt;
+                            // Status
+                            var Status= "";
+                            if(item.status == 0 ) Status ="Preparing";
+                            else if(item.status == 1 ) Status ="Shipped";
+                            else if(item.status == 2 ) Status ="Delivered";
+                            else if(item.status == 3 ) Status ="Rejected";
+
                             html += '<tr>';
                             html += '<td>'+item.orderId+'</td>';
                             html += '<td>'+OrderDate+'</td>';
@@ -157,7 +168,7 @@
                             html += '<td>'+item.itemName+'</td>';
                             html += '<td>'+item.unitPrice+'</td>';
                             html += '<td>'+item.units+'</td>';
-                            html += '<td>'+item.status+'</td>';
+                            html += '<td>'+Status+'</td>';
                             html +='<td>'
                             html +=' <a href="#"><i class="fa fa-info"></i></a>';           
                             //html +='<a asp-action="Delete" href="User/Delete/'+item.userId+'"><i class="fa fa-close"></i></a>';  
