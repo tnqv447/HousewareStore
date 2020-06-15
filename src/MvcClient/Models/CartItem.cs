@@ -7,6 +7,7 @@ namespace MvcClient.Models
         public string ItemName { get; set; }
         public double UnitPrice { get; set; }
         public double OldUnitPrice { get; set; }
+        public string OwnerId { get; set; }
         public int Quantity { get; set; }
         public string PictureUrl { get; set; }
     }

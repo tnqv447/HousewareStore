@@ -84,6 +84,7 @@ namespace MvcClient.Services
                     ItemId = int.Parse(item.ItemId),
                     ItemName = item.ItemName,
                     UnitPrice = item.UnitPrice,
+                    OwnerId = item.OwnerId,
                     PictureUrl = item.PictureUrl,
                     Units = item.Quantity
                 });
