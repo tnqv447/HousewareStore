@@ -14,6 +14,8 @@ namespace IdentityApi.Data.Repos
         Task<ApplicationUser> CreateUser(ApplicationUserDTO dto);
         Task DeleteUser(ApplicationUser user);
         Task UpdateUser(ApplicationUserDTO dto);
+
+        Task<string> GetRoleByUser(string id);
         bool UserExists(string id);
 
     }

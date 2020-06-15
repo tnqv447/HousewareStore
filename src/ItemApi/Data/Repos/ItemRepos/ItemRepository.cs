@@ -37,7 +37,7 @@ namespace ItemApi.Data.Repos
             }
             if (!string.IsNullOrEmpty(searchString))
             {
-                Items = Items.Where(m => m.Name.Contains(searchString));
+                Items = Items.Where(m => m.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             }
             if (!string.IsNullOrEmpty(sortOrder))
             {
