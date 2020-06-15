@@ -46,7 +46,7 @@ namespace IdentityApi.Quickstart.User
         }
 
         [HttpGet("manage")]
-        public async Task<ActionResult<List<ApplicationUserDTO>>> ManagerUser(string role = null)
+        public async Task<ActionResult<List<ApplicationUserDTO>>> ManagerUser(string role = null, string name = null, string username = null, SortType sortType = SortType.Role, SortOrder sortOrder = SortOrder.Ascending)
         {
             IList<ApplicationUser> users = null;
             if (String.IsNullOrEmpty(role))
@@ -58,12 +58,32 @@ namespace IdentityApi.Quickstart.User
                 users = await _userRepo.GetUsersByRole(role);
             }
 
+            if (!String.IsNullOrEmpty(name))
+            {
+                users = users.Where(m => m.Name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!String.IsNullOrEmpty(username))
+            {
+                users = users.Where(m => m.UserName.Contains(username, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
             var dtos = new List<ApplicationUserDTO>(toDtoRange(users));
             if (!String.IsNullOrEmpty(role))
             {
                 foreach (var dto in dtos)
                     dto.Role = role;
             }
+            else
+            {
+                foreach (var dto in dtos)
+                {
+                    dto.Role = await _userRepo.GetRoleByUser(dto.UserId);
+                }
+            }
+
+            this.SortUser(dtos, sortType, sortOrder);
+
             return dtos;
         }
 
@@ -122,6 +142,54 @@ namespace IdentityApi.Quickstart.User
             await _userRepo.DeleteUser(user);
 
             return NoContent();
+        }
+
+        //
+        //support functions
+        //
+        private void SortUser(List<ApplicationUserDTO> dtos, SortType sortType, SortOrder sortOrder)
+        {
+            switch (sortOrder)
+            {
+                case (SortOrder.Descending):
+                    {
+                        switch (sortType)
+                        {
+                            case (SortType.UserId):
+                                dtos = dtos.OrderByDescending(m => m.UserId).ToList(); break;
+                            case (SortType.FullName):
+                                dtos = dtos.OrderByDescending(m => m.Name.ToLower()).ToList(); break;
+                            case (SortType.GivenName):
+                                dtos = dtos.OrderByDescending(m => m.GivenName.ToLower()).ToList(); break;
+                            case (SortType.FamilyName):
+                                dtos = dtos.OrderByDescending(m => m.FamilyName.ToLower()).ToList(); break;
+                            case (SortType.Username):
+                                dtos = dtos.OrderByDescending(m => m.UserName).ToList(); break;
+                            default:
+                                dtos = dtos.OrderByDescending(m => m.Role).ToList(); break;
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        switch (sortType)
+                        {
+                            case (SortType.UserId):
+                                dtos = dtos.OrderBy(m => m.UserId).ToList(); break;
+                            case (SortType.FullName):
+                                dtos = dtos.OrderBy(m => m.Name.ToLower()).ToList(); break;
+                            case (SortType.GivenName):
+                                dtos = dtos.OrderBy(m => m.GivenName.ToLower()).ToList(); break;
+                            case (SortType.FamilyName):
+                                dtos = dtos.OrderBy(m => m.FamilyName.ToLower()).ToList(); break;
+                            case (SortType.Username):
+                                dtos = dtos.OrderBy(m => m.UserName).ToList(); break;
+                            default:
+                                dtos = dtos.OrderBy(m => m.Role).ToList(); break;
+                        }
+                        break;
+                    }
+            }
         }
 
         //

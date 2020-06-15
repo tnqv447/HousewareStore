@@ -160,6 +160,10 @@ namespace IdentityApi.Data.Repos
             Log.Debug($"Application user doesn't exist. Delete failed");
 
         }
+        public async Task<string> GetRoleByUser(string id)
+        {
+            return (await _userManager.GetRolesAsync(await _userManager.FindByIdAsync(id))).First();
+        }
 
         public bool UserExists(string id)
         {

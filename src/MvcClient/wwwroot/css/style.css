@@ -2330,7 +2330,10 @@ ol {
 	font-weight: 700;
 	float:right;
 }
-
+.card-body {
+    padding: 25.6px;
+    padding: 1.6rem;
+}
 .checkout__order .checkout__order__subtotal {
 	font-size: 18px;
 	color: #1c1c1c;

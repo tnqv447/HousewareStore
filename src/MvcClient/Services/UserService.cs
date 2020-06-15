@@ -19,9 +19,9 @@ namespace MvcClient.Services
             _baseUrl = $"{appSettings.Value.IdentityUrl}/api/user";
         }
 
-        public async Task<IEnumerable<User>> ManageUsers(string role = null)
+        public async Task<IEnumerable<User>> ManageUsers(string role = null, string name = null, string username = null, SortType sortType = SortType.Role, SortOrder sortOrder = SortOrder.Ascending)
         {
-            var url = _baseUrl + $"/manage?role={role}";
+            var url = _baseUrl + $"/manage?role={role}$name={name}&username={username}&sortType={sortType}&sortOrder={sortOrder}";
 
             return await _httpClient.GetListAsync<User>(url);
         }
