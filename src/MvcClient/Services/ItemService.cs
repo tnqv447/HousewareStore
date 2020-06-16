@@ -27,7 +27,7 @@ namespace MvcClient.Services
 
             return await _httpClient.GetAsync<IndexViewModel>(uri);
         }
-        
+
 
         public async Task<IList<Category>> GetCategories()
 
@@ -44,11 +44,11 @@ namespace MvcClient.Services
             return await _httpClient.GetAsync<Item>(uri);
         }
 
-        public async Task CreateItem(Item item)
+        public async Task<Item> CreateItem(Item item)
         {
             var uri = _baseUrl;
 
-            await _httpClient.PostAsync<Item>(uri, item);
+            return await _httpClient.PostAsync<Item>(uri, item);
         }
 
         public async Task UpdateItem(int id, Item item)

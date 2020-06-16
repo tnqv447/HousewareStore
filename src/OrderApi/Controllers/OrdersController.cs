@@ -147,8 +147,8 @@ namespace OrderApi.Controllers
             }
             if (isRejected.Equals(count)) res = OrderStatus.Rejected;
             else if (isDelivered.Equals(count)) res = OrderStatus.Delivered;
-            else if (isShipping == count - isDelivered) res = OrderStatus.Shipping;
-            else if (isAccepted == count - isDelivered - isShipping) res = OrderStatus.Accepted;
+            else if (isShipping == count - isDelivered - isRejected) res = OrderStatus.Shipping;
+            else if (isAccepted == count - isDelivered - isShipping - isRejected) res = OrderStatus.Accepted;
 
             order.Status = res;
             await _orderRepo.UpdateAsync(order);

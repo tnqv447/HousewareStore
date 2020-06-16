@@ -12,7 +12,7 @@ namespace MvcClient.Services
                                         double maxPrice = 0, string sortOrder = null, bool isAdmin = false, string userId = null);
         Task<IList<Category>> GetCategories();
         Task<Item> GetItem(int id);
-        Task CreateItem(Item item);
+        Task<Item> CreateItem(Item item);
         Task UpdateItem(int id, Item item);
         Task DeleteItem(int id);
         Task ChangeItemStatus(int id, ItemStatus status);
