@@ -13,6 +13,20 @@
         <div class="col-md-8">
             <form asp-action="Create" asp-controller="User" method="POST" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group"> 
+                    <label asp-for="ImageURL" class="control-label"></label>  
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Upload</span>
+                        </div>
+                        <div class="custom-file"> 
+                            <input asp-for="ImageURL" class="custom-file-input" >  
+                            <label class="custom-file-label" for="customFile">Choose file</label>  
+                        </div>
+                    </div>
+                    <span asp-validation-for="ImageURL" class="text-danger"></span>  
+                </div> 
+                <img src="" id="displayImage" height="300px" width="300px"/>
                 <h3>Account</h3>
                 <div class="form-group">
                     <label asp-for="UserName" class="control-label"></label>
@@ -112,4 +126,25 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} 
+    
+    <script type="text/javascript">  
+        // Add the following code if you want the name of the file appear on select  
+        $(".custom-file-input").on("change", function () {  
+            var fileName = $(this).val().split("\\").pop();  
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);  
+        });  
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function (e) {
+                    $('#displayImage').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#ImageURL").change(function(){
+            readURL(this);
+        });
+    </script>
 }

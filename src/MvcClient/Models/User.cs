@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace MvcClient.Models
 {
@@ -52,6 +53,9 @@ namespace MvcClient.Models
         [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
         [Compare("Password", ErrorMessage = "The entered passwords do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Item Picutre")]
+        public IFormFile ImageURL { get; set; }
 
         public override string ToString()
         {

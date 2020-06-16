@@ -58,5 +58,23 @@ namespace MvcClient.Controllers
         }
 
 
+        // [HttpPost]
+        // public async Task<IActionResult> Reject(int id)
+        // {
+        //     var item = await _itemService.GetItem(id);
+
+        //     var isAuthorize = await _authorizationService.AuthorizeAsync(User, item, Operations.Reject);
+        //     if (!isAuthorize.Succeeded)
+        //     {
+        //         return Forbid();
+        //     }
+
+        //     item.ItemStatus = ItemStatus.Rejected;
+        //     await _itemService.UpdateItem(id, item);
+
+        //     return RedirectToAction(nameof(Index));
+        // }
+
+
     }
 }
