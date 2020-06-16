@@ -99,7 +99,7 @@
                                             <td class="item"><img class="img_aspect" src="@PictureURLPath" asp-append-version="true" /></td>
                                             <td >@Html.DisplayFor(model => item.Name)</td>
                                             <td >@Html.DisplayFor(model => item.Category)</td>
-                                            <td>$@Html.DisplayFor(model => item.UnitPrice)</td>
+                                            <td>@Html.DisplayFor(model => item.UnitPrice)</td>
                                             <td>
                                                 @{
                                                     if((int)item.ItemStatus == 1 ){
