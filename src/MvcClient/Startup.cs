@@ -108,8 +108,11 @@ namespace MvcClient
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
+        [Obsolete]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Stripe.StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
