@@ -77,18 +77,22 @@ namespace MvcClient.Controllers
             return viewModel;
         }
         [Authorize(Roles = "Users")]
-        public async Task<IActionResult> Account()
+        public IActionResult Account()
         {
+            BuyerViewModel bvm = new BuyerViewModel();
+            
             var buyer = _identityService.Get(User);
-            var user = await _service.GetUser(buyer.Id);
-            return View(user);
+            bvm.buyer =buyer;
+            return View(bvm);
         }
         [Authorize(Roles = "Users")]
-        public async Task<IActionResult> Profile()
+        public IActionResult Profile()
         {
+            BuyerViewModel bvm = new BuyerViewModel();
+            
             var buyer = _identityService.Get(User);
-            var user = await _service.GetUser(buyer.Id);
-            return View(user);
+            bvm.buyer =buyer;
+            return View(bvm);
         }
 
         [Authorize(Roles = "Administrators")]

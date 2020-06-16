@@ -86,7 +86,7 @@
                         <a href="./home"><img src="/img/logo.png" alt=""></a>
                     </div>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <nav class="header__menu">
                         <ul>
                             
@@ -96,7 +96,7 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-5">
                     <nav class="header__menu">
                         <ul>
                             <partial name="_LoginPartial"/>
@@ -192,6 +192,7 @@
     <script src="~/js/main.js" asp-append-version="true"></script>
     <script>
         (function ($) {
+            var delay_check = 2000;
             $(document).on('click','.add_to_cart',function(){
                 var item_id = $(this).attr('id');
                 var item_name = $('#item_name_'+item_id).text();
@@ -205,7 +206,7 @@
                 item.UnitPrice = parseFloat(item_price),
                 item.CategoryId = parseInt(item_category_id);
                 item.PictureUrl = item_picture_url;
-                
+                $(".add_to_cart").focus();
                 $.ajax({
                     type: 'POST',
                     
@@ -220,9 +221,16 @@
                             total_price += (data.cartItems[i].unitPrice * data.cartItems[i].quantity);   
                             
                         }
+                        $("#success_"+item_id).show(500);
                         $("#loadCart").text(total_quantities);
                         $("#loadTotal").text("$" + $.number(total_price,2));    
                     
+                    },
+                    complete:function(){
+                        setTimeout(function(){
+                            $("#success_"+item_id).hide(1000);
+                        },delay_check)
+                        
                     },
                     error: function(xhr){
                         alert("error");
