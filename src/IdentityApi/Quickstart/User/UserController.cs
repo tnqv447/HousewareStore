@@ -42,7 +42,9 @@ namespace IdentityApi.Quickstart.User
             {
                 return NotFound();
             }
-            return toDto(user);
+            var dto = toDto(user);
+            dto.Role = await _userRepo.GetRoleByUser(user.Id);
+            return dto;
         }
 
         [HttpGet("manage")]

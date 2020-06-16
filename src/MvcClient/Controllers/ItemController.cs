@@ -98,13 +98,6 @@ namespace MvcClient.Controllers
             }
             return View();
         }
-        public string UploadFileName(string fileName)
-        {
-            string name = Path.GetFileNameWithoutExtension(fileName);
-            string extension = Path.GetExtension(fileName);
-            fileName = name + DateTime.Now.ToString("dd-MM-yyyy-hh-mm-tt") + extension;
-            return fileName;
-        }
         private string UploadedFile(ItemCategoryViewModel model)
         {
             string uniqueFileName = null;
@@ -112,13 +105,9 @@ namespace MvcClient.Controllers
             if (model.ImageURL != null)
             {
                 Console.WriteLine("anime " + model.ImageURL.FileName);
-                string uploadFileName = UploadFileName(model.ImageURL.FileName);
-                Console.WriteLine("anime " + uploadFileName);
                 string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "img/product/");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + uploadFileName;
+                uniqueFileName = model.Item.OwnerId + "_" + model.Item.Name + Path.GetExtension(model.ImageURL.FileName);
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                // Console.WriteLine("anime " + uploadsFolder);
-                // Console.WriteLine("anime " + filePath);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     model.ImageURL.CopyTo(fileStream);
