@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MvcClient.Models;
 using MvcClient.Services;
 using System;
+using MvcClient.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace MvcClient.Controllers
@@ -28,8 +29,10 @@ namespace MvcClient.Controllers
         {
             var user = _identitySvc.Get(User);
             var orders = await _orderSvc.GetOrders(user.Id);
-
-            return View(orders);
+            BuyerViewModel orvm = new BuyerViewModel();
+            orvm.order = orders;
+            orvm.buyer = user;
+            return View(orvm);
         }
         // [Authorize]
         public async Task<IActionResult> Create()
@@ -47,7 +50,7 @@ namespace MvcClient.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Order frmOrder)
+        public async Task<IActionResult> Create(Order frmOrder, string stripeToken,string stripeEmail)
         {
             if (!ModelState.IsValid)
             {
@@ -60,15 +63,15 @@ namespace MvcClient.Controllers
             order.BuyerId = user.Id;
             
             
-            // var chargeSvc = new ChargeService();
-            // var charge = chargeSvc.Create(new ChargeCreateOptions
-            // {
-            //     Amount = (int)(order.Total * 100),
-            //     Currency = "usd",
-            //     Description = $"Order Payment {order.UserName}",
-            //     ReceiptEmail = order.UserName,
-            //     Source = order.StripeToken
-            // });
+            var chargeSvc = new Stripe.ChargeService();
+            var charge = chargeSvc.Create(new Stripe.ChargeCreateOptions
+            {
+                Amount = (int)(order.Total * 100),
+                Currency = "usd",
+                Description = $"Order Payment {order.UserName}",
+                ReceiptEmail = stripeEmail,
+                Source = stripeToken
+            });
 
             var succeeded = true;
             // if (charge.Status == "succeeded")

@@ -106,6 +106,9 @@
                 })
             })
             $(document).on('click','.update_cart',function(){
+                $('html, body').animate({
+                    scrollTop: $("#cart_body").offset().top
+                }, 1200);
                 var quantities = {}
                 var action = '[ Update ]';
                 var length = $("#length_cart").val();

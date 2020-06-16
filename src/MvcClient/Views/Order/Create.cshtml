@@ -1,5 +1,6 @@
 @model Order
-
+@using Microsoft.Extensions.Options
+@inject IOptions<StripeSettings> Srtipe
 @{
     ViewData["Title"] = "New Order";
 }
@@ -78,13 +79,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="checkout__input__checkbox">
-                            <label for="diff-acc">
-                                Ship to a different address?
-                                <input type="checkbox" id="diff-acc">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
+                        <script src="//checkout.stripe.com/v2/checkout.js"
+                                class="stripe-button"
+                                data-key=>
+                        </script>
                         <div class="checkout__input">
                             <p>Order notes<span>*</span></p>
                             <input asp-for="@Model.Note" type="text"
@@ -97,6 +95,7 @@
         </div>
     </div>
 </section>
+
 @* <form asp-action="Create" asp-controller="Order" method="POST">
     <section class="esh-orders_new-section">
         <h4 class="esh-orders_new-title">Shipping address</h4>
