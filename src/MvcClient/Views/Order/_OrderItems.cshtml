@@ -1,4 +1,6 @@
 @model Order
+@using Microsoft.Extensions.Options
+@inject IOptions<StripeSettings> Stripe
 <div class="col-lg-6 col-md-6">
     <div class="checkout__order">
         <h4>Your Order</h4>
@@ -27,7 +29,12 @@
             <a asp-action="Index" asp-controller="Shop" class="primary-btn cart-btn">Go back to shop</a>
         }
         else{
-            <input type="submit" class="site-btn" value="[ Place Order ]">
+            
+            @* <input type="submit" class="stripe-button site-btn" value="[ Place Order ]"> *@
+            <script src="//checkout.stripe.com/v2/checkout.js"
+                                class="stripe-button"
+                                data-key="@Stripe.Value.PublishableKey" >
+                        </script>
         }
     </div>
 </div>

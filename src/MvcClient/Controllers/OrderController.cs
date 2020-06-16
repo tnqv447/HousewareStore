@@ -43,14 +43,15 @@ namespace MvcClient.Controllers
             var order = _cartSvc.MapCartToOrder(cart);
             order.FirstName = user.FirstName;
             order.LastName = user.LastName;
-            
+            order.PhoneNumber = user.PhoneNumber;
+            order.Email =   user.Email;
             order.Address = user.Address;
 
             return View(order);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Order frmOrder, string stripeToken,string stripeEmail)
+        public async Task<IActionResult> Create(Order frmOrder, string stripeToken)
         {
             if (!ModelState.IsValid)
             {
@@ -69,14 +70,15 @@ namespace MvcClient.Controllers
                 Amount = (int)(order.Total * 100),
                 Currency = "usd",
                 Description = $"Order Payment {order.UserName}",
-                ReceiptEmail = stripeEmail,
+                ReceiptEmail = order.Email,
                 Source = stripeToken
             });
-
-            var succeeded = true;
-            // if (charge.Status == "succeeded")
-            if (succeeded)
-            {
+            
+            // var succeeded = true;
+            if (charge.Status == "succeeded")
+            // if (succeeded)
+            {   
+                order.PaymentAuthCode = charge.Status;
                 int orderId = await _orderSvc.CreateOrder(order);
                 Console.WriteLine(orderId);
                 await _cartSvc.ClearCart(user);
