@@ -98,13 +98,6 @@ namespace MvcClient.Controllers
             }
             return View();
         }
-        // public string UploadFileName(string fileName)
-        // {
-        //     string name = Path.GetFileNameWithoutExtension(fileName);
-        //     string extension = Path.GetExtension(fileName);
-        //     fileName = name + DateTime.Now.ToString("dd-MM-yyyy-hh-mm-tt") + extension;
-        //     return fileName;
-        // }
         private string UploadedFile(ItemCategoryViewModel model)
         {
             string uniqueFileName = null;
