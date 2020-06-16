@@ -43,7 +43,6 @@ namespace MvcClient.Models
         //for add,update user
         //public string UserNameStr { get; set; }
         [DataType(DataType.Password)]
-        [Required]
         [Display(Name = "Password")]
         [RegularExpression(@"^(?:(?:(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]))|(?:(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]))|(?:(?=.*[0-9])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]))|(?:(?=.*[0-9])(?=.*[a-z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]))).{8,32}$", ErrorMessage = "At least one uppercase character,one lowercase character, one number, one special character and between 8 to 32 characters in length")]
         public string Password { get; set; }

@@ -103,6 +103,8 @@ namespace MvcClient.Controllers
         {
             user.Name = user.GivenName + " " + user.FamilyName;
             user.Role = "Managers";
+            if (user.Password == null || user.Password.Trim().Equals(""))
+                user.Password = "Pass123$";
             if (String.IsNullOrEmpty(user.PictureUrl))
                 user.PictureUrl = "default_avatar.png";
             if (ModelState.IsValid)
