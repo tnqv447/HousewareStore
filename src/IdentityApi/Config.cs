@@ -22,7 +22,7 @@ namespace IdentityApi
             new List<ApiResource>
             {
                 new ApiResource("item", "Item API"),
-                //new ApiResource("user", "User API")
+                new ApiResource("user", "Identity API")
             };
 
 
@@ -48,9 +48,8 @@ namespace IdentityApi
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        //"user",
+                        "user",
                         "item"
-
                     },
 
                     AllowOfflineAccess = true

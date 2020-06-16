@@ -23,20 +23,6 @@
         <div class="checkout__order__subtotal">Subtotal <span>$@Model.Total.ToString("N2")</span></div>
         <div class="checkout__order__total">Total <span>$@Model.Total.ToString("N2")</span></div>
         <input type="hidden" value="@Model.Total" name="Total"/>
-        <div class="checkout__input__checkbox">
-            <label for="payment">
-                Check Payment
-                <input type="checkbox" id="payment">
-                <span class="checkmark"></span>
-            </label>
-        </div>
-        <div class="checkout__input__checkbox">
-            <label for="paypal">
-                Paypal
-                <input type="checkbox" id="paypal">
-                <span class="checkmark"></span>
-            </label>
-        </div>
         @if(Model.OrderItems.Count == 0){
             <a asp-action="Index" asp-controller="Shop" class="primary-btn cart-btn">Go back to shop</a>
         }

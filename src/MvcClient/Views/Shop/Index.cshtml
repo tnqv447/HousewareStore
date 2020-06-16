@@ -150,6 +150,8 @@
                                             <li><a style="cursor:pointer" class="add_to_cart" id="@item.Id"><i class="fa fa-shopping-cart"></i></a></li>
                             
                                         }
+                                        <li id="success_@item.Id" style="display:none"><a style="background-color:#7fad39;color:#FFFFFF" href="#"><i class="fa fa-check"></i></a></li>
+
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
@@ -191,6 +193,7 @@
                                                     <li><a style="cursor:pointer" class="add_to_cart" id="@item.Id"><i class="fa fa-shopping-cart"></i></a></li>
                                     
                                                 }
+                                                <li id="success_@item.Id" style="display:none"><a style="background-color:#7fad39;color:#FFFFFF" href="#"><i class="fa fa-check"></i></a></li>
                                             </ul>
                                         </div>
                                         <div class="product__discount__item__text">
@@ -243,6 +246,7 @@
                             html += '               <li><a href="#"><i class="fa fa-heart"></i></a></li>';
                             html += '                   <li><a href="#"><i class="fa fa-info"></i></a></li>';
                             html += '                   @if(User.Identity.IsAuthenticated){<li><a style="cursor:pointer" class="add_to_cart" id="'+data.itemsPaging[i].id+'"><i class="fa fa-shopping-cart"></i></a></li>}';
+                            html += '                   <li id="success_'+data.itemsPaging[i].id+'" style="display:none"><a style="background-color:#7fad39;color:#FFFFFF" href="#"><i class="fa fa-check"></i></a></li>'
                             html += '           </ul>';
                             html += '       </div>';
                             html += '       <div class="product__item__text">';
@@ -307,7 +311,7 @@
             $(document).on('click','.number_page',function(){
                 $('html, body').animate({
                     scrollTop: $("#loadProductPage").offset().top
-                }, 1500);
+                }, 1200);
                 var pageNumber = $(this).attr("id").slice(5);
                 var selectedSort = $(".select_sort_value").children("option:selected").val();
                 var category = $('ul#select_category').find('li.active').text();

@@ -56,9 +56,8 @@ namespace OrderApi.Controllers
             }
             else
             {
-                var order = await _orderRepo.GetByAsync(orderItems.ElementAt(0).OrderId);
                 var res = _mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemForSalesDTO>>(orderItems);
-                this.TranferAdditionalInfo(order, res);
+                await this.TranferAdditionalInfo(res);
                 return res;
             }
         }
@@ -158,10 +157,11 @@ namespace OrderApi.Controllers
         }
 
         //support functions
-        private void TranferAdditionalInfo(Order order, IEnumerable<OrderItemForSalesDTO> items)
+        private async Task TranferAdditionalInfo(IEnumerable<OrderItemForSalesDTO> items)
         {
             foreach (var item in items)
             {
+                var order = await _orderRepo.GetByAsync(item.OrderId);
                 item.BuyerId = order.BuyerId;
                 item.FirstName = order.FirstName;
                 item.LastName = order.LastName;

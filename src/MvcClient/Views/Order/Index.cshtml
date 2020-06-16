@@ -1,4 +1,4 @@
-@model IEnumerable<Order>
+@model BuyerViewModel
 
 @{
     ViewData["Title"] = "Order List";
@@ -29,14 +29,14 @@
                     <h4>Order List</h4>
                     <table class="text-center table table-borderless">
                         <thead>
-                            <th>@Html.DisplayNameFor(model => model.OrderId)</th>
-                            <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
-                            <th>@Html.DisplayNameFor(model => model.Total)</th>
-                            <th>@Html.DisplayNameFor(model => model.Status)</th>
+                            <th>@Html.DisplayNameFor(model => model.order.ElementAt(0).OrderId)</th>
+                            <th>@Html.DisplayNameFor(model => model.order.ElementAt(0).OrderDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.order.ElementAt(0).Total)</th>
+                            <th>@Html.DisplayNameFor(model => model.order.ElementAt(0).Status)</th>
                             <th>Detail</th>
                         </thead>
                         <tbody>
-                        @foreach (var order in Model){
+                        @foreach (var order in Model.order){
                             <tr>
                                 <td>@Html.DisplayFor(model => order.OrderId)</td>
                                 <td><p>@order.OrderDate.ToString("dd/MM/yyyy")</p></td>

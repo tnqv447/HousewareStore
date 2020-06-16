@@ -86,6 +86,7 @@ namespace MvcClient
                     options.SaveTokens = true;
 
                     options.Scope.Add("item");
+                    options.Scope.Add("user");
                     options.Scope.Add("offline_access");
 
                     options.TokenValidationParameters = new TokenValidationParameters()
