@@ -85,12 +85,8 @@
                                                 <a href="#" class="btn btn-rounded btn-outline-success btn-xs mb-3" data-toggle="modal" data-target=".model-delivered"><i class="fa fa-send"></i></a>
                                             }else if((int)@item.Status == 2){
                                                 <a href="#" class="btn btn-rounded btn-outline-success btn-xs mb-3" data-toggle="modal" data-target=".model-accepted"><i class="fa fa-send"></i></a>
-                                            }else if((int)@item.Status == 3){
-                                                <span class="badge badge-danger">Accepted</span>
-                                            }else if((int)@item.Status == 4){
-                                                <span class="badge badge-danger">Rejected</span>   
                                             }
-                                            <a href="#" asp-action="Detail" asp-route-id="@item.OrderId" class="btn btn-rounded btn-outline-primary btn-xs mb-3"><i class="fa fa-info"></i></a>
+                                            <a href="#" class="btn btn-rounded btn-outline-primary btn-xs mb-3"><i class="fa fa-info"></i></a>
                                         </td>
                                     </tr>
                                 } 
@@ -223,6 +219,13 @@
     <script>
         $(document).ready(function(){
             var delay_time = 500;
+            function formarOrderDate(orderDate){
+                var hour = parseInt(orderDate.slice(11,13));
+                var tt="AM";
+                if(hour>12) {hour=hour-12; tt="PM";}
+                var OrderDate = orderDate.slice(5,7)+"/"+orderDate.slice(8,10)+"/"+orderDate.slice(0,4)+" "+hour+":"+orderDate.slice(14,16)+":"+orderDate.slice(17,19)+" "+tt;
+                return OrderDate;
+            }
             function loadPage(searchItemName,satus,pageNumber,sortOrder){
                 $.ajax({
                     method:'GET',
@@ -235,21 +238,17 @@
                         {
                             var item = data.orderItemsPaging[i];
                             var fullname= item.firstName + " " + item.lastName;
-                            // DateTime
-                            var hour = parseInt(item.orderDate.slice(11,13));
-                            var tt="AM";
-                            if(hour>12) {hour=hour-12; tt="PM";}
-                            var OrderDate = item.orderDate.slice(5,7)+"/"+item.orderDate.slice(8,10)+"/"+item.orderDate.slice(0,4)+" "+hour+":"+item.orderDate.slice(14,16)+":"+item.orderDate.slice(17,19)+" "+tt;
                             // Status
                             var Status= "";
                             if(item.status == 0 ) Status ="Preparing";
                             else if(item.status == 1 ) Status ="Shipped";
                             else if(item.status == 2 ) Status ="Delivered";
-                            else if(item.status == 3 ) Status ="Rejected";
+                            else if(item.status == 3 ) Status ="Accepted";
+                            else if(item.status == 4 ) Status ="Rejected";
 
                             html += '<tr>';
                             html += '<td>'+item.orderId+'</td>';
-                            html += '<td>'+OrderDate+'</td>';
+                            html += '<td>'+formarOrderDate(item.orderDate)+'</td>';
                             html += '<td>'+fullname+'</td>';
                             html += '<td>'+item.itemName+'</td>';
                             html += '<td>'+item.unitPrice+'</td>';

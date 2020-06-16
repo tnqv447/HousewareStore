@@ -24,7 +24,7 @@ namespace ItemApi.Data.Config
                 .HasColumnType("decimal(18,2)");
 
             builder.Property(m => m.Description)
-                .HasMaxLength(30);
+                .HasMaxLength(200);
         }
 
     }
