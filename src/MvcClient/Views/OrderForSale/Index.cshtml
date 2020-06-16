@@ -245,9 +245,11 @@
                             else if(item.status == 3 ) Status ="Accepted";
                             else if(item.status == 4 ) Status ="Rejected";
 
+                            var OrderDate = new Date(item.orderDate).toLocaleString("th-TH");
+
                             html += '<tr>';
                             html += '<td>'+item.orderId+'</td>';
-                            html += '<td>'+formarOrderDate(item.orderDate)+'</td>';
+                            html += '<td>'+OrderDate+'</td>';
                             html += '<td>'+fullname+'</td>';
                             html += '<td>'+item.itemName+'</td>';
                             html += '<td>'+item.unitPrice+'</td>';

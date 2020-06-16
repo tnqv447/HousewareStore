@@ -78,10 +78,10 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ItemCategoryViewModel viewModel)
         {
-            string uniqueFileName = UploadedFile(viewModel);
             Item item = viewModel.Item;
             item.PublishDate = DateTime.Today;
-            item.PictureUrl = uniqueFileName;
+            item.PictureUrl = null;
+
             if (ModelState.IsValid)
             {
                 item.OwnerId = _identityService.Get(User).Id;
@@ -92,7 +92,9 @@ namespace MvcClient.Controllers
                     return Forbid();
                 }
 
-                await _itemService.CreateItem(item);
+                Item upItem = await _itemService.CreateItem(item);
+                upItem.PictureUrl = UploadedFile(viewModel);
+                await _itemService.UpdateItem(upItem.Id, upItem);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -106,7 +108,7 @@ namespace MvcClient.Controllers
             {
                 Console.WriteLine("anime " + model.ImageURL.FileName);
                 string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "img/product/");
-                uniqueFileName = model.Item.OwnerId + "_" + model.Item.Name + Path.GetExtension(model.ImageURL.FileName);
+                uniqueFileName = "item_" + model.Item.Id + Path.GetExtension(model.ImageURL.FileName);
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {

@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityApi.Quickstart.User
 {
-    //[Authorize(Roles = "Managers, Administrators")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
