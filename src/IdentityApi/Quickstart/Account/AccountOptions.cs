@@ -22,5 +22,6 @@ namespace IdentityServer4.Quickstart.UI
 
         public static string InvalidCredentialsErrorMessage = "Invalid username or password";
         public static string RegisterErrorMessage = "Username taken or register error";
+        public static string RoleNullErrorMessage = "Role isn't selected";
     }
 }
