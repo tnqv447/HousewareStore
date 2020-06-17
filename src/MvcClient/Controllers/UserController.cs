@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +12,7 @@ using MvcClient.Authorization;
 using MvcClient.Models;
 using MvcClient.Services;
 using MvcClient.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 
 namespace MvcClient.Controllers
 {
@@ -22,15 +24,18 @@ namespace MvcClient.Controllers
         private readonly IUserService _service;
         private readonly IAuthorizationService _authorizationService;
         private readonly IIdentityService<Buyer> _identityService;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
         public UserController(ILogger<UserController> logger, IOptions<AppSettings> settings, IUserService service,
-                            IAuthorizationService authorizationService, IIdentityService<Buyer> identityService)
+                            IAuthorizationService authorizationService, IIdentityService<Buyer> identityService,
+                             IWebHostEnvironment hostEnvironment)
         {
             _settings = settings.Value;
             _service = service;
             _logger = logger;
             _authorizationService = authorizationService;
             _identityService = identityService;
+            webHostEnvironment = hostEnvironment;
         }
         [Authorize(Roles = "Administrators")]
         public async Task<IActionResult> Index(string searchName = null, string itemRole = null, int pageNumber = 1, string sortOrder = null, string sortBy = null)
@@ -76,19 +81,31 @@ namespace MvcClient.Controllers
             }
             return viewModel;
         }
-        [Authorize(Roles = "Users")]
-        public async Task<IActionResult> Account()
+        [Authorize(Roles = "Sales, Managers, Administrators")]
+        public IActionResult ProfileAdmin()
         {
+            var user = _identityService.Get(User);//
+            return View(user);//thì lên nộp đi, chư hỏi t gì m, thì lúc đó có thể t phải tắt lap, thì tắt đi =)), m lo cái này của m đi kìa
+        }
+
+
+        [Authorize(Roles = "Users")]
+        public IActionResult Account()
+        {
+            BuyerViewModel bvm = new BuyerViewModel();
+
             var buyer = _identityService.Get(User);
-            var user = await _service.GetUser(buyer.Id);
-            return View(user);
+            bvm.buyer = buyer;
+            return View(bvm);
         }
         [Authorize(Roles = "Users")]
-        public async Task<IActionResult> Profile()
+        public IActionResult Profile()
         {
+            BuyerViewModel bvm = new BuyerViewModel();
+
             var buyer = _identityService.Get(User);
-            var user = await _service.GetUser(buyer.Id);
-            return View(user);
+            bvm.buyer = buyer;
+            return View(bvm);
         }
 
         [Authorize(Roles = "Administrators")]
@@ -103,14 +120,38 @@ namespace MvcClient.Controllers
         {
             user.Name = user.GivenName + " " + user.FamilyName;
             user.Role = "Managers";
-            if (String.IsNullOrEmpty(user.PictureUrl))
+            if (user.Password == null || user.Password.Trim().Equals(""))
+                user.Password = "Pass123$";
+            if (String.IsNullOrEmpty(user.ImageURL.FileName))
                 user.PictureUrl = "default_avatar.png";
+            else user.PictureUrl = UploadedFile(user);
+
             if (ModelState.IsValid)
             {
                 await _service.CreateUser(user);
                 return RedirectToAction(nameof(Index));
             }
             return View();
+        }
+        private string UploadedFile(User user)
+        {
+            string uniqueFileName = null;
+
+            if (user.ImageURL != null)
+            {
+                Console.WriteLine("anime " + user.ImageURL.FileName);
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "img/user/");
+                uniqueFileName = user.UserName + Path.GetExtension(user.ImageURL.FileName);
+                Console.WriteLine("anime " + uniqueFileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    user.ImageURL.CopyTo(fileStream);
+                    Console.WriteLine("anime Done ");
+                }
+            }
+
+            return uniqueFileName;
         }
         [Authorize(Roles = "Administrators")]
         [HttpGet]

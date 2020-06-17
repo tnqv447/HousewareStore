@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MvcClient.Models;
 using MvcClient.Services;
 using System;
+using MvcClient.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace MvcClient.Controllers
@@ -28,8 +29,10 @@ namespace MvcClient.Controllers
         {
             var user = _identitySvc.Get(User);
             var orders = await _orderSvc.GetOrders(user.Id);
-
-            return View(orders);
+            BuyerViewModel orvm = new BuyerViewModel();
+            orvm.order = orders;
+            orvm.buyer = user;
+            return View(orvm);
         }
         // [Authorize]
         public async Task<IActionResult> Create()
@@ -40,14 +43,15 @@ namespace MvcClient.Controllers
             var order = _cartSvc.MapCartToOrder(cart);
             order.FirstName = user.FirstName;
             order.LastName = user.LastName;
-            
+            order.PhoneNumber = user.PhoneNumber;
+            order.Email =   user.Email;
             order.Address = user.Address;
 
             return View(order);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Order frmOrder)
+        public async Task<IActionResult> Create(Order frmOrder, string stripeToken)
         {
             if (!ModelState.IsValid)
             {
@@ -60,20 +64,21 @@ namespace MvcClient.Controllers
             order.BuyerId = user.Id;
             
             
-            // var chargeSvc = new ChargeService();
-            // var charge = chargeSvc.Create(new ChargeCreateOptions
-            // {
-            //     Amount = (int)(order.Total * 100),
-            //     Currency = "usd",
-            //     Description = $"Order Payment {order.UserName}",
-            //     ReceiptEmail = order.UserName,
-            //     Source = order.StripeToken
-            // });
-
-            var succeeded = true;
-            // if (charge.Status == "succeeded")
-            if (succeeded)
+            var chargeSvc = new Stripe.ChargeService();
+            var charge = chargeSvc.Create(new Stripe.ChargeCreateOptions
             {
+                Amount = (int)(order.Total * 100),
+                Currency = "usd",
+                Description = $"Order Payment {order.UserName}",
+                ReceiptEmail = order.Email,
+                Source = stripeToken
+            });
+            
+            // var succeeded = true;
+            if (charge.Status == "succeeded")
+            // if (succeeded)
+            {   
+                order.PaymentAuthCode = charge.Status;
                 int orderId = await _orderSvc.CreateOrder(order);
                 Console.WriteLine(orderId);
                 await _cartSvc.ClearCart(user);

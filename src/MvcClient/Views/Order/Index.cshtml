@@ -1,4 +1,4 @@
-@model IEnumerable<Order>
+@model BuyerViewModel
 
 @{
     ViewData["Title"] = "Order List";
@@ -27,20 +27,20 @@
             <div class="col-lg-9">
                 <div class="card-body">
                     <h4>Order List</h4>
-                    <table class="text-center table">
+                    <table class="text-center table table-borderless">
                         <thead>
-                            <th>@Html.DisplayNameFor(model => model.OrderId)</th>
-                            <th>@Html.DisplayNameFor(model => model.OrderDate)</th>
-                            <th>@Html.DisplayNameFor(model => model.Total)</th>
-                            <th>@Html.DisplayNameFor(model => model.Status)</th>
+                            <th>@Html.DisplayNameFor(model => model.order.ElementAt(0).OrderId)</th>
+                            <th>@Html.DisplayNameFor(model => model.order.ElementAt(0).OrderDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.order.ElementAt(0).Total)</th>
+                            <th>@Html.DisplayNameFor(model => model.order.ElementAt(0).Status)</th>
                             <th>Detail</th>
                         </thead>
                         <tbody>
-                        @foreach (var order in Model){
+                        @foreach (var order in Model.order){
                             <tr>
                                 <td>@Html.DisplayFor(model => order.OrderId)</td>
                                 <td><p>@order.OrderDate.ToString("dd/MM/yyyy")</p></td>
-                                <td>@Html.DisplayFor(model => order.Total)</td>
+                                <td>@order.Total.ToString("N2")</td>
                                 <td>@order.Status
                                     
                                 </td>
@@ -51,11 +51,11 @@
                             </tr>
                             <tr style="display:none" id="action_@order.OrderId" >
                                 <td colspan="5">
-                                    <table>
-                                        <thead>
-                                            <th width="40%">@Html.DisplayNameFor(model => model.OrderItems[0].ItemName)</th>
-                                            <th>@Html.DisplayNameFor(model => model.OrderItems[0].Units)</th>
-                                            <th>@Html.DisplayNameFor(model => model.OrderItems[0].UnitPrice)</th>
+                                    <table class="table-striped" style="width:100%">
+                                        <thead style="color:#ffffff;background-color:#7fad39;">
+                                            <th width="40%">Item Name</th>
+                                            <th>Quantities</th>
+                                            <th>Unit Price</th>
                                             <th>Total</th>
                                             <th>Status</th>
                                         </thead>

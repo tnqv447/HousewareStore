@@ -86,6 +86,7 @@ namespace MvcClient
                     options.SaveTokens = true;
 
                     options.Scope.Add("item");
+                    options.Scope.Add("user");
                     options.Scope.Add("offline_access");
 
                     options.TokenValidationParameters = new TokenValidationParameters()
@@ -108,8 +109,11 @@ namespace MvcClient
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
+        [Obsolete]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Stripe.StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

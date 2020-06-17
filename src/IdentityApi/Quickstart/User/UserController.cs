@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityApi.Quickstart.User
 {
-    //[Authorize(Roles = "Managers, Administrators")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -42,7 +42,9 @@ namespace IdentityApi.Quickstart.User
             {
                 return NotFound();
             }
-            return toDto(user);
+            var dto = toDto(user);
+            dto.Role = await _userRepo.GetRoleByUser(user.Id);
+            return dto;
         }
 
         [HttpGet("manage")]

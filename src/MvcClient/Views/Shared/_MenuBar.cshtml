@@ -1,6 +1,33 @@
+@model BuyerViewModel
+<div class="product__discount__item" style="margin-bottom:20px">
+    @if(Model.buyer.PictureUrl == null){
+        <div class="product__discount__item__pic set-bg" data-setbg="/img/user/default.png" > 
+            <div class="product__discount__item__pic set-bg" data-setbg="/img/user/@Model.buyer.PictureUrl"  >
+                @if(Url.Action() != "/Order"){
+                    <ul class="product__item__pic__hover">
+                        <input type="file" id="imgupload" style="display:none"/> 
+                        <li><a style="cursor:pointer" id="OpenImgUpload"><i class="fa fa-wrench"></i></a></li>
+                    </ul>
+                }
+                
+            </div>
+        </div>
+    }
+    else{
+        <div class="product__discount__item__pic set-bg" data-setbg="/img/user/@Model.buyer.PictureUrl" > 
+            <div class="product__discount__item__pic set-bg" data-setbg="/img/user/@Model.buyer.PictureUrl"  > 
+                <ul class="product__item__pic__hover">
+                    <input type="file" id="imgupload" style="display:none"/> 
+                    <li><a style="cursor:pointer"><i class="fa fa-wrench"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    }
+</div>
 <div class="hero__categories">
+    
     <div class="hero__categories__all">
-        <span>Menu</span>
+        <span>Menu - @Model.buyer.FirstName</span>
     </div>
     <ul>
         <li><a asp-action="Account" asp-controller="User">Account</a></li>
@@ -8,3 +35,10 @@
         <li><a asp-action="Index" asp-controller="Order">Orders</a></li>
     </ul>
 </div>
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            $('#OpenImgUpload').click(function(){ $('#imgupload').trigger('click'); });
+        })
+    </script>
+}

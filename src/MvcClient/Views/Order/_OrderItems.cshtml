@@ -1,4 +1,6 @@
 @model Order
+@using Microsoft.Extensions.Options
+@inject IOptions<StripeSettings> Stripe
 <div class="col-lg-6 col-md-6">
     <div class="checkout__order">
         <h4>Your Order</h4>
@@ -23,25 +25,16 @@
         <div class="checkout__order__subtotal">Subtotal <span>$@Model.Total.ToString("N2")</span></div>
         <div class="checkout__order__total">Total <span>$@Model.Total.ToString("N2")</span></div>
         <input type="hidden" value="@Model.Total" name="Total"/>
-        <div class="checkout__input__checkbox">
-            <label for="payment">
-                Check Payment
-                <input type="checkbox" id="payment">
-                <span class="checkmark"></span>
-            </label>
-        </div>
-        <div class="checkout__input__checkbox">
-            <label for="paypal">
-                Paypal
-                <input type="checkbox" id="paypal">
-                <span class="checkmark"></span>
-            </label>
-        </div>
         @if(Model.OrderItems.Count == 0){
             <a asp-action="Index" asp-controller="Shop" class="primary-btn cart-btn">Go back to shop</a>
         }
         else{
-            <input type="submit" class="site-btn" value="[ Place Order ]">
+            
+            @* <input type="submit" class="stripe-button site-btn" value="[ Place Order ]"> *@
+            <script src="//checkout.stripe.com/v2/checkout.js"
+                                class="stripe-button"
+                                data-key="@Stripe.Value.PublishableKey" >
+                        </script>
         }
     </div>
 </div>

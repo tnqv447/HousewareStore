@@ -18,6 +18,7 @@ namespace MvcClient.Controllers
         private readonly IItemService _itemService;
         private readonly IAuthorizationService _authorizationService;
         private readonly IIdentityService<Buyer> _identityService;
+
         private readonly IWebHostEnvironment webHostEnvironment;
 
         public ItemController(IItemService itemService, IAuthorizationService authorizationService,
@@ -78,10 +79,10 @@ namespace MvcClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ItemCategoryViewModel viewModel)
         {
-            string uniqueFileName = UploadedFile(viewModel);
             Item item = viewModel.Item;
             item.PublishDate = DateTime.Today;
-            item.PictureUrl = uniqueFileName;
+            item.PictureUrl = null;
+
             if (ModelState.IsValid)
             {
                 item.OwnerId = _identityService.Get(User).Id;
@@ -92,18 +93,13 @@ namespace MvcClient.Controllers
                     return Forbid();
                 }
 
-                await _itemService.CreateItem(item);
+                Item upItem = await _itemService.CreateItem(item);
+                upItem.PictureUrl = UploadedFile(viewModel);
+                await _itemService.UpdateItem(upItem.Id, upItem);
 
                 return RedirectToAction(nameof(Index));
             }
             return View();
-        }
-        public string UploadFileName(string fileName)
-        {
-            string name = Path.GetFileNameWithoutExtension(fileName);
-            string extension = Path.GetExtension(fileName);
-            fileName = name + DateTime.Now.ToString("dd-MM-yyyy-hh-mm-tt") + extension;
-            return fileName;
         }
         private string UploadedFile(ItemCategoryViewModel model)
         {
@@ -112,13 +108,9 @@ namespace MvcClient.Controllers
             if (model.ImageURL != null)
             {
                 Console.WriteLine("anime " + model.ImageURL.FileName);
-                string uploadFileName = UploadFileName(model.ImageURL.FileName);
-                Console.WriteLine("anime " + uploadFileName);
                 string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "img/product/");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + uploadFileName;
+                uniqueFileName = "item_" + model.Item.Id + Path.GetExtension(model.ImageURL.FileName);
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                // Console.WriteLine("anime " + uploadsFolder);
-                // Console.WriteLine("anime " + filePath);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     model.ImageURL.CopyTo(fileStream);

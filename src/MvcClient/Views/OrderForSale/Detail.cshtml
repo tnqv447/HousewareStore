@@ -1,0 +1,52 @@
+@model MvcClient.Models.OrderItemForSales;
+
+@{
+    ViewData["Title"] = "Order - Detail";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
+}
+
+@* <div class="container">
+    <div class="row" style="text-align: justify;">
+        <h1>Detail</h1>
+    </div>
+    <br />
+    <br />
+    <dl class="row">
+        @{string PictureURLPath = @Url.Content("~/img/product/"+@Model.PictureUrl);}
+        <img src="@PictureURLPath" height="300px" width="300px"/>
+    </dl>
+    <br />
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Category)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Category)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.UnitPrice)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.UnitPrice)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.PublishDate)</dt>
+        <dd class="col-sm-10">@Model.DisplayPublishDate()</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Description)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Description)</dd>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ItemStatus)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.ItemStatus)</dd>
+    </dl>
+
+    <div class="row">
+        <div class="form-group btn-group mb-xl-3">
+            <a type="button" class="btn btn-outline-primary mb-3" asp-action="Index">Back</a>
+            <a class="btn btn-success mb-3" asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
+        </div>
+    </div>
+
+</div> *@
+

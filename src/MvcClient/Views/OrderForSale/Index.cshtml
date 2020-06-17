@@ -56,14 +56,14 @@
                         <table id="dataTable2" class="text-center">
                             <thead class="text-capitalize">
                                 <tr>
-                                    <th width="10%">Order Id</th>
+                                    <th width="5%">Order Id</th>
                                     <th width="20%">Order Date</th>
-                                    <th width="20%">Buyer Name</th>
-                                    <th width="25%">Item Name</th>
+                                    <th width="15%">Buyer Name</th>
+                                    <th width="20%">Item Name</th>
                                     <th width="10%">Unit Price</th>
                                     <th width="5%">Units</th>
                                     <th width="10%">Status</th>
-                                    <th width="10%">Actions</th>
+                                    <th width="15%">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="item_body">
@@ -76,17 +76,29 @@
                                         <td>@item.ItemName</td>
                                         <td>@item.UnitPrice</td>
                                         <td>@item.Units</td>
-                                        <td>@item.Status</td>
-                                        <td>
-                                            <a href="#"><i class="fa fa-info"></i></a>
-                                            <a href="#"> <i class="fa fa-edit"></i></a>
+                                        <td id="stt_@item.Id">@item.Status</td>
+                                        <td> 
+                                            @{var id_update= "update_"+item.Status+"_"+item.Id;
+                                            var id_rejected = "rejected_"+item.Status+"_"+item.Id;} 
+                                            @if((int)@item.Status == 0){
+                                                //ua3 quen6 minh phai lay item stt dsmei siplit siplit 0 la lay  rejected hay update ,1  la stt 2 la id
+                                                <input id="@item.Id" type="hidden" value="@item.Id">
+                                                <a href="#" id="@id_rejected" class="btn btn-rounded btn-outline-danger btn-xs mb-3 stt" ><i class="fa fa-close"></i></a>
+                                                <a href="#" id="@id_update" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>
+                                            }else if((int)@item.Status == 3){
+                                                <input id="@item.Id" type="hidden" value="@item.Id">
+                                                <a href="#" id="@id_update" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>
+                                            }else if((int)@item.Status == 1){
+                                                <input id="@item.Id" type="hidden" value="@item.Id">
+                                                <a href="#" id="@id_update" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>
+                                            }
+                                            <a href="#" class="btn btn-rounded btn-outline-primary btn-xs mb-3"><i class="fa fa-info"></i></a>
                                         </td>
                                     </tr>
                                 } 
                             </tbody>
                         </table>
-                    }
-                    
+                    }  
                 </div>
                 @if(@Model.OrderItemsPaging != null){
                     <div class="row">
@@ -132,11 +144,19 @@
     <!-- Primary table end -->
 </div>
 
-@* Javascript *@
+
+
 @section Scripts{
     <script>
         $(document).ready(function(){
             var delay_time = 500;
+            function formarOrderDate(orderDate){
+                var hour = parseInt(orderDate.slice(11,13));
+                var tt="AM";
+                if(hour>12) {hour=hour-12; tt="PM";}
+                var OrderDate = orderDate.slice(5,7)+"/"+orderDate.slice(8,10)+"/"+orderDate.slice(0,4)+" "+hour+":"+orderDate.slice(14,16)+":"+orderDate.slice(17,19)+" "+tt;
+                return OrderDate;
+            }
             function loadPage(searchItemName,satus,pageNumber,sortOrder){
                 $.ajax({
                     method:'GET',
@@ -149,17 +169,15 @@
                         {
                             var item = data.orderItemsPaging[i];
                             var fullname= item.firstName + " " + item.lastName;
-                            // DateTime
-                            var hour = parseInt(item.orderDate.slice(11,13));
-                            var tt="AM";
-                            if(hour>12) {hour=hour-12; tt="PM";}
-                            var OrderDate = item.orderDate.slice(5,7)+"/"+item.orderDate.slice(8,10)+"/"+item.orderDate.slice(0,4)+" "+hour+":"+item.orderDate.slice(14,16)+":"+item.orderDate.slice(17,19)+" "+tt;
                             // Status
                             var Status= "";
                             if(item.status == 0 ) Status ="Preparing";
                             else if(item.status == 1 ) Status ="Shipped";
                             else if(item.status == 2 ) Status ="Delivered";
-                            else if(item.status == 3 ) Status ="Rejected";
+                            else if(item.status == 3 ) Status ="Accepted";
+                            else if(item.status == 4 ) Status ="Rejected";
+
+                            var OrderDate = new Date(item.orderDate).toLocaleString("th-TH");
 
                             html += '<tr>';
                             html += '<td>'+item.orderId+'</td>';
@@ -169,9 +187,8 @@
                             html += '<td>'+item.unitPrice+'</td>';
                             html += '<td>'+item.units+'</td>';
                             html += '<td>'+Status+'</td>';
-                            html +='<td>'
+                            html +='<td>';
                             html +=' <a href="#"><i class="fa fa-info"></i></a>';           
-                            //html +='<a asp-action="Delete" href="User/Delete/'+item.userId+'"><i class="fa fa-close"></i></a>';  
                             html +='<a href="#"> <i class="fa fa-edit"></i></a>';          
                             html += '</td>';
                             html += '</tr>';
@@ -250,6 +267,44 @@
                 $("#pagination_body").html('');
                 $("#item_body").html(html);
             }
+            function uploadStt(id_orderItem,status,action){
+                $.ajax({
+                method: 'POST',
+                url: '@Url.Action("UpdateStatus","OrderForSale")',
+                data: {id:id_orderItem,itemStatus: status, action:action},
+                success:function(data){ // khoan return status la no return so int do
+                    $("#stt_" + id_orderItem).text(data); // m muon return status k cung dc ma
+                },
+                error: function(xhr){
+                    alert(xhr);
+                }
+            })
+            }
+            $(document).on('click','.stt',function(){
+                var id_click = $(this).attr('id');
+                var split_str = id_click.split("_");
+                var action = split_str[0];
+                var id_orderItem =parseInt(split_str[2]);
+                var status = split_str[1];
+
+                alert(action+" "+status+ " "+ id_orderItem);
+                if(action == "rejected"){
+                    if (confirm('Do you want to rejected')) {
+                        uploadStt(id_orderItem,status,action);
+                    } else {
+                        return false;
+                    }
+                }
+                else{
+                    if (confirm('Do your want to update?')) {
+                        uploadStt(id_orderItem,status,action);
+                    } else {
+                        return false;
+                    }
+                }
+                
+            })
+            
         })
     </script>
 }

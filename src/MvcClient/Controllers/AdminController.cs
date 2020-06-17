@@ -14,7 +14,7 @@ using MvcClient.ViewModels;
 
 namespace MvcClient.Controllers
 {
-    [Authorize(Roles = "Managers, Administrators")]
+    [Authorize(Roles = "Sales, Managers, Administrators")]
     public class AdminController : Controller
     {
         private readonly ILogger<AdminController> _logger;

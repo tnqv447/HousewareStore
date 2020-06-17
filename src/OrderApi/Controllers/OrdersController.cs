@@ -56,9 +56,8 @@ namespace OrderApi.Controllers
             }
             else
             {
-                var order = await _orderRepo.GetByAsync(orderItems.ElementAt(0).OrderId);
                 var res = _mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemForSalesDTO>>(orderItems);
-                this.TranferAdditionalInfo(order, res);
+                await this.TranferAdditionalInfo(res);
                 return res;
             }
         }
@@ -69,6 +68,13 @@ namespace OrderApi.Controllers
             var order = await _orderRepo.GetByAsync(id);
 
             return _mapper.Map<Order, OrderDTO>(order);
+        }
+        [HttpGet("orderItem/{id}")]
+        public async Task<OrderItemDTO> GetOrderItem(int id)
+        {
+            var orderItem = await _orderItemRepo.GetByAsync(id);
+
+            return _mapper.Map<OrderItem, OrderItemDTO>(orderItem);
         }
 
         [HttpPost]
@@ -108,7 +114,10 @@ namespace OrderApi.Controllers
             // }
 
             // var Item = await _itemRepos.GetBy(id);
-            var item = (await _orderRepo.GetByAsync(orderId)).OrderItems.Where(m => m.ItemId.Equals(itemId)).ElementAt(0);
+            // t van chua hieu nhi, lẽ ra get item tư orderitem ID la dc r, sao phai lay itemID == itemID nữa
+            // hinh là no lay order r sau do tư order mơi lay orderItem, t di ăn cơm cai, dm nay t an thi m an di deo
+            var item = (await _orderRepo.GetByAsync(orderId)).OrderItems.Where(m => m.ItemId == itemId).ElementAt(0);
+
             if (item == null)
             {
                 return NotFound();
@@ -148,8 +157,8 @@ namespace OrderApi.Controllers
             }
             if (isRejected.Equals(count)) res = OrderStatus.Rejected;
             else if (isDelivered.Equals(count)) res = OrderStatus.Delivered;
-            else if (isShipping == count - isDelivered) res = OrderStatus.Shipping;
-            else if (isAccepted == count - isDelivered - isShipping) res = OrderStatus.Accepted;
+            else if (isShipping == count - isDelivered - isRejected) res = OrderStatus.Shipping;
+            else if (isAccepted == count - isDelivered - isShipping - isRejected) res = OrderStatus.Accepted;
 
             order.Status = res;
             await _orderRepo.UpdateAsync(order);
@@ -159,10 +168,11 @@ namespace OrderApi.Controllers
         }
 
         //support functions
-        private void TranferAdditionalInfo(Order order, IEnumerable<OrderItemForSalesDTO> items)
+        private async Task TranferAdditionalInfo(IEnumerable<OrderItemForSalesDTO> items)
         {
             foreach (var item in items)
             {
+                var order = await _orderRepo.GetByAsync(item.OrderId);
                 item.BuyerId = order.BuyerId;
                 item.FirstName = order.FirstName;
                 item.LastName = order.LastName;

@@ -16,6 +16,8 @@ using System.Linq;
 using AutoMapper;
 using IdentityApi.Data.Repos;
 using IdentityApi.DTO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace IdentityApi
 {
@@ -84,6 +86,25 @@ namespace IdentityApi
                     options.ClientId = "copy client ID from Google here";
                     options.ClientSecret = "copy client secret from Google here";
                 });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Account/Unauthorized/";
+                options.AccessDeniedPath = "/Account/Forbidden/";
+            })
+            .AddJwtBearer(options =>
+            {
+                options.Authority = "http://localhost:5000";
+                options.RequireHttpsMetadata = false;
+                options.Audience = "user";
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = "name",
+                    RoleClaimType = "role"
+                };
+            });
+
+
         }
 
         public void Configure(IApplicationBuilder app)

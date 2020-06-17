@@ -38,8 +38,11 @@ namespace MvcClient.Infrastructure
         public async Task<T> GetAsync<T>(string uri) where T : class
         {
             await SetTokenForHttpClient();
+            var response = await _httpClient.GetAsync(uri);
 
             var responseString = await _httpClient.GetStringAsync(uri);
+
+
 
             return JsonConvert.DeserializeObject<T>(responseString);
 
@@ -80,7 +83,10 @@ namespace MvcClient.Infrastructure
             {
                 throw new Exception($"Error in Udpating {entity.GetType().Name}, try later");
             }
-
+            if (response.StatusCode == HttpStatusCode.MethodNotAllowed)
+            {
+                throw new Exception($"Error in Udpating {response.Content.ReadAsByteArrayAsync().Result}, try later");
+            }
             response.EnsureSuccessStatusCode();
 
             var responseString = await response.Content.ReadAsStringAsync();
