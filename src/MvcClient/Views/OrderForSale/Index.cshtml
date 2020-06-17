@@ -76,15 +76,21 @@
                                         <td>@item.ItemName</td>
                                         <td>@item.UnitPrice</td>
                                         <td>@item.Units</td>
-                                        <td>@item.Status</td>
-                                        <td>
+                                        <td id="stt_@item.Id">@item.Status</td>
+                                        <td> 
+                                            @{var id_update= "update_"+item.Status+"_"+item.Id;
+                                            var id_rejected = "rejected_"+item.Status+"_"+item.Id;} 
                                             @if((int)@item.Status == 0){
-                                                <a href="#" class="btn btn-rounded btn-outline-danger btn-xs mb-3" data-toggle="modal" data-target=".model-rejected"><i class="fa fa-close"></i></a>
-                                                <a href="#" class="btn btn-rounded btn-outline-success btn-xs mb-3" data-toggle="modal" data-target=".model-accepted"><i class="fa fa-send"></i></a>
+                                                //ua3 quen6 minh phai lay item stt dsmei siplit siplit 0 la lay  rejected hay update ,1  la stt 2 la id
+                                                <input id="@item.Id" type="hidden" value="@item.Id">
+                                                <a href="#" id="@id_rejected" class="btn btn-rounded btn-outline-danger btn-xs mb-3 stt" ><i class="fa fa-close"></i></a>
+                                                <a href="#" id="@id_update" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>
                                             }else if((int)@item.Status == 3){
-                                                <a href="#" class="btn btn-rounded btn-outline-success btn-xs mb-3" data-toggle="modal" data-target=".model-shipping"><i class="fa fa-send"></i></a>
+                                                <input id="@item.Id" type="hidden" value="@item.Id">
+                                                <a href="#" id="@id_update" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>
                                             }else if((int)@item.Status == 1){
-                                                <a href="#" class="btn btn-rounded btn-outline-success btn-xs mb-3" data-toggle="modal" data-target=".model-delivered"><i class="fa fa-send"></i></a>
+                                                <input id="@item.Id" type="hidden" value="@item.Id">
+                                                <a href="#" id="@id_update" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>
                                             }
                                             <a href="#" class="btn btn-rounded btn-outline-primary btn-xs mb-3"><i class="fa fa-info"></i></a>
                                         </td>
@@ -139,81 +145,7 @@
 </div>
 
 
-@* Model  *@
-<div class="modal fade model-shipping">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Update to Shipping</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to update status of this order item to Shipping</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal fade model-delivered">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Update to Delivered</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to update status of this order item to Delivered</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade model-accepted">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Update to Accepted</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to update status of this order item to Accepted</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade model-rejected">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Rejected</h5>
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <p>Do you want to reject this order item</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-@* Javascript *@
 @section Scripts{
     <script>
         $(document).ready(function(){
@@ -335,6 +267,44 @@
                 $("#pagination_body").html('');
                 $("#item_body").html(html);
             }
+            function uploadStt(id_orderItem,status,action){
+                $.ajax({
+                method: 'POST',
+                url: '@Url.Action("UpdateStatus","OrderForSale")',
+                data: {id:id_orderItem,itemStatus: status, action:action},
+                success:function(data){ // khoan return status la no return so int do
+                    $("#stt_" + id_orderItem).text(data); // m muon return status k cung dc ma
+                },
+                error: function(xhr){
+                    alert(xhr);
+                }
+            })
+            }
+            $(document).on('click','.stt',function(){
+                var id_click = $(this).attr('id');
+                var split_str = id_click.split("_");
+                var action = split_str[0];
+                var id_orderItem =parseInt(split_str[2]);
+                var status = split_str[1];
+
+                alert(action+" "+status+ " "+ id_orderItem);
+                if(action == "rejected"){
+                    if (confirm('Do you want to rejected')) {
+                        uploadStt(id_orderItem,status,action);
+                    } else {
+                        return false;
+                    }
+                }
+                else{
+                    if (confirm('Do your want to update?')) {
+                        uploadStt(id_orderItem,status,action);
+                    } else {
+                        return false;
+                    }
+                }
+                
+            })
+            
         })
     </script>
 }

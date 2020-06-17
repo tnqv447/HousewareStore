@@ -12,11 +12,7 @@
         @if(User.IsInRole("Sales") || User.IsInRole("Managers") || User.IsInRole("Administrators"))
         {
             <ul class="header__menu__dropdown"> 
-                @if( User.IsInRole("Sales") ){
-                    <li><a asp-action="Index" asp-controller="Item" class="dropdown-item">Management</a></li>
-                }else{
-                    <li><a asp-action="Index" asp-controller="Admin" class="dropdown-item">Management</a></li>
-                } 
+                <li><a asp-action="Index" asp-controller="Admin" class="dropdown-item">Management</a></li>
                 <li><a asp-action="Logout" asp-controller="Account" class="dropdown-item">Logout</a></li>
             </ul>
         }
