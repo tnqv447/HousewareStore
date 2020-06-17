@@ -31,6 +31,11 @@ namespace MvcClient.Services
             var uri = _serviceBaseUrl + $"/{id}";
             return await _httpClient.GetAsync<Order>(uri);
         }
+        public async Task<OrderItem> GetOrderItem(int id)
+        {
+            var uri = _serviceBaseUrl + $"/orderItem/{id}";
+            return await _httpClient.GetAsync<OrderItem>(uri);
+        }
 
         public async Task<IEnumerable<Order>> GetOrders()
         {
@@ -41,7 +46,7 @@ namespace MvcClient.Services
 
         public async Task<IEnumerable<Order>> GetOrders(string userId)
         {
-            var uri = _serviceBaseUrl + $"/buyerId/{userId}"; ;
+            var uri = _serviceBaseUrl + $"/buyerId/{userId}";
             Console.WriteLine(uri);
             return await _httpClient.GetListAsync<Order>(uri);
         }
@@ -54,9 +59,9 @@ namespace MvcClient.Services
         }
         public async Task UpdateOrderItem(int orderId, OrderItem item)
         {
-            var uri = _serviceBaseUrl + $"/orderItem?orderId={orderId}&itemId{item.ItemId}";
+            var uri = _serviceBaseUrl + $"/orderItems?orderId={orderId}&itemId={item.ItemId}";
 
-            await _httpClient.PutAsync<OrderItem>(uri, item);
+            await _httpClient.PutAsync<OrderItem>(uri, item); // nãy nó viết thiếu dâu = và cái này có s
         }
     }
 }

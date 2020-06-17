@@ -18,6 +18,7 @@ namespace MvcClient.Controllers
         private readonly IItemService _itemService;
         private readonly IAuthorizationService _authorizationService;
         private readonly IIdentityService<Buyer> _identityService;
+
         private readonly IWebHostEnvironment webHostEnvironment;
 
         public ItemController(IItemService itemService, IAuthorizationService authorizationService,

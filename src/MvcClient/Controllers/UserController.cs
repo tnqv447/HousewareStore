@@ -27,7 +27,8 @@ namespace MvcClient.Controllers
         private readonly IWebHostEnvironment webHostEnvironment;
 
         public UserController(ILogger<UserController> logger, IOptions<AppSettings> settings, IUserService service,
-                            IAuthorizationService authorizationService, IIdentityService<Buyer> identityService, IWebHostEnvironment hostEnvironment)
+                            IAuthorizationService authorizationService, IIdentityService<Buyer> identityService,
+                             IWebHostEnvironment hostEnvironment)
         {
             _settings = settings.Value;
             _service = service;
@@ -80,22 +81,30 @@ namespace MvcClient.Controllers
             }
             return viewModel;
         }
+        [Authorize(Roles = "Sales, Managers, Administrators")]
+        public IActionResult ProfileAdmin()
+        {
+            var user = _identityService.Get(User);//
+            return View(user);//thì lên nộp đi, chư hỏi t gì m, thì lúc đó có thể t phải tắt lap, thì tắt đi =)), m lo cái này của m đi kìa
+        }
+
+
         [Authorize(Roles = "Users")]
         public IActionResult Account()
         {
             BuyerViewModel bvm = new BuyerViewModel();
-            
+
             var buyer = _identityService.Get(User);
-            bvm.buyer =buyer;
+            bvm.buyer = buyer;
             return View(bvm);
         }
         [Authorize(Roles = "Users")]
         public IActionResult Profile()
         {
             BuyerViewModel bvm = new BuyerViewModel();
-            
+
             var buyer = _identityService.Get(User);
-            bvm.buyer =buyer;
+            bvm.buyer = buyer;
             return View(bvm);
         }
 
