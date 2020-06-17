@@ -37,8 +37,10 @@ namespace MvcClient.Controllers
             viewModel.CommonItems = catalog.Items;
             return View(viewModel);
         }
-        public IActionResult Analysis()
-        {
+        public IActionResult Seo(){
+            return View();
+        }       
+        public IActionResult Ecommerce(){
             return View();
         }
         private IList<DataChart> prepareDataChart()

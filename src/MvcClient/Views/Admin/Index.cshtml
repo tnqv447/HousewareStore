@@ -1,6 +1,6 @@
 @model MvcClient.ViewModels.DashboardViewModel;
 @{
-    ViewData["Title"] = "Admin - Index";
+    ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
     var XLabels = Newtonsoft.Json.JsonConvert.SerializeObject( Model.Data.Select( x => x.Month ).ToList() );  
     var YValues = Newtonsoft.Json.JsonConvert.SerializeObject( Model.Data.Select( x => x.Revenue ).ToList() );  
