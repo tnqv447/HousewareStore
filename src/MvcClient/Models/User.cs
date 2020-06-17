@@ -51,7 +51,7 @@ namespace MvcClient.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
         [MaxLength(100, ErrorMessage = "The Password cannot be longer than 100 characters.")]
-        [Compare("Password", ErrorMessage = "The entered passwords do not match.")]
+        [Compare(nameof(Password), ErrorMessage = "The entered passwords do not match.")]
         public string ConfirmPassword { get; set; }
 
         [Display(Name = "Item Picutre")]

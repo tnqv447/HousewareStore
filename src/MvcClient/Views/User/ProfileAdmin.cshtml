@@ -1,37 +1,87 @@
 
-@model Buyer
+@model MvcClient.Models.User;
 @{
-    ViewData["Title"] = "Profile - Admin";
+    ViewData["Title"] = "Profile";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
 }
-<h1>Admin</h1>
 <div class="container">
-    <div class="row" style="text-align: justify;">
-        <h1>Edit</h1>
-    </div>
-    <br />
     <div class="row">
         <div class="col-md-8">
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" asp-controller="User" asp-action="ProfileAdminUpdate" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 @* start input hidden *@
-                @* <input type="hidden" asp-for="UserId"/> 
-                <input type="hidden" asp-for="PictureUrl"/>  
+                <input type="hidden" asp-for="UserId"/> 
                 <input type="hidden" asp-for="UserName"/>
-                <input type="hidden" asp-for="Password"/> *@
+                <input type="hidden" asp-for="Password"/> 
+                <h3>Account</h3>
+                <div class="form-group">
+                    <div class="col-sm-8 mb-3">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control"/> 
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck2">
+                    <label class="custom-control-label" for="customCheck2">Change Password</label>
+                </div>
+                <br />
+                <div id="changePassword" style="display:none">
+                    @* <div class="form-group">
+                        <div class="col-sm-8 mb-3">
+                            <label asp-for="OldPassword" class="control-label"></label>
+                            <input asp-for="OldPassword" class="form-control"/> 
+                            <span asp-validation-for="OldPassword" class="text-danger"></span>
+                        </div>
+                    </div> *@
+                    <div class="form-group">
+                        <div class="col-sm-8 mb-3">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" class="form-control"/> 
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8 mb-3">
+                            <label asp-for="ConfirmPassword" class="control-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control"/> 
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                
                  @* end input hidden  *@
+                <hr />
                 <h3>User Profile </h3>
+                <div class="form-group"> 
+                    <label asp-for="ImageURL" class="control-label"></label>  
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Upload</span>
+                        </div>
+                        <div class="custom-file"> 
+                            <input asp-for="ImageURL" class="custom-file-input" >  
+                            <label class="custom-file-label" for="customFile">@Model.PictureUrl</label>  
+                        </div>
+                    </div>
+                    <span asp-validation-for="ImageURL" class="text-danger"></span>  
+                </div> 
+                <div class="from-group">
+                     @{string PictureURLPath = @Url.Content("~/img/user/"+@Model.PictureUrl);}
+                    <img src="@PictureURLPath" id="displayImage" height="300px" width="300px"/>
+                </div>
                 <div class="form-group">
                     <div class="form-row">
                         <div class="col-sm-6 mb-3">
-                            <label asp-for="@Model.FirstName" class="control-label"></label>
-                            <input asp-for="FirstName" class="form-control"/> 
-                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                            <label asp-for="FamilyName" class="control-label"></label>
+                            <input asp-for="FamilyName" class="form-control"/> 
+                            <span asp-validation-for="FamilyName" class="text-danger"></span>
                         </div>
                         <div class="col-sm-6 mb-3">
-                            <label asp-for="LastName" class="control-label"></label>
-                            <input asp-for="LastName" class="form-control"/> 
-                            <span asp-validation-for="LastName" class="text-danger"></span>
+                            <label asp-for="GivenName" class="control-label"></label>
+                            <input asp-for="GivenName" class="form-control"/> 
+                            <span asp-validation-for="GivenName" class="text-danger"></span>
                         </div>
                     </div>  
                 </div>
@@ -80,7 +130,7 @@
                         </div>
                     </div>
                 </div>
-                @* <div class="form-group">
+                <div class="form-group">
                     <div class="form-row">
                         <div class="col-sm-6 mb-3">
                             <label asp-for="Website" class="control-label"></label>
@@ -97,11 +147,11 @@
                             <input asp-for="Role" class="form-control" type="text" disabled/> 
                         </div>
                     </div>  
-                </div>     *@
-                @* <div class="form-group btn-group mb-xl-3">
-                    <a type="button" class="btn btn-outline-primary mb-3" asp-action="Index">Back</a>
+                </div>     
+                <div class="form-group btn-group mb-xl-3">
+                    <a type="button" class="btn btn-outline-primary mb-3" asp-action="Index" asp-controller="admin">Back</a>
                     <input type="submit" value="Save" class="btn btn-primary mb-3"/>
-                </div> *@
+                </div> 
             </form>
         </div>
     </div>
@@ -109,4 +159,33 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            $(".custom-file-input").on("change", function () {  
+                var fileName = $(this).val().split("\\").pop();  
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);  
+            }); 
+            $("#customCheck2").change(function() {
+                if (this.checked) {
+                     $("#changePassword").css("display", "block");
+                }else{
+                    $("#changePassword").css("display", "none");
+                }
+            });
+        });   
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function (e) {
+                    $('#displayImage').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#ImageURL").change(function(){
+            readURL(this);
+        });
+    </script> 
 }

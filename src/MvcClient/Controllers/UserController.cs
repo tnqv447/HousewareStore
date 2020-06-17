@@ -82,12 +82,33 @@ namespace MvcClient.Controllers
             return viewModel;
         }
         [Authorize(Roles = "Sales, Managers, Administrators")]
-        public IActionResult ProfileAdmin()
+        public async Task<IActionResult> ProfileAdmin()
         {
-            var user = _identityService.Get(User);//
+            var id = _identityService.Get(User).Id;
+            var user = await _service.GetUser(id);
             return View(user);
         }
+        public async Task<IActionResult> ProfileAdminUpdate(User user)
+        {
+            if (String.IsNullOrEmpty(user.PictureUrl))
+                user.PictureUrl = "default_avatar.png";
+            user.Name = user.GivenName + " " + user.FamilyName;
 
+            if (ModelState.IsValid)
+            {
+                var userToUpdate = await _service.GetUser(user.UserId);
+
+                if (userToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                await _service.UpdateUser(user.UserId, user);
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
 
         [Authorize(Roles = "Users")]
         public IActionResult Account()
@@ -107,25 +128,29 @@ namespace MvcClient.Controllers
             bvm.buyer = buyer;
             return View(bvm);
         }
-        [Authorize(Roles="Users")]
+        [Authorize(Roles = "Users")]
         [HttpPost]
-        public async Task<IActionResult> Profile(BuyerViewModel bvm){
+        public async Task<IActionResult> Profile(BuyerViewModel bvm)
+        {
             string id = _identityService.Get(User).Id;
             var user = await _service.GetUser(id);
             Console.WriteLine(bvm.buyer.Address.Country);
-            if(user == null){
+            if (user == null)
+            {
                 return NotFound();
             }
-            if(bvm.buyer == null){
+            if (bvm.buyer == null)
+            {
                 return NotFound();
             }
-            else{
+            else
+            {
                 user.Name = bvm.buyer.FirstName + " " + bvm.buyer.LastName;
                 user.PhoneNumber = bvm.buyer.PhoneNumber;
                 user.Email = bvm.buyer.Email;
                 user.Address = bvm.buyer.Address;
             }
-            await _service.UpdateUser(id,user);
+            await _service.UpdateUser(id, user);
             return View(bvm);
         }
         [Authorize(Roles = "Administrators")]

@@ -96,7 +96,7 @@ namespace IdentityServer4.Quickstart.UI
             {
 
                 var result = true;
-                if (model.Password.Equals(model.ConfirmPassword))
+                if (model.Password.Equals(model.ConfirmPassword) && !String.IsNullOrEmpty(model.Role))
                 {
 
                     // Console.WriteLine("\ngg\n");
@@ -129,6 +129,7 @@ namespace IdentityServer4.Quickstart.UI
                 else
                 {
                     ModelState.AddModelError(string.Empty, AccountOptions.RegisterErrorMessage);
+                    if (String.IsNullOrEmpty(model.Role)) ModelState.AddModelError(string.Empty, AccountOptions.RoleNullErrorMessage);
                 }
             }
             //show errors
