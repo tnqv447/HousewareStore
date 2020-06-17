@@ -150,12 +150,12 @@
                                             <li><a style="cursor:pointer" class="add_to_cart" id="@item.Id"><i class="fa fa-shopping-cart"></i></a></li>
                             
                                         }
-                                        <li id="success_@item.Id" style="display:none"><a style="background-color:#7fad39;color:#FFFFFF" href="#"><i class="fa fa-check"></i></a></li>
 
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6 ><a id="item_name_@item.Id">@item.Name</a></h6>
+                                    <h6 ><span id="item_name_@item.Id">@item.Name</span>
+                                    <span id="success_@item.Id" style="display:none;margin-left:10px;color:#7fad39;"><i style="font-size:25px" class="fa fa-check"></i></span></h6>
                                     <h5>$@item.UnitPrice.ToString("N2")</h5>
                                 </div>
                             </div>
@@ -193,12 +193,13 @@
                                                     <li><a style="cursor:pointer" class="add_to_cart" id="@item.Id"><i class="fa fa-shopping-cart"></i></a></li>
                                     
                                                 }
-                                                <li id="success_@item.Id" style="display:none"><a style="background-color:#7fad39;color:#FFFFFF" href="#"><i class="fa fa-check"></i></a></li>
                                             </ul>
                                         </div>
                                         <div class="product__discount__item__text">
                                             <span>@item.Category</span>
-                                            <h5><a href="#">@item.Name</a></h5>
+                                            <h5>@item.Name
+                                                <span id="success_@item.Id" style="display:none;margin-left:10px;color:#7fad39;"><i style="font-size:25px" class="fa fa-check"></i></span>
+                                            </h5>
                                             <div>@item.UnitPrice </div>
                                         </div>
                                     </div>

@@ -40,7 +40,7 @@
                             <tr>
                                 <td>@Html.DisplayFor(model => order.OrderId)</td>
                                 <td><p>@order.OrderDate.ToString("dd/MM/yyyy")</p></td>
-                                <td>@Html.DisplayFor(model => order.Total)</td>
+                                <td>@order.Total.ToString("N2")</td>
                                 <td>@order.Status
                                     
                                 </td>
