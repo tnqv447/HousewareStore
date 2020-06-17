@@ -20,6 +20,7 @@
                 <input type="hidden" value="@item.UnitPrice" name=@("OrderItems[" + i + "].UnitPrice") />
                 <input type="hidden" value="@item.Units" name=@("OrderItems[" + i + "].Units") />
                 <input type="hidden" value="@item.ItemId" name=@("OrderItems[" + i + "].ItemId") />
+                <input type="hidden" value="@item.OwnerId" name=@("OrderItems[" + i + "].OwnerId")>
             }
         </ul>
         <div class="checkout__order__subtotal">Subtotal <span>$@Model.Total.ToString("N2")</span></div>

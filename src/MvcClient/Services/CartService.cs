@@ -57,7 +57,7 @@ namespace MvcClient.Services
             var cart = await GetCart(user);
 
             var itemFound = cart.CartItems.Find(x => x.ItemId == item.ItemId);
-
+        
             if (itemFound == null)
             {
                 

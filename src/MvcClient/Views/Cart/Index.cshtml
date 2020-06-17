@@ -48,9 +48,10 @@
                             html += '               <input min="1" disabled type="number" data-val="true" data-val-required="The Quantity field is required." id="item_Quantity_'+i+'" name="item.Quantity" value="'+data.cartItems[i].quantity+'"/>';
                             html += '           </div>';
                             html += '       </div>';
+                            html += '       <input type=hidden>';
                             html += '       <input type="hidden" name="quantities[' + i + '].Key" value="'+data.cartItems[i].id+'" />';
                             html += '   </td>';
-                            html += '   <td class="shoping__cart__total">$ '+(data.cartItems[i].quantity * data.cartItems[i].unitPrice)+'</td>';
+                            html += '   <td class="shoping__cart__total">$ '+(data.cartItems[i].quantity * data.cartItems[i].unitPrice).toFixed(2)+'</td>';
                             html += '   <td class="shoping__cart__item__close clear_item" id="'+data.cartItems[i].id+'">';
                             html += '       <span class="icon_close"></span>';
                             html += '   </td>';
@@ -64,11 +65,13 @@
                                 }
                             }
                         html +='<input type="hidden" id="length_cart" value="'+count+'">';
-
+                        if(count == 0){
+                            html ='<tr style="text-align:center;font-weight:600"><td colspan="5"><h2>Your Cart is empty...<h2></td></tr>';
+                        }
                         $("#cart_body").html('');
                         $("#cart_body").html(html);
-                        $("#suptotal").text(total);
-                        $("#total").text(total);
+                        $("#suptotal").text("$"+total.toFixed(2));
+                        $("#total").text("$"+total.toFixed(2));
                         var proQty = $('.pro-qty');
                         proQty.prepend('<span class="dec qtybtn">-</span>');
                         proQty.append('<span class="inc qtybtn">+</span>');
@@ -101,6 +104,24 @@
                     method: 'POST',
                     url: '@Url.Action("AllACtion","Cart")',
                     data: {action: action, id: id},
+                    success: function(data){
+                        loadCart();
+                    },
+                    error: function(xhr){
+                        alert(xhr);
+                    }
+                })
+            })
+            $(document).on('click','.clear_cart',function(){
+                $('html, body').animate({
+                    scrollTop: $("#cart_body").offset().top
+                }, 1200);
+                var quantities = {}
+                var action = '[ Clear ]';
+                $.ajax({
+                    method: 'POST',
+                    url: '@Url.Action("AllAction","cart")',
+                    data: {action:action},
                     success: function(data){
                         loadCart();
                     },
