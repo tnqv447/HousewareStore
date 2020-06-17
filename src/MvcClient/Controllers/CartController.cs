@@ -75,12 +75,18 @@ namespace MvcClient.Controllers
                 await _cartSvc.CheckQuantitiesCart(upCart);
                 msg="Succesfull";
             }
+            else if(action=="[ Clear ]"){
+                var buyer = _identitySvc.Get(User);
+                await _cartSvc.ClearCart(buyer);
+                msg="Succesfull";
+            }
             return new JsonResult(msg);
         }
         [HttpPost]
         public async Task<IActionResult> AddToCart(Item item, int quantity)
         {
             var buyer = _identitySvc.Get(User);
+            
             if(quantity != 0){
                 var cartItem = new CartItem
                 {
