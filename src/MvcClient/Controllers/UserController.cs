@@ -88,6 +88,27 @@ namespace MvcClient.Controllers
             var user = await _service.GetUser(id);
             return View(user);
         }
+        public async Task<IActionResult> ProfileAdminUpdate(User user)
+        {
+            if (String.IsNullOrEmpty(user.PictureUrl))
+                user.PictureUrl = "default_avatar.png";
+            user.Name = user.GivenName + " " + user.FamilyName;
+
+            if (ModelState.IsValid)
+            {
+                var userToUpdate = await _service.GetUser(user.UserId);
+
+                if (userToUpdate == null)
+                {
+                    return NotFound();
+                }
+
+                await _service.UpdateUser(user.UserId, user);
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
 
         [Authorize(Roles = "Users")]
         public IActionResult Account()
