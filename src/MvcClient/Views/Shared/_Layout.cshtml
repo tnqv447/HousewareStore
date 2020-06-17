@@ -200,6 +200,7 @@
                 var item_category_id = $('#item_category_id_'+item_id).val();
                 var item_picture_url = $('#item_picture_uri_'+item_id).val();
                 var quantity = parseInt($('#quantity_' + item_id).val());
+                var ownerId = $('#item_owner_'+item_id).val();
                 var item = new Object()
                 item.Id = parseInt(item_id);
                 item.Name = item_name;
@@ -237,6 +238,13 @@
                     }
                 })
             })
+            $('#OpenImgUpload').click(function(){ $('#imgupload').trigger('click'); });
+            $(document).on('click','.open_edit_user',function(){
+                $(".open_edit_user").hide();
+                $('.save-change').show();
+                $('.cancel').show();
+                $('input').prop("disabled",false);
+            });
             })(jQuery);
     </script>
 

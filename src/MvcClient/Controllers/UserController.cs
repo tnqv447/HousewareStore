@@ -85,7 +85,7 @@ namespace MvcClient.Controllers
         public IActionResult ProfileAdmin()
         {
             var user = _identityService.Get(User);//
-            return View(user);//thì lên nộp đi, chư hỏi t gì m, thì lúc đó có thể t phải tắt lap, thì tắt đi =)), m lo cái này của m đi kìa
+            return View(user);
         }
 
 
@@ -107,7 +107,27 @@ namespace MvcClient.Controllers
             bvm.buyer = buyer;
             return View(bvm);
         }
-
+        [Authorize(Roles="Users")]
+        [HttpPost]
+        public async Task<IActionResult> Profile(BuyerViewModel bvm){
+            string id = _identityService.Get(User).Id;
+            var user = await _service.GetUser(id);
+            Console.WriteLine(bvm.buyer.Address.Country);
+            if(user == null){
+                return NotFound();
+            }
+            if(bvm.buyer == null){
+                return NotFound();
+            }
+            else{
+                user.Name = bvm.buyer.FirstName + " " + bvm.buyer.LastName;
+                user.PhoneNumber = bvm.buyer.PhoneNumber;
+                user.Email = bvm.buyer.Email;
+                user.Address = bvm.buyer.Address;
+            }
+            await _service.UpdateUser(id,user);
+            return View(bvm);
+        }
         [Authorize(Roles = "Administrators")]
         public IActionResult Create()
         {

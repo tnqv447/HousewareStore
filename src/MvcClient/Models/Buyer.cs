@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace MvcClient.Models
 {
     public class Buyer
@@ -9,6 +11,7 @@ namespace MvcClient.Models
         public Address Address { get; set; }
         public string PhoneNumber { get; set; }
         public string PictureUrl { get; set; }
+        public IFormFile ImageURL { get; set; }
         public string Email { get; set; }
     }
 
