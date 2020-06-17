@@ -71,12 +71,12 @@
                         <table id="dataTable2" class="text-center">
                             <thead class="text-capitalize">
                                 <tr>
-                                    <th width="15%%">Name</th>
+                                    <th width="10%">Name</th>
                                     <th width="20%">Email</th>
                                     <th width="10%">Phone Number</th>
-                                    <th width="30%">Address</th>
+                                    <th width="40%">Address</th>
                                     <th width="10%">Role</th>
-                                    <th width="15%">Actions</th>
+                                    <th width="10%">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="item_body">
@@ -90,10 +90,10 @@
                                         <td>@item.Role</td>
                                         <td>
                                             @if(item.Role.Equals("Managers") || item.Role.Equals("Administrators")){
-                                                <a style="cursor:pointer" asp-action="Edit" asp-route-id="@item.UserId"><i class="fa fa-edit"></i></a>
+                                                <a  asp-action="Edit" asp-route-id="@item.UserId"><i style="font-size:20px" class="fa fa-edit"></i></a>
                                             }
                                             @if(item.Role.Equals("Administrators") == false){
-                                                <a asp-action="Delete" asp-route-id="@item.UserId"><i class="fa fa-close"></i></a>
+                                                <a asp-action="Delete" asp-route-id="@item.UserId"><i style="font-size:20px" class="fa fa-close"></i></a>
                                             }   
                                         </td>
                                     </tr>

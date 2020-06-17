@@ -279,8 +279,8 @@
                 method: 'POST',
                 url: '@Url.Action("UpdateStatus","OrderForSale")',
                 data: {id:id_orderItem,itemStatus: status, action:action},
-                success:function(data){ // khoan return status la no return so int do
-                    $("#stt_" + id_orderItem).text(data); // m muon return status k cung dc ma
+                success:function(data){ 
+                    $("#stt_" + id_orderItem).text(data);
                 },
                 error: function(xhr){
                     alert(xhr);
@@ -296,6 +296,10 @@
                 if(action == "rejected"){
                     if (confirm('Do you want to rejected')) {
                         uploadStt(id_orderItem,status,action);
+                        var searchItemName = $("#SearchItemName").val();
+                        var status = $("#ItemStatus").children("option:selected").val();
+                        var pageNumber = $(this).attr("id").slice(8);
+                        loadPage(searchItemName,status,pageNumber,null);
                     } else {
                         return false;
                     }
@@ -303,6 +307,10 @@
                 else{
                     if (confirm('Do your want to update?')) {
                         uploadStt(id_orderItem,status,action);
+                        var searchItemName = $("#SearchItemName").val();
+                        var status = $("#ItemStatus").children("option:selected").val();
+                        var pageNumber = $(this).attr("id").slice(8);
+                        loadPage(searchItemName,status,pageNumber,null);
                     } else {
                         return false;
                     }

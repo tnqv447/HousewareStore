@@ -185,7 +185,7 @@
     height: 100vh;
     width: 280px;
     overflow: hidden;
-    background: #303641;
+    background: #ffffff;
     box-shadow: 2px 0 32px rgba(0, 0, 0, 0.05);
     -webkit-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
@@ -204,7 +204,7 @@
 }
 
 .menu-inner {
-    overflow-y: scroll;
+    overflow-y: overlay;
     height: 100%;
 }
 
@@ -215,8 +215,7 @@
 
 .sidebar-header {
     padding: 19px 32px 20px;
-    background: #303641;
-    border-bottom: 1px solid #343e50;
+    background: #ffffff;
 }
 
 .sidebar-menu .logo {
@@ -286,18 +285,22 @@
 
 .metismenu>li:hover>a,
 .metismenu>li.active>a {
-    color: #fff;
-    background: #343942;
+    font-weight: bold;
+    color: #8631fb;
 }
 
 .metismenu li:hover>a,
 .metismenu li.active>a {
-    color: #fff;
+    font-weight: bold;
+
+    color: #8631fb;
 }
 
 .metismenu li:hover>a i,
 .metismenu li.active>a i {
-    color: #fff;
+    font-weight: bold;
+
+    color: #8631fb;
 }
 
 .metismenu li li a:after {
