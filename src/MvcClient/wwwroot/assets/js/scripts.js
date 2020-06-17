@@ -45,9 +45,9 @@
   /*================================
     slimscroll activation
     ==================================*/
-  $(".menu-inner").slimScroll({
-    height: "auto",
-  });
+  // $(".menu-inner").slimScroll({
+  //   height: "auto",
+  // });
   $(".nofity-list").slimScroll({
     height: "435px",
   });
