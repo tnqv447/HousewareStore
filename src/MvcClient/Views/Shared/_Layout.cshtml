@@ -247,6 +247,12 @@
                 $('.cancel').show();
                 $('input').prop("disabled",false);
             });
+            $(document).on('click','.cancel',function(){
+                $(".open_edit_user").show();
+                $('.save-change').hide();
+                $('.cancel').hide();
+                $('input').prop("disabled",true);
+            })
             })(jQuery);
     </script>
 
