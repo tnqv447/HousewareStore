@@ -207,6 +207,7 @@
                 item.UnitPrice = parseFloat(item_price),
                 item.CategoryId = parseInt(item_category_id);
                 item.PictureUrl = item_picture_url;
+                item.OwnerId = ownerId;
                 $(".add_to_cart").focus();
                 $.ajax({
                     type: 'POST',
