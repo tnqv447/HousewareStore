@@ -41,7 +41,7 @@ namespace MvcClient.Controllers
         public async Task<OrderForSaleViewModel> getViewModel(string searchItemName, int pageNumber = 1, string status = null, string sortOrder = null)
         {
             OrderForSaleViewModel viewModel = new OrderForSaleViewModel();
-            var pageSize = 3;
+            var pageSize = 8;
             var saleId = User.IsInRole(Constants.SalesRole) ? _identityService.Get(User).Id : null;
             viewModel.OrderItems = await _orderService.GetOrderItemsForSales(saleId);
             if (viewModel.OrderItems != null)
