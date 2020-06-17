@@ -162,7 +162,7 @@ namespace IdentityApi.Data.Repos
         }
         public async Task<string> GetRoleByUser(string id)
         {
-            return (await _userManager.GetRolesAsync(await _userManager.FindByIdAsync(id))).First();
+            return (await _userManager.GetRolesAsync(await _userManager.FindByIdAsync(id))).FirstOrDefault();
         }
 
         public bool UserExists(string id)
