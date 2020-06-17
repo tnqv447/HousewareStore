@@ -35,9 +35,9 @@
                             <th>@Html.DisplayNameFor(model => model.order.ElementAt(0).Status)</th>
                             <th>Detail</th>
                         </thead>
-                        <tbody>
+                        <tbody class="table-hide">
                         @foreach (var order in Model.order){
-                            <tr>
+                            <tr id="table_show_@order.OrderId">
                                 <td>@Html.DisplayFor(model => order.OrderId)</td>
                                 <td><p>@order.OrderDate.ToString("dd/MM/yyyy")</p></td>
                                 <td>@order.Total.ToString("N2")</td>

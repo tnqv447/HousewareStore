@@ -14,7 +14,9 @@ namespace MvcClient.Services
                 FirstName = user.FindFirstValue("firstname"),
                 LastName = user.FindFirstValue("lastname"),
                 PhoneNumber = user.FindFirstValue("phonenumber"),
+                PictureUrl = user.FindFirstValue("pictureurl"),
                 Email = user.FindFirstValue("email"),
+                UserName = user.FindFirstValue("name"),
                 Address = JsonConvert.DeserializeObject<Address>(user.FindFirstValue("address"))
             };
         }

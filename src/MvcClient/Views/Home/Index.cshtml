@@ -130,6 +130,7 @@
                                 <input type="hidden" value="@Model.Items[i].PictureUrl" id="item_picture_uri_@Model.Items[i].Id"/>
                                 <input type="hidden" value="1" id="quantity_@Model.Items[i].Id" />
                                 <input type="hidden" value="@Model.Items[i].UnitPrice" id="item_price_@Model.Items[i].Id"/>
+                                <input type="hidden" value="@Model.Items[i].OwnerId" id="item_owner_@Model.Items[i].OwnerId">
                                 @if(User.Identity.IsAuthenticated){
                                     <li><a style="cursor:pointer" class="add_to_cart" id="@Model.Items[i].Id"><i class="fa fa-shopping-cart"></i></a></li>
                                     @* <input class="esh-catalog-button" type="submit" value="[ ADD TO CART ]" /> *@

@@ -90,8 +90,8 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span>$@Model.Total()</span></li>
-                            <li>Total <span>$@Model.Total()</span></li>
+                            <li>Subtotal <span id="suptotal">$@Model.Total()</span></li>
+                            <li>Total <span id="total">$@Model.Total()</span></li>
                         </ul>
                         <a asp-action="Create" asp-controller="Order" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>

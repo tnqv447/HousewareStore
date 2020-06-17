@@ -2814,6 +2814,28 @@ ol {
     outline: none;
 }
 /*---------------------
+	Contact buyer
+-----------------------*/
+.contact_buyer{
+	margin-left:20px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.contact_buyer .contact__info span{
+	display:block;
+	margin-bottom: 10px;
+}
+.contact_buyer .contact__info input{
+	border-top: none;
+	border-left: none;
+	border-right:none;
+	border-bottom: 1px solid #000000;
+	background: none;
+}
+/*---------------------
+	Contact buyer
+-----------------------*/
+/*---------------------
 	Footer
 -----------------------*/
 
