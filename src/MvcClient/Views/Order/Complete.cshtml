@@ -3,10 +3,19 @@
 @{
     ViewBag.Title = "Order Complete";
 }
+<section style="margin:20px" class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="text-align:center">
+                <h2 style="color:green">Order Complete</h2>
+                <p>Thanks for your order! Your order is: @Model</p>
+                <p>
+                    How about shopping for some more goods in our
+                    <a style="text-decoration:none; color:green" asp-action="Index" asp-controller="Shop">Store</a>
+                </p>
+            </div>
+            
+        </div>
+    </div>
+</section>
 
-<h2>Order Complete</h2>
-<p>Thanks for your order! Your order is: @Model</p>
-<p>
-    How about shopping for some more goods in our
-    <a asp-action="Index" asp-controller="Home">Store</a>
-</p>

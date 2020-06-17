@@ -134,10 +134,13 @@
                                     <li><a style="cursor:pointer" class="add_to_cart" id="@Model.Items[i].Id"><i class="fa fa-shopping-cart"></i></a></li>
                                     @* <input class="esh-catalog-button" type="submit" value="[ ADD TO CART ]" /> *@
                                 }
+                                
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6 id="item_name_@Model.Items[i].Id">@Model.Items[i].Name</h6>
+                            <h6 id="item_name_@Model.Items[i].Id">@Model.Items[i].Name
+                                <span id="success_@Model.Items[i].Id" style="display:none;margin-left:10px;color:#7fad39;"><i style="font-size:25px" class="fa fa-check"></i></span>
+                            </h6>
                             <h5>$@Model.Items[i].UnitPrice.ToString("N2")</h5>
                         </div>
                     </div>
