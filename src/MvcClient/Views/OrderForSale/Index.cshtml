@@ -81,15 +81,11 @@
                                             @{var id_update= "update_"+item.Status+"_"+item.Id;
                                             var id_rejected = "rejected_"+item.Status+"_"+item.Id;} 
                                             @if((int)@item.Status == 0){
-                                                //ua3 quen6 minh phai lay item stt dsmei siplit siplit 0 la lay  rejected hay update ,1  la stt 2 la id
-                                                <input id="@item.Id" type="hidden" value="@item.Id">
                                                 <a href="#" id="@id_rejected" class="btn btn-rounded btn-outline-danger btn-xs mb-3 stt" ><i class="fa fa-close"></i></a>
                                                 <a href="#" id="@id_update" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>
                                             }else if((int)@item.Status == 3){
-                                                <input id="@item.Id" type="hidden" value="@item.Id">
                                                 <a href="#" id="@id_update" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>
                                             }else if((int)@item.Status == 1){
-                                                <input id="@item.Id" type="hidden" value="@item.Id">
                                                 <a href="#" id="@id_update" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>
                                             }
                                             <a href="#" class="btn btn-rounded btn-outline-primary btn-xs mb-3"><i class="fa fa-info"></i></a>
@@ -186,10 +182,21 @@
                             html += '<td>'+item.itemName+'</td>';
                             html += '<td>'+item.unitPrice+'</td>';
                             html += '<td>'+item.units+'</td>';
-                            html += '<td>'+Status+'</td>';
+                            html += '<td id="stt_'+item.id+'">'+Status+'</td>';
                             html +='<td>';
-                            html +=' <a href="#"><i class="fa fa-info"></i></a>';           
-                            html +='<a href="#"> <i class="fa fa-edit"></i></a>';          
+
+                            var id_update= "update_"+Status+"_"+item.id;
+                            var id_rejected = "rejected_"+Status+"_"+item.id;
+                            if(item.status == 0){
+                                html +=' <a href="#" id="'+id_rejected+'" class="btn btn-rounded btn-outline-danger btn-xs mb-3 stt" ><i class="fa fa-close"></i></a>';
+                                html +=' <a href="#" id="'+id_update+'" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>';
+                            }else if(item.status == 3){
+                                html +='<a href="#" id="'+id_update+'" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>';
+                            }else if(item.status == 1){
+                                html +='<a href="#" id="'+id_update+'" class="btn btn-rounded btn-outline-success btn-xs mb-3 stt" ><i class="fa fa-send"></i></a>';
+                            }
+                            html +='<a href="#" class="btn btn-rounded btn-outline-primary btn-xs mb-3"><i class="fa fa-info"></i></a>';
+                                   
                             html += '</td>';
                             html += '</tr>';
                         }
@@ -286,8 +293,6 @@
                 var action = split_str[0];
                 var id_orderItem =parseInt(split_str[2]);
                 var status = split_str[1];
-
-                alert(action+" "+status+ " "+ id_orderItem);
                 if(action == "rejected"){
                     if (confirm('Do you want to rejected')) {
                         uploadStt(id_orderItem,status,action);
