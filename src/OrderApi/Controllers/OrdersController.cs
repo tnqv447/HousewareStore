@@ -100,12 +100,12 @@ namespace OrderApi.Controllers
         }
 
         [HttpPut("orderItems")]
-        public async Task<IActionResult> UpdateOrderItem(int orderId, int itemId, OrderItemDTO dto)
+        public async Task<IActionResult> UpdateOrderItem(int orderId, int itemId, OrderItemStatus status)
         {
-            if (!orderId.Equals(dto.OrderId) || !itemId.Equals(dto.ItemId))
-            {
-                return BadRequest();
-            }
+            // if (!orderId.Equals(dto.OrderId) || !itemId.Equals(dto.ItemId))
+            // {
+            //     return BadRequest();
+            // }
 
             // var Item = await _itemRepos.GetBy(id);
             var item = (await _orderRepo.GetByAsync(orderId)).OrderItems.Where(m => m.ItemId.Equals(itemId)).ElementAt(0);
@@ -118,6 +118,7 @@ namespace OrderApi.Controllers
 
             try
             {
+                item.Status = status;
                 await _orderItemRepo.UpdateAsync(item);
             }
             catch (DbUpdateConcurrencyException) when (!_orderItemRepo.ItemExists(orderId, itemId))
