@@ -170,8 +170,6 @@ namespace OrderApi.Controllers
             // }
 
             // var Item = await _itemRepos.GetBy(id);
-            // t van chua hieu nhi, lẽ ra get item tư orderitem ID la dc r, sao phai lay itemID == itemID nữa
-            // hinh là no lay order r sau do tư order mơi lay orderItem, t di ăn cơm cai, dm nay t an thi m an di deo
             var item = (await _orderRepo.GetByAsync(orderId)).OrderItems.Where(m => m.ItemId == itemId).ElementAt(0);
 
             if (item == null)

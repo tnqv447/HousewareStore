@@ -42,8 +42,9 @@
                                         @{
                                             var temp = new Dictionary<string,string>
                                                 {
-                                                    {"id", @sale.Sale.UserId},
-                                                    {"saleName", @sale.Sale.Name}
+                                                    {"saleName", @sale.Sale.Name},
+                                                    {"id", @sale.Sale.UserId}
+                                                    
                                                 };
                                         }
                                         <td><a asp-action="Sale" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>

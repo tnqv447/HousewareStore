@@ -311,13 +311,17 @@
                 var action = split_str[0];
                 var id_orderItem =parseInt(split_str[2]);
                 var status = split_str[1];
+                var sortOrder= $("#sortOrder").children("option:selected").val();
+                var sortType= $("#sortType").children("option:selected").val();
+                var searchType= $("#searchType").children("option:selected").val();
+                var searchString = $("#searchString").val();
                 if(action == "rejected"){
                     if (confirm('Do you want to rejected')) {
                         uploadStt(id_orderItem,status,action);
                         var searchItemName = $("#SearchItemName").val();
                         var status = $("#ItemStatus").children("option:selected").val();
                         var pageNumber = $(this).attr("id").slice(8);
-                        loadPage(searchItemName,status,pageNumber,null);
+                        loadPage(1,searchType,searchString,status,sortType,sortOrder);
                     } else {
                         return false;
                     }
@@ -328,7 +332,7 @@
                         var searchItemName = $("#SearchItemName").val();
                         var status = $("#ItemStatus").children("option:selected").val();
                         var pageNumber = $(this).attr("id").slice(8);
-                        loadPage(searchItemName,status,pageNumber,null);
+                        loadPage(1,searchType,searchString,status,sortType,sortOrder);
                     } else {
                         return false;
                     }

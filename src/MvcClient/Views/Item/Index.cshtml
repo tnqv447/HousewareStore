@@ -75,7 +75,7 @@
                         </div>
                     }else{
                         <div class="row">
-                            <table id="dataTable2" class="text-center table table-hover table-striped text-center">
+                            <table id="dataTable2" class="text-center table table-hover text-center" style="width:100%;">
                                 <thead class="text-capitalize">
                                     <tr>
                                         <th width="5%">Index</th>
@@ -184,9 +184,11 @@
                     data:{SearchString: searchString, ItemCategory: category, pageNumber: pageNumber, minPrice: minPrice, maxPrice: maxPrice,sortOrder: sortOrder},
                     success:function(data){
                         html = '';
-                        html_2 = '';    
+                        html_2 = '';
+                        var count = 0;    
                         for(i=0; i<data.itemsPaging.length;i++)
                         {
+                            count += 1;
                             var item = data.itemsPaging[i];
                             html += '<tr>';
                             html += '<td>'+(i+1)+'</td>';
@@ -214,6 +216,7 @@
                             html += '</td>';
                             html += '</tr>';
                         }
+                        
                         // html_2
                         var prevDisabled = "";
                         var nextDisabled = "";
@@ -232,7 +235,11 @@
                                 html_2 +='<li class="page-item"><a class="page-link" id="'+idpageIndex+'" asp-action="Index" asp-route-pageNumber="'+pageIndex+'">'+pageIndex+'</a></li>';
                             }
                         }    
-                        html_2 +='<li class="page-item '+nextDisabled+'"><a class="page-link" id="'+idnext+'" asp-action="Index" asp-route-pageNumber="'+(data.pageIndex+1)+'">Next</a></li>';                                                                                              
+                        html_2 +='<li class="page-item '+nextDisabled+'"><a class="page-link" id="'+idnext+'" asp-action="Index" asp-route-pageNumber="'+(data.pageIndex+1)+'">Next</a></li>';
+                        if(count == 0){
+                            html = '<tr><td colspan="7"><h2 style="font-weight: 600;text-align:center">Sorry, no items found</h2><td></tr>';
+                            html_2 = '';
+                    }
                     },
                     complete:function(){
                         setTimeout(function(){
@@ -274,8 +281,7 @@
                 loadPage(searchString,itemCategory,pageNumber,minPrice,maxPrice,selectedSort);
             });
             function WaitingSearch(){
-                html = '<div class="preloder_item"><div class="loader_item"></div></div>';
-                html = '<div style="width: 1000px;text-align:center"><h3><b>Waiting for searching...</b></h3></div>';
+                html = '<tr><td colspan="7"><h2 style="font-weight: 600;text-align:center">Waiting for searching...</h2><td></tr>';
                 $('#item_body').html('');
                 $("#pagination_body").html('');
                 $("#item_body").html(html);

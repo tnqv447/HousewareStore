@@ -33,7 +33,7 @@ namespace MvcClient.Controllers
             viewModel.CountRejected = 2;
             viewModel.CountSubmitted = 5;
             viewModel.Data = prepareDataChart();
-            var catalog = await _itemService.GetCatalog(null, null, 0, 0, null);
+            var catalog = await _itemService.GetCatalog();
             viewModel.CommonItems = catalog.Items;
             return View(viewModel);
         }
