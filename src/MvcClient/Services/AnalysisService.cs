@@ -73,6 +73,12 @@ namespace MvcClient.Services
                                                             TotalUnits = m.itGr.Sum(n => n.Units)
                                                         }
                                                     );
+                    results =  results.GroupBy(m => new {m.ItemId, m.Name, m.UnitPrice}, (m,n) => new Management{
+                        ItemId = m.ItemId,
+                        Name = m.Name,
+                        UnitPrice = m.UnitPrice,
+                        TotalUnits = n.Sum(p => p.TotalUnits)
+                    });
                 }
             
                             
