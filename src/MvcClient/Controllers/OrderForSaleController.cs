@@ -28,22 +28,53 @@ namespace MvcClient.Controllers
             _authorizationService = authorizationService;
             _identityService = identityService;
         }
-        public async Task<IActionResult> Index(string searchItemName, int pageNumber = 1, string status = null, string sortOrder = null)
+        public async Task<IActionResult> Index(int pageNumber = 1, string searchType = null, string searchString = null, string status = null, string sortType = null, string sortOrder = null)
         {
-            var viewModel = await getViewModel(searchItemName, pageNumber, status, sortOrder);
+            var viewModel = await getViewModel(pageNumber, searchType, searchString, status, sortType, sortOrder);
             return View(viewModel);
         }
-        public async Task<IActionResult> OrderForSalePaging(string searchItemName, int pageNumber = 1, string status = null, string sortOrder = null)
+        public async Task<IActionResult> OrderForSalePaging(int pageNumber = 1, string searchType = null, string searchString = null, string status = null, string sortType = null, string sortOrder = null)
         {
-            var viewModel = await getViewModel(searchItemName, pageNumber, status, sortOrder);
+            var viewModel = await getViewModel(pageNumber, searchType, searchString, status, sortType, sortOrder);
             return new JsonResult(viewModel);
         }
-        public async Task<OrderForSaleViewModel> getViewModel(string searchItemName, int pageNumber = 1, string status = null, string sortOrder = null)
+        public async Task<OrderForSaleViewModel> getViewModel(int pageNumber = 1, string searchType = null, string searchString = null, string status = null, string sortType = null, string sortOrder = null)
         {
             OrderForSaleViewModel viewModel = new OrderForSaleViewModel();
             var pageSize = 8;
+            OrderItemStatus Status = OrderItemStatus.AllStatus;
+            switch (status)
+            {
+                case "Preparing": Status = OrderItemStatus.Preparing; break;
+                case "Accepted": Status = OrderItemStatus.Accepted; break;
+                case "Shipping": Status = OrderItemStatus.Shipping; break;
+                case "Delivered": Status = OrderItemStatus.Delivered; break;
+                case "Rejected": Status = OrderItemStatus.Rejected; break;
+                default: Status = OrderItemStatus.AllStatus; break;
+            }
+            SearchTypeOrderItem SearchType = SearchTypeOrderItem.ItemName;
+            switch (searchType)
+            {
+                case "BuyerName": SearchType = SearchTypeOrderItem.BuyerName; break;
+                default: SearchType = SearchTypeOrderItem.ItemName; break;
+            }
+            SortOrderOrderItem SortOrder = SortOrderOrderItem.Ascending;
+            switch (sortOrder)
+            {
+                case "Ascending": SortOrder = SortOrderOrderItem.Ascending; break;
+                case "Descending": SortOrder = SortOrderOrderItem.Descending; break;
+                default: SortOrder = SortOrderOrderItem.Ascending; break;
+            }
+            SortTypeOrderItem SortType = SortTypeOrderItem.OrderId;
+            switch (sortType)
+            {
+                case "BuyerName": SortType = SortTypeOrderItem.BuyerName; break;
+                case "ItemName": SortType = SortTypeOrderItem.ItemName; break;
+                case "Status": SortType = SortTypeOrderItem.Status; break;
+                default: SortType = SortTypeOrderItem.OrderId; break;
+            }
             var saleId = User.IsInRole(Constants.SalesRole) ? _identityService.Get(User).Id : null;
-            viewModel.OrderItems = await _orderService.GetOrderItemsForSales(saleId);
+            viewModel.OrderItems = await _orderService.GetOrderItemsForSales(saleId, SearchType, searchString, Status, SortType, SortOrder);
             if (viewModel.OrderItems != null)
             {
                 viewModel.OrderItemsPaging = PaginatedList<OrderItemForSales>.Create(viewModel.OrderItems, pageNumber, pageSize);
