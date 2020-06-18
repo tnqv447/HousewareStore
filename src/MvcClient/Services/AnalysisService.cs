@@ -57,27 +57,30 @@ namespace MvcClient.Services
             IEnumerable<Management> results = Enumerable.Empty<Management>();
 
             if(listOrders != null && listItems != null){
+                    //Đầu tiên là left join 2 bảng vừa lấy về
                     results = listItems.GroupJoin(listOrders,
-                                                    it => it.Id,
-                                                    oit => oit.ItemId,
-                                                    (it,itGr) => new{
-                                                        it = it,
-                                                        itGr = itGr
+                                                    it => it.Id, // key của left table
+                                                    oit => oit.ItemId,// key của right table
+                                                    (it,itGr) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
+                                                    new{ //new này là tạo table mới chứa 2 giá trị dưới
+                                                        it = it, //value
+                                                        itGr = itGr//table
                                                     })
-                                                    .SelectMany(
-                                                        m => m.itGr.DefaultIfEmpty(),
-                                                        (m,oit) => new Management{
-                                                            ItemId = m.it.Id,
+                                                    .SelectMany( //cái này dùng để left join
+                                                        m => m.itGr.DefaultIfEmpty(), //hàm này nhìn là biết nó làm gì
+                                                        (m,oit) => new Management{ //new table là để làm theo định dạng mình chọn sẵn
+                                                            ItemId = m.it.Id, //gán các giá trị vào
                                                             Name = m.it.Name,
                                                             UnitPrice = m.it.UnitPrice,
                                                             TotalUnits = m.itGr.Sum(n => n.Units)
                                                         }
                                                     );
-                    results =  results.GroupBy(m => new {m.ItemId, m.Name, m.UnitPrice}, (m,n) => new Management{
-                        ItemId = m.ItemId,
+                                                    //vì sau khi join sẽ có các giá trị lặp lại nên phải groupby sum nó lại
+                    results =  results.GroupBy(m => new {m.ItemId, m.Name, m.UnitPrice}, (m,n) => new Management{  // new {keyA,keyB,keyC}, cứ thấy () là một table mới dấu => là để định dạng table đó
+                        ItemId = m.ItemId, // gán giá trị vào table mới
                         Name = m.Name,
                         UnitPrice = m.UnitPrice,
-                        TotalUnits = n.Sum(p => p.TotalUnits)
+                        TotalUnits = n.Sum(p => p.TotalUnits) //group by phải có sum
                     });
                 }
             
