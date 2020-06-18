@@ -51,9 +51,10 @@ namespace MvcClient.Services
             return await _httpClient.GetListAsync<Order>(uri);
         }
 
-        public async Task<IEnumerable<OrderItemForSales>> GetOrderItemsForSales(string salesId)
+        public async Task<IEnumerable<OrderItemForSales>> GetOrderItemsForSales(string salesId, SearchTypeOrderItem searchType = SearchTypeOrderItem.ItemName, string searchString = null,
+                                OrderItemStatus status = OrderItemStatus.Preparing, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending)
         {
-            var uri = _serviceBaseUrl + $"/salesId/{salesId}"; ;
+            var uri = _serviceBaseUrl + $"/salesId/{salesId}?searchType={searchType}&searchString={searchString}&status={status}&sortType={sortType}&sortOrder={sortOrder}";
 
             return await _httpClient.GetListAsync<OrderItemForSales>(uri);
         }

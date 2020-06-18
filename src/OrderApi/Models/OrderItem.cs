@@ -50,12 +50,30 @@ namespace OrderApi.Models
 
     }
 
+    public enum SortOrderOrderItem
+    {
+        Descending = 0,
+        Ascending = 1,
+    }
+    public enum SortTypeOrderItem
+    {
+        OrderId = 0,
+        BuyerName = 1,
+        ItemName = 2,
+        Status = 3,
+    }
+    public enum SearchTypeOrderItem
+    {
+        BuyerName = 0,
+        ItemName = 1
+    }
     public enum OrderItemStatus
     {
         Preparing = 0,
         Shipping = 1,
         Delivered = 2,
         Accepted = 3,
-        Rejected = 4
+        Rejected = 4,
+        AllStatus = 5
     }
 }

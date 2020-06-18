@@ -47,7 +47,8 @@ namespace OrderApi.Controllers
         }
 
         [HttpGet("salesId/{salesId}")]
-        public async Task<IEnumerable<OrderItemForSalesDTO>> GetOrdersBySales(string salesId)
+        public async Task<IEnumerable<OrderItemForSalesDTO>> GetOrdersBySales(string salesId, SearchTypeOrderItem searchType = SearchTypeOrderItem.ItemName, string searchString = null,
+                                OrderItemStatus status = OrderItemStatus.Preparing, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending)
         {
             var orderItems = await _orderRepo.GetBySalesAsync(salesId);
             if (orderItems == null || orderItems.Count() == 0)
@@ -58,8 +59,63 @@ namespace OrderApi.Controllers
             {
                 var res = _mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemForSalesDTO>>(orderItems);
                 await this.TranferAdditionalInfo(res);
+                if (status != OrderItemStatus.AllStatus)
+                {
+                    res = res.Where(m => m.Status == status).ToList();
+                }
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    switch (searchType)
+                    {
+                        case (SearchTypeOrderItem.BuyerName):
+                            res = res.Where(m => (m.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase) || m.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))).ToList(); break;
+                        case (SearchTypeOrderItem.ItemName):
+                            res = res.Where(m => m.ItemName.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList(); break;
+                        default: break;
+                    }
+                }
+                res = this.SortOrderItem(res, sortType, sortOrder);
                 return res;
             }
+        }
+        private IEnumerable<OrderItemForSalesDTO> SortOrderItem(IEnumerable<OrderItemForSalesDTO> dtos, SortTypeOrderItem sortType, SortOrderOrderItem sortOrder)
+        {
+
+            switch (sortOrder)
+            {
+                case (SortOrderOrderItem.Descending):
+                    {
+                        switch (sortType)
+                        {
+                            case (SortTypeOrderItem.BuyerName):
+                                dtos = dtos.OrderByDescending(m => m.FirstName.ToLower()).ToList(); break;
+                            case (SortTypeOrderItem.ItemName):
+                                dtos = dtos.OrderByDescending(m => m.ItemName.ToLower()).ToList(); break;
+                            case (SortTypeOrderItem.Status):
+                                dtos = dtos.OrderByDescending(m => m.Status).ToList(); break;
+                            default:
+                                dtos = dtos.OrderByDescending(m => m.OrderId).ToList(); break;
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        switch (sortType)
+                        {
+                            case (SortTypeOrderItem.BuyerName):
+                                dtos = dtos.OrderBy(m => m.FirstName.ToLower()).ToList(); break;
+                            case (SortTypeOrderItem.ItemName):
+                                dtos = dtos.OrderBy(m => m.ItemName.ToLower()).ToList(); break;
+                            case (SortTypeOrderItem.Status):
+                                dtos = dtos.OrderBy(m => m.Status).ToList(); break;
+                            default:
+                                dtos = dtos.OrderBy(m => m.OrderId).ToList(); break;
+                        }
+                        break;
+                    }
+
+            }
+            return dtos;
         }
 
         [HttpGet("{id}")]
