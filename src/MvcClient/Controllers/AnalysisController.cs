@@ -19,10 +19,17 @@ namespace MvcClient.Controllers{
             _logger = logger;
             _analysisService = analysisService;
         }
+        [Authorize(Roles="Administrators, Sales, Managers")]
         public async Task<IActionResult> IndexAsync()
         {
             var indexView = await _analysisService.CountAllSales();
             return View(indexView);
+        }
+        [Authorize(Roles="Administrator, Managers")]
+        public async Task<IActionResult> Sale(string id, string saleName){
+            // Console.WriteLine("\n asdasda: "+sale.UserId);
+            var v = await _analysisService.CountItemsBySalesAsync(id);
+            return View(v);
         }
     }
 }

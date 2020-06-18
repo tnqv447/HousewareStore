@@ -72,37 +72,20 @@ namespace MvcClient.Services
                                                     item = item, //value 1
                                                     orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))//value 2
                                                 })
-                                                .Select( //cái này dùng để left join
-                                                         //m => m.orderitems.DefaultIfEmpty(), //hàm này nhìn là biết nó làm 
+                                                .Select(  
                                                     m => new ItemAnalysis
-                                                    { //new table là để làm theo định dạng mình chọn sẵn
+                                                    { 
                                                         ItemId = m.item.Id, //gán các giá trị vào
                                                         Name = m.item.Name,
                                                         UnitPrice = m.item.UnitPrice,
                                                         TotalUnits = m.orderitemsUnitCount
                                                     }
                                                 );
-                //vì sau khi join sẽ có các giá trị lặp lại nên phải groupby sum nó lại
-                // results = results.GroupBy(m => new { m.ItemId, m.Name, m.UnitPrice }, (m, n) => new ItemAnalysis
-                // {  // new {keyA,keyB,keyC}, cứ thấy () là một table mới dấu => là để định dạng table đó
-                //     ItemId = m.ItemId, // gán giá trị vào table `
-                //     Name = m.Name,
-                //     UnitPrice = m.UnitPrice,
-                //     TotalUnits = n.TotalUnits//group by phải có sum
-                // });
             }
 
             return results;
         }
-        //tong so item da ban
-        // public async Task<int> CountDeliveredItemBySalesAsync(string salesId, DateTime? fromDate = null, DateTime? toDate = null)
-        // {
-        //     return 0;
-        // }
-        //tong doanh thu
 
-        //for administrators ==================================================
-        //
 
 
     }
