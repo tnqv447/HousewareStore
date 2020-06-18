@@ -153,7 +153,7 @@ namespace IdentityApi.Data.Repos
                 {
                     Log.Debug($"{username} deleted successfully");
                 }
-                Log.Debug($"Delete {username} failed. Some errors happened");
+                else Log.Debug($"Delete {username} failed. Some errors happened");
 
             }
 

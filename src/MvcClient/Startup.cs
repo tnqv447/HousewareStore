@@ -45,7 +45,7 @@ namespace MvcClient
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAnalysisService,AnalysisService>();
+            services.AddScoped<IAnalysisService, AnalysisService>();
             services.AddScoped<IIdentityService<Buyer>, IdentityService>();
             IdentityModelEventSource.ShowPII = true;
             services.AddControllersWithViews(
@@ -95,6 +95,7 @@ namespace MvcClient
                         NameClaimType = "name",
                         RoleClaimType = "role"
                     };
+                    options.AccessDeniedPath = "/Account/AccessDenied.cshtml";
 
                     options.Events = new OpenIdConnectEvents
                     {

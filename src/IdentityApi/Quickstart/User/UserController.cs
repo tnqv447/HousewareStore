@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,10 +13,12 @@ using IdentityApi.Data.Repos;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityApi.Quickstart.User
 {
     [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(Roles = "Administrators")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -36,6 +39,8 @@ namespace IdentityApi.Quickstart.User
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationUserDTO>> GetUser(string id)
         {
+            if (!this.ValidateRole(new string[] { "Administrators" }))
+                return Forbid();
             var user = await _userRepo.GetUser(id);
 
             if (user == null)
@@ -50,6 +55,8 @@ namespace IdentityApi.Quickstart.User
         [HttpGet("manage")]
         public async Task<ActionResult<List<ApplicationUserDTO>>> ManagerUser(string role = null, string name = null, string username = null, SortType sortType = SortType.Role, SortOrder sortOrder = SortOrder.Ascending)
         {
+            if (!this.ValidateRole(new string[] { "Administrators" }))
+                return Forbid();
             IList<ApplicationUser> users = null;
             if (String.IsNullOrEmpty(role))
             {
@@ -92,6 +99,8 @@ namespace IdentityApi.Quickstart.User
         public async Task<ActionResult<ApplicationUser>> Create(ApplicationUserDTO dto)
         {
             //var user = this.toEntity(dto);
+            if (!this.ValidateRole(new string[] { "Administrators" }))
+                return Forbid();
             if (!String.IsNullOrEmpty(dto.UserName) && !String.IsNullOrEmpty(dto.Password))
             {
                 await _userRepo.CreateUser(dto);
@@ -133,6 +142,8 @@ namespace IdentityApi.Quickstart.User
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
+            if (!this.ValidateRole(new string[] { "Administrators" }))
+                return Forbid();
             var user = await _userRepo.GetUser(id);
 
             if (user == null)
@@ -198,6 +209,16 @@ namespace IdentityApi.Quickstart.User
         //
         //mapping support functions
         //
+        private bool ValidateRole(string[] roles)
+        {
+            var roleClaim = User.Claims.Where(m => m.Type.Equals(ClaimTypes.Role)).FirstOrDefault().Value;
+            for (int i = 0; i < roles.Count(); i++)
+            {
+                if (roleClaim.Equals(roles[i])) return true;
+            }
+            return false;
+        }
+
         private ApplicationUserDTO toDto(ApplicationUser user)
         {
             return _mapper.Map<ApplicationUser, ApplicationUserDTO>(user);

@@ -58,13 +58,13 @@ namespace MvcClient.Controllers
         }
         public IActionResult Privacy()
         {
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
             // Response.Redirect("Index");
             // return View();
         }
+
+
         [AllowAnonymous]
-
-
         public IActionResult Contact()
         {
             return View();
