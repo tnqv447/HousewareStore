@@ -173,7 +173,8 @@
                             else if(item.status == 3 ) Status ="Accepted";
                             else if(item.status == 4 ) Status ="Rejected";
 
-                            var OrderDate = new Date(item.orderDate).toLocaleString("th-TH");
+                            //var OrderDate = new Date(item.orderDate).toLocaleString("th-TH");
+                            var OrderDate = formarOrderDate(item.orderDate);
 
                             html += '<tr>';
                             html += '<td>'+item.orderId+'</td>';
