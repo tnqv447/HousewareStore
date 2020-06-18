@@ -60,7 +60,7 @@ namespace MvcClient.Services
         }
         public async Task UpdateOrderItem(int orderId, OrderItem item)
         {
-            var uri = _serviceBaseUrl + $"/orderItems?orderId={orderId}&itemId={item.ItemId}";
+            var uri = _serviceBaseUrl + $"/orderItems?orderId={orderId}&itemId={item.ItemId}&status={item.Status}";
 
             await _httpClient.PutAsync<OrderItem>(uri, item); // nãy nó viết thiếu dâu = và cái này có s
         }

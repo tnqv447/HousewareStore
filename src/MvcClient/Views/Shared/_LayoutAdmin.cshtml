@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="~/assets/css/styles.css">
     <link rel="stylesheet" href="~/assets/css/responsive.css">
     <!-- modernizr css -->
+    
     <script src="~/assets/js/vendor/modernizr-2.8.3.min.js"></script>
 
     <script src="~/assets/js/Chart.bundle.min.js"></script>
@@ -275,14 +276,26 @@
                             <ul class="breadcrumbs pull-left">
                                 <li><a asp-controller="Admin" asp-action="Index">Home</a></li>
                                 @{
-                                    var urlString =@Url.Action().Split("/");
+                                    var check = true;
+                                    
+                                    var urlString =Url.Action().Split("/");
                                     var count = urlString.Count();
+                                    if(count > 2){
+                                        if(Url.Action().Split("/")[2] == "Sale"){
+                                            check =false;
+                                            urlString = Url.Action().Split("/");
+                                        }
+                                    }
+                                    
                                 }
                                 @if(urlString.Count() > 1){
                                     @for(var i = 1;i< count - 1;i++){
                                         <li><a asp-controller="Admin" asp-action="Index">@urlString[i]</a></li>
                                     }
-                                    <li><span>@urlString[count - 1]</span></li>
+                                    if(check){
+                                        <li><span>@urlString[count - 1]</span></li>
+                                    }
+                                
                                 }
                                 else if(count == 1){
                                     <li><span>@urlString[0]</span></li>
@@ -325,10 +338,17 @@
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <!-- start zingchart js -->
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+
+    
     <script>
     zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
     ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
     </script>
+    <!-- start amchart js -->
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
     <!-- all line chart activation -->
     <script src="~/assets/js/line-chart.js"></script>
     <!-- all pie chart -->

@@ -60,6 +60,7 @@ namespace IdentityServer4.Quickstart.UI
         public string PictureUrl { get; set; }
 
         public string Website { get; set; }
+        [Required]
         public Address Address { get; set; }
 
         public UserProfileInputModel() { }
