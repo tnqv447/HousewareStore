@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MvcClient.Models
 {
-    public class Management
+    public class ItemAnalysis
     {
         public int ItemId { get; set; }
         public string Name { get; set; }

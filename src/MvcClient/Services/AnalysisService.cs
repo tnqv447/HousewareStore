@@ -20,8 +20,9 @@ namespace MvcClient.Services
 
         //for managers ==================================================
         //
-        public AnalysisService(IHttpClient httpClient,IOrderService orderService,IUserService userService,
-        IItemService itemService){
+        public AnalysisService(IHttpClient httpClient, IOrderService orderService, IUserService userService,
+        IItemService itemService)
+        {
             _httpClient = httpClient;
             _orderService = orderService;
             _userService = userService;
@@ -33,59 +34,64 @@ namespace MvcClient.Services
         {
             IList<AnalysisViewModel> results = new List<AnalysisViewModel>();
             var listSales = await _userService.ManageUsers("Sales");
-            foreach(var sale in listSales){
+            foreach (var sale in listSales)
+            {
                 var count = await CountItemsBySalesAsync(sale.UserId);
-                if(count!=null){
-                    AnalysisViewModel result = new AnalysisViewModel{
+                if (count != null)
+                {
+                    AnalysisViewModel result = new AnalysisViewModel
+                    {
                         Sale = sale,
                         Count = count
                     };
-                    
+
                     results.Add(result);
                 }
-                
+
             }
-                
-            Console.WriteLine("\nTEST: "+ results.ElementAt(0).Sale.UserId);
+
+            Console.WriteLine("\nTEST: " + results.ElementAt(0).Sale.UserId);
             return results;
         }
         // Chi tiết từng sale
-        public async Task<IEnumerable<Management>> CountItemsBySalesAsync(string saleId)
+        public async Task<IEnumerable<ItemAnalysis>> CountItemsBySalesAsync(string saleId)
         {
             var listOrders = await _orderService.GetOrderItemsForSales(saleId);
             var listItems = await _itemService.GetItemsSale(saleId);
-            IEnumerable<Management> results = Enumerable.Empty<Management>();
+            IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
 
-            if(listOrders != null && listItems != null){
-                    //Đầu tiên là left join 2 bảng vừa lấy về
-                    results = listItems.GroupJoin(listOrders,
-                                                    it => it.Id, // key của left table
-                                                    oit => oit.ItemId,// key của right table
-                                                    (it,itGr) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
-                                                    new{ //new này là tạo table mới chứa 2 giá trị dưới
-                                                        it = it, //value 1
-                                                        itGr = itGr//value 2
-                                                    })
-                                                    .SelectMany( //cái này dùng để left join
-                                                        m => m.itGr.DefaultIfEmpty(), //hàm này nhìn là biết nó làm gì
-                                                        (m,oit) => new Management{ //new table là để làm theo định dạng mình chọn sẵn
-                                                            ItemId = m.it.Id, //gán các giá trị vào
-                                                            Name = m.it.Name,
-                                                            UnitPrice = m.it.UnitPrice,
-                                                            TotalUnits = m.itGr.Sum(n => n.Units)
-                                                        }
-                                                    );
-                                                    //vì sau khi join sẽ có các giá trị lặp lại nên phải groupby sum nó lại
-                    results =  results.GroupBy(m => new {m.ItemId, m.Name, m.UnitPrice}, (m,n) => new Management{  // new {keyA,keyB,keyC}, cứ thấy () là một table mới dấu => là để định dạng table đó
-                        ItemId = m.ItemId, // gán giá trị vào table mới
-                        Name = m.Name,
-                        UnitPrice = m.UnitPrice,
-                        TotalUnits = n.Sum(p => p.TotalUnits) //group by phải có sum
-                    });
-                }
-            
-                            
-            
+            if (listOrders != null && listItems != null)
+            {
+                //Đầu tiên là left join 2 bảng vừa lấy về
+                results = listItems.GroupJoin(listOrders,
+                                                item => item.Id, // key của left table
+                                                orderitems => orderitems.ItemId,// key của right table
+                                                (item, orderitems) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
+                                                new
+                                                { //new này là tạo table mới chứa 2 giá trị dưới
+                                                    item = item, //value 1
+                                                    orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))//value 2
+                                                })
+                                                .Select( //cái này dùng để left join
+                                                         //m => m.orderitems.DefaultIfEmpty(), //hàm này nhìn là biết nó làm 
+                                                    m => new ItemAnalysis
+                                                    { //new table là để làm theo định dạng mình chọn sẵn
+                                                        ItemId = m.item.Id, //gán các giá trị vào
+                                                        Name = m.item.Name,
+                                                        UnitPrice = m.item.UnitPrice,
+                                                        TotalUnits = m.orderitemsUnitCount
+                                                    }
+                                                );
+                //vì sau khi join sẽ có các giá trị lặp lại nên phải groupby sum nó lại
+                // results = results.GroupBy(m => new { m.ItemId, m.Name, m.UnitPrice }, (m, n) => new ItemAnalysis
+                // {  // new {keyA,keyB,keyC}, cứ thấy () là một table mới dấu => là để định dạng table đó
+                //     ItemId = m.ItemId, // gán giá trị vào table `
+                //     Name = m.Name,
+                //     UnitPrice = m.UnitPrice,
+                //     TotalUnits = n.TotalUnits//group by phải có sum
+                // });
+            }
+
             return results;
         }
         //tong so item da ban
@@ -97,17 +103,17 @@ namespace MvcClient.Services
 
         //for administrators ==================================================
         //
-        
-        
+
+
     }
     public static class LinqEx
     {
         //cac ham left join,right join, inner join, outer join
         public static IEnumerable<TResult> LeftOuterJoin<TOuter, TInner, TKey, TResult>(
-            this IEnumerable<TOuter> outer, 
-            IEnumerable<TInner> inner, 
-            Func<TOuter, TKey> outerKeySelector, 
-            Func<TInner, TKey> innerKeySelector, 
+            this IEnumerable<TOuter> outer,
+            IEnumerable<TInner> inner,
+            Func<TOuter, TKey> outerKeySelector,
+            Func<TInner, TKey> innerKeySelector,
             Func<TOuter, TInner, TResult> resultSelector)
         {
             return outer
