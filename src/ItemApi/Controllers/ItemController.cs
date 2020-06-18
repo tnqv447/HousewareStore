@@ -74,7 +74,12 @@ namespace ItemApi.Controllers
             }
             return result;
         }
-
+        [AllowAnonymous]
+        [HttpGet("sale")]
+        public async Task<IEnumerable<ItemDTO>> getItemsSale(string saleId){
+            var result = await _itemRepos.GetItemsSale(saleId);
+            return result;
+        } 
         [HttpPost]
         public async Task<ActionResult<Item>> Create(ItemDTO ItemDTO)
         {

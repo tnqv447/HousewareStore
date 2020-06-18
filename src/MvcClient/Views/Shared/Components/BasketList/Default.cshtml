@@ -45,7 +45,7 @@
                                             </div>
                                             <input type="hidden" name="@("quantities[" + i +"].Key")" value="@item.Id" />
                                         </td>
-                                        <td  class="shoping__cart__total">$ @Math.Round(item.UnitPrice * item.Quantity, 2).ToString("N2")</td>
+                                        <td  class="shoping__cart__total">$@Math.Round(item.UnitPrice * item.Quantity, 2).ToString("N2")</td>
                                         <td class="shoping__cart__item__close clear_item" id="@item.Id" >
                                             <span class="icon_close"></span>
                                         </td>

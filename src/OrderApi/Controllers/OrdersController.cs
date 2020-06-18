@@ -45,7 +45,7 @@ namespace OrderApi.Controllers
 
             return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderDTO>>(orders);
         }
-
+    
         [HttpGet("salesId/{salesId}")]
         public async Task<IEnumerable<OrderItemForSalesDTO>> GetOrdersBySales(string salesId)
         {

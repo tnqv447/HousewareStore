@@ -28,7 +28,10 @@ namespace MvcClient.Services
             return await _httpClient.GetAsync<IndexViewModel>(uri);
         }
 
-
+        public async Task<IEnumerable<Item>> GetItemsSale(string saleId){
+            var uri = _baseUrl + $"/sale?saleId={saleId}";
+            return await _httpClient.GetAsync<IEnumerable<Item>>(uri);
+        }
         public async Task<IList<Category>> GetCategories()
 
         {

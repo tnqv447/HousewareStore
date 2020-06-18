@@ -66,7 +66,13 @@ namespace ItemApi.Data.Repos
             // return await Items.Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync(); 
             return await MappingToItemDTO(Items);
         }
-
+        public async Task<IEnumerable<ItemDTO>> GetItemsSale(string saleId, DbStatus dbStatus = DbStatus.Active){
+            var Items = dbStatus == DbStatus.All ? _context.Items : _context.Items.Where(m => m.DbStatus.Equals(dbStatus));
+            if(!String.IsNullOrEmpty(saleId)){
+                Items = Items.Where(m => m.OwnerId == saleId);
+            }
+            return await Items.Select(m => _mapper.Map<ItemDTO>(m)).ToListAsync();
+        }
         public bool ItemExists(int id)
         {
             return _context.Items.Any(m => m.Id == id);
@@ -95,9 +101,9 @@ namespace ItemApi.Data.Repos
         public async Task<IEnumerable<ItemDTO>> MappingToItemDTO(IQueryable<Item> items)
         {
             var ItemsDto = from i in items
-                           join c in _context.Categories on i.CategoryId equals c.CategoryId into catGroup
-                           from cat in catGroup
-                           select new ItemDTO(i, cat.CategoryName);
+                        join c in _context.Categories on i.CategoryId equals c.CategoryId into catGroup
+                        from cat in catGroup
+                        select new ItemDTO(i, cat.CategoryName);
             return await ItemsDto.ToListAsync();
         }
         public async Task<ItemDTO> MappingToItemDTO(Item item)

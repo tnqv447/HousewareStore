@@ -14,6 +14,7 @@ namespace ItemApi.Data.Repos
         bool ItemExists(int id);
         Task Activate(int id);
         Task Disable(int id);
+        Task<IEnumerable<ItemDTO>> GetItemsSale(string saleId, DbStatus dbStatus = DbStatus.Active);
 
         Task<IEnumerable<ItemDTO>> MappingToItemDTO(IQueryable<Item> items);
         Task<ItemDTO> MappingToItemDTO(Item item);

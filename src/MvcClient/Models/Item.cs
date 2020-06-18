@@ -28,7 +28,7 @@ namespace MvcClient.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{dd/MM/yyyy}")]
         public DateTime PublishDate { get; set; }
-
+            
         public string PictureUrl { get; set; }
         public string OwnerId { get; set; }
 

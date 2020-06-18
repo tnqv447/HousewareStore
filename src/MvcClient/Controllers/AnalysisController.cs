@@ -14,14 +14,15 @@ using MvcClient.ViewModels;
 namespace MvcClient.Controllers{
     public class AnalysisController : Controller{
         private readonly ILogger<AdminController> _logger;
-        private readonly IItemService _itemService;
-        public AnalysisController(ILogger<AdminController> logger, IItemService itemService){
+        private readonly IAnalysisService _analysisService;
+        public AnalysisController(ILogger<AdminController> logger, IAnalysisService analysisService){
             _logger = logger;
-            _itemService = itemService;
+            _analysisService = analysisService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View();
+            var indexView = await _analysisService.CountAllSales();
+            return View(indexView);
         }
     }
 }
