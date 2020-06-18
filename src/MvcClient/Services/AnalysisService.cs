@@ -63,8 +63,8 @@ namespace MvcClient.Services
                                                     oit => oit.ItemId,// key của right table
                                                     (it,itGr) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
                                                     new{ //new này là tạo table mới chứa 2 giá trị dưới
-                                                        it = it, //value
-                                                        itGr = itGr//table
+                                                        it = it, //value 1
+                                                        itGr = itGr//value 2
                                                     })
                                                     .SelectMany( //cái này dùng để left join
                                                         m => m.itGr.DefaultIfEmpty(), //hàm này nhìn là biết nó làm gì
