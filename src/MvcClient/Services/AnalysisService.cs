@@ -57,6 +57,8 @@ namespace MvcClient.Services
         public async Task<IEnumerable<ItemAnalysis>> CountItemsBySalesAsync(string saleId)
         {
             var listOrders = await _orderService.GetOrderItemsForSales(saleId);
+            listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
+
             var listItems = await _itemService.GetItemsSale(saleId);
             IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
 

@@ -52,7 +52,7 @@ namespace MvcClient.Services
         }
 
         public async Task<IEnumerable<OrderItemForSales>> GetOrderItemsForSales(string salesId, SearchTypeOrderItem searchType = SearchTypeOrderItem.ItemName, string searchString = null,
-                                OrderItemStatus status = OrderItemStatus.Preparing, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending)
+                                OrderItemStatus status = OrderItemStatus.AllStatus, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending)
         {
             var uri = _serviceBaseUrl + $"/salesId/{salesId}?searchType={searchType}&searchString={searchString}&status={status}&sortType={sortType}&sortOrder={sortOrder}";
 

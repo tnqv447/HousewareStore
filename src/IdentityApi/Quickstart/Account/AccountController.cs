@@ -98,15 +98,6 @@ namespace IdentityServer4.Quickstart.UI
                 var result = true;
                 if (model.Password.Equals(model.ConfirmPassword) && !String.IsNullOrEmpty(model.Role))
                 {
-
-                    // Console.WriteLine("\ngg\n");
-                    // Console.WriteLine(model.Username);
-                    // Console.WriteLine(model.Password);
-                    // Console.WriteLine(returnUrl);
-                    // Console.WriteLine(model.RememberMe);
-                    // Console.WriteLine(model.UserProfile.Name);
-                    //var temp = this.CreateClaims(model.UserProfile);
-
                     result = this.CreateUser(model.Username, model.Password, model.Role, model.UserProfile);
                 }
                 else
@@ -116,14 +107,15 @@ namespace IdentityServer4.Quickstart.UI
                 //if success
                 if (result)
                 {
-                    var loginModel = new LoginInputModel
-                    {
-                        Username = model.Username,
-                        Password = model.Password,
-                        RememberLogin = model.RememberMe,
-                        ReturnUrl = returnUrl
-                    };
-                    return await this.Login(loginModel, "login");
+                    // var loginModel = new LoginInputModel
+                    // {
+                    //     Username = model.Username,
+                    //     Password = model.Password,
+                    //     RememberLogin = model.RememberMe,
+                    //     ReturnUrl = returnUrl
+                    // };
+                    // return await this.Login(loginModel, "login");
+                    Redirect("http://localhost:5002");
                 }
                 //if fail
                 else
