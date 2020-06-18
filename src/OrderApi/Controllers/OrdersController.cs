@@ -45,10 +45,10 @@ namespace OrderApi.Controllers
 
             return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderDTO>>(orders);
         }
-    
+
         [HttpGet("salesId/{salesId}")]
         public async Task<IEnumerable<OrderItemForSalesDTO>> GetOrdersBySales(string salesId, SearchTypeOrderItem searchType = SearchTypeOrderItem.ItemName, string searchString = null,
-                                OrderItemStatus status = OrderItemStatus.Preparing, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending)
+                                OrderItemStatus status = OrderItemStatus.AllStatus, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending)
         {
             var orderItems = await _orderRepo.GetBySalesAsync(salesId);
             if (orderItems == null || orderItems.Count() == 0)
