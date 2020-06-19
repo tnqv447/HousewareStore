@@ -19,28 +19,64 @@ namespace MvcClient.Controllers
     {
         private readonly ILogger<AdminController> _logger;
         private readonly IItemService _itemService;
+        private readonly IOrderService _orderService;
 
-        public AdminController(ILogger<AdminController> logger, IItemService itemService)
+        public AdminController(ILogger<AdminController> logger, IItemService itemService, IOrderService orderService)
         {
             _logger = logger;
             _itemService = itemService;
+            _orderService = orderService;
         }
         public async Task<IActionResult> Index()
         {
+            List<OrderItem> list = new List<OrderItem>();
+            var orders = await _orderService.GetOrders();
+            foreach (var order in orders)
+            {
+                foreach (var item in order.OrderItems)
+                {
+                    list.Add(item);
+
+                }
+            }
+            List<LineItem> commonItems = list
+                                .GroupBy(l => l.ItemName)
+                                .Select(cl => new LineItem
+                                {
+                                    ItemName = cl.First().ItemName,
+                                    Total = cl.Sum(c => c.Units),
+                                    PictureURL = cl.First().PictureUrl,
+                                    UnitPrice = cl.First().UnitPrice
+                                }).ToList();
+            commonItems = commonItems.OrderByDescending(c => c.Total).ToList();
+            var top = from m in list
+                      group m by m.ItemName into g
+                      select new { id = g.Key, cnt = g.Count() };
+            Console.WriteLine("aaa " + top.First().id + " " + top.First().cnt);
+            var items = await _itemService.GetAll();
             DashboardViewModel viewModel = new DashboardViewModel();
-            viewModel.TotalRevenue = 9999;
-            viewModel.CountApproved = 20;
-            viewModel.CountRejected = 2;
-            viewModel.CountSubmitted = 5;
+            viewModel.TotalRevenue = (from m in orders
+                                      select m.Total).Sum();
+            viewModel.CountApproved = (from m in items
+                                       where m.ItemStatus == ItemStatus.Approved
+                                       select m).Count();
+            viewModel.CountRejected = (from m in items
+                                       where m.ItemStatus == ItemStatus.Rejected
+                                       select m).Count();
+            viewModel.CountSubmitted = (from m in items
+                                        where m.ItemStatus == ItemStatus.Submitted
+                                        select m).Count();
             viewModel.Data = prepareDataChart();
             var catalog = await _itemService.GetCatalog(null, null, 0, 0, null);
-            viewModel.CommonItems = catalog.Items;
+            viewModel.CommonItems = commonItems;
             return View(viewModel);
         }
-        public IActionResult Seo(){
+        public IActionResult Seo()
+        {
             return View();
-        }       
-        public IActionResult Ecommerce(){
+        }
+        public IActionResult Ecommerce()
+        {
             return View();
         }
         private IList<DataChart> prepareDataChart()
@@ -62,4 +98,5 @@ namespace MvcClient.Controllers
         }
 
     }
+
 }

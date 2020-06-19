@@ -78,22 +78,30 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active">
                             <div class="table-responsive">
-                                <table class="dbkit-table">
-                                    <tr class="heading-td text-capitalize">
-                                        <td width="5%">Index</td>
-                                        <td width="60%">Name</td>
-                                        <td width="20%">Category</td>
-                                        <td width="15%">PublishDate</td>
-                                    </tr>
-                                    @for(var i= 0 ;i < 5; ++i){
-                                        var item = Model.CommonItems[i];
+                                <table class="table table-striped text-center">
+                                    <thead>
                                         <tr>
-                                            <td>@(i+1)</td>
-                                            <td>@item.Name</td>
-                                            <td>@item.Category</td>
-                                            <td>@item.DisplayPublishDate()</td>
+                                            <th scope="col">Index</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Unit price</th>
+                                            <th scope="col">Amount</th>
                                         </tr>
-                                    }
+                                    </thead>
+                                    <tbody>
+                                        @for(var i= 0 ;i < 5; ++i)
+                                        {
+                                            var item = Model.CommonItems[i];
+                                            <tr>
+                                                <td>@(i+1)</td>
+                                                @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureURL);}
+                                                <td><img class="img_aspect" src="@PictureURLPath" asp-append-version="true" /></td>
+                                                <td>@item.ItemName</td>
+                                                <td>@item.UnitPrice</td>
+                                                <td>@item.Total</td>
+                                            </tr>
+                                        }   
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

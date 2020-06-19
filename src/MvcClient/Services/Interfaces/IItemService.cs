@@ -17,6 +17,7 @@ namespace MvcClient.Services
         Task UpdateItem(int id, Item item);
         Task DeleteItem(int id);
         Task ChangeItemStatus(int id, ItemStatus status);
+        Task<IEnumerable<Item>> GetAll();
 
     }
 }

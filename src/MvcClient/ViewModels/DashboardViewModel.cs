@@ -6,9 +6,9 @@ namespace MvcClient.ViewModels
 {
     public class DashboardViewModel
     {
-        public decimal TotalRevenue { get; set; }
+        public double TotalRevenue { get; set; }
         public IList<DataChart> Data { get; set; }
-        public IList<Item> CommonItems { get; set; }
+        public IList<LineItem> CommonItems { get; set; }
         public int CountApproved { get; set; }
         public int CountSubmitted { get; set; }
         public int CountRejected { get; set; }
@@ -23,5 +23,12 @@ namespace MvcClient.ViewModels
             this.Month = Month;
             this.Revenue = Revenue;
         }
+    }
+    public class LineItem
+    {
+        public string ItemName { get; set; }
+        public int Total { get; set; }
+        public string PictureURL { get; set; }
+        public double UnitPrice { get; set; }
     }
 }
