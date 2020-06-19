@@ -34,10 +34,6 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <h4 class="header-title mb-0">Overview</h4>
-                    <select class="custome-select border-0 pr-3">
-                        <option selected>Last 24 Hours</option>
-                        <option value="0">01 July 2018</option>
-                    </select>
                 </div>
                 <div class="chart-container">  
                     <canvas id="RevenueChart" style="width:100%; height:500px"></canvas>  
@@ -78,22 +74,30 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active">
                             <div class="table-responsive">
-                                <table class="dbkit-table">
-                                    <tr class="heading-td text-capitalize">
-                                        <td width="5%">Index</td>
-                                        <td width="60%">Name</td>
-                                        <td width="20%">Category</td>
-                                        <td width="15%">PublishDate</td>
-                                    </tr>
-                                    @for(var i= 0 ;i < 5; ++i){
-                                        var item = Model.CommonItems[i];
+                                <table class="table table-striped text-center">
+                                    <thead>
                                         <tr>
-                                            <td>@(i+1)</td>
-                                            <td>@item.Name</td>
-                                            <td>@item.Category</td>
-                                            <td>@item.DisplayPublishDate()</td>
+                                            <th with="10%" scope="col">Index</th>
+                                            <th with="40%" scope="col">Image</th>
+                                            <th with="30%" scope="col">Name</th>
+                                            <th with="10%" scope="col">Unit price</th>
+                                            <th with="10%" scope="col">Amount</th>
                                         </tr>
-                                    }
+                                    </thead>
+                                    <tbody>
+                                        @for(var i= 0 ;i < 5; ++i)
+                                        {
+                                            var item = Model.CommonItems[i];
+                                            <tr>
+                                                <td>@(i+1)</td>
+                                                @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureURL);}
+                                                <td><img class="img_aspect" src="@PictureURLPath" asp-append-version="true" /></td>
+                                                <td>@item.ItemName</td>
+                                                <td>@item.UnitPrice</td>
+                                                <td>@item.Total</td>
+                                            </tr>
+                                        }   
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -116,7 +120,7 @@ $(document).ready(function(){
         var data = {  
             labels: xLabels,  
             datasets: [{  
-                label: "Revenue Chart",  
+                label: "Revenue Last 12 Months Chart",  
                 backgroundColor: [  
                     'rgba(255, 99, 132, 0.2)',  
                     'rgba(54, 162, 235, 0.2)',  

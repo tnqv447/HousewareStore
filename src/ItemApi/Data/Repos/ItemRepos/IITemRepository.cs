@@ -18,6 +18,7 @@ namespace ItemApi.Data.Repos
 
         Task<IEnumerable<ItemDTO>> MappingToItemDTO(IQueryable<Item> items);
         Task<ItemDTO> MappingToItemDTO(Item item);
+        Task<IEnumerable<ItemDTO>> getAll();
 
 
     }

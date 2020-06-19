@@ -115,6 +115,10 @@ namespace ItemApi.Data.Repos
             var ItemsDto = new ItemDTO(item, CategoryName);
             return ItemsDto;
         }
+        public async Task<IEnumerable<ItemDTO>> getAll()
+        {
+            return await MappingToItemDTO(_context.Items);
+        }
 
     }
 }

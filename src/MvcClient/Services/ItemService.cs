@@ -28,7 +28,8 @@ namespace MvcClient.Services
             return await _httpClient.GetAsync<IndexViewModel>(uri);
         }
 
-        public async Task<IEnumerable<Item>> GetItemsSale(string saleId){
+        public async Task<IEnumerable<Item>> GetItemsSale(string saleId)
+        {
             var uri = _baseUrl + $"/sale?saleId={saleId}";
             return await _httpClient.GetAsync<IEnumerable<Item>>(uri);
         }
@@ -73,6 +74,12 @@ namespace MvcClient.Services
             var uri = _baseUrl + $"/{id}";
 
             await _httpClient.DeleteAsync(uri);
+        }
+
+        public async Task<IEnumerable<Item>> GetAll()
+        {
+            var uri = _baseUrl + $"/all";
+            return await _httpClient.GetAsync<IEnumerable<Item>>(uri);
         }
 
     }
