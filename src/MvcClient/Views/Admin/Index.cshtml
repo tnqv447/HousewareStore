@@ -6,6 +6,22 @@
     var YValues = Newtonsoft.Json.JsonConvert.SerializeObject( Model.Data.Select( x => x.Revenue ).ToList() );  
 }
 <h1> Dashboard</h1>
+
+<br />
+<div class="row">
+    <div class="col-xl-12 col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="header-title mb-0">Overview</h4>
+                </div>
+                <div class="chart-container">  
+                    <canvas id="RevenueChart" style="width:100%; height:500px"></canvas>  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-xl-6 col-lg-4 " style="margin: auto;">
             <div class="card h-full">
@@ -29,27 +45,8 @@
 </div>
 <br />
 <div class="row">
-    <div class="col-xl-12 col-lg-8">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h4 class="header-title mb-0">Overview</h4>
-                    <select class="custome-select border-0 pr-3">
-                        <option selected>Last 24 Hours</option>
-                        <option value="0">01 July 2018</option>
-                    </select>
-                </div>
-                <div class="chart-container">  
-                    <canvas id="RevenueChart" style="width:100%; height:500px"></canvas>  
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<br />
-<div class="row">
     <!-- Item Status area start -->
-    <div class="col-lg-4">
+    @* <div class="col-lg-4">
         <div class="card">
             <div class="card-body">
                 <h4 class="header-title">Item Status</h4>
@@ -65,10 +62,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> *@
     <!-- Item Status area end -->
     <!-- Top Item area start -->
-    <div class="col-lg-8 mt-sm-30 mt-xs-30">
+    <div class="col-lg-12 mt-sm-30 mt-xs-30">
         <div class="card">
             <div class="card-body">
                 <div class="d-sm-flex justify-content-between align-items-center">
@@ -78,22 +75,34 @@
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active">
                             <div class="table-responsive">
-                                <table class="dbkit-table">
-                                    <tr class="heading-td text-capitalize">
-                                        <td width="5%">Index</td>
-                                        <td width="60%">Name</td>
-                                        <td width="20%">Category</td>
-                                        <td width="15%">PublishDate</td>
-                                    </tr>
-                                    @for(var i= 0 ;i < 5; ++i){
-                                        var item = Model.CommonItems[i];
+                                <table class="table table-striped text-center">
+                                    <thead>
                                         <tr>
-                                            <td>@(i+1)</td>
-                                            <td>@item.Name</td>
-                                            <td>@item.Category</td>
-                                            <td>@item.DisplayPublishDate()</td>
+                                            <th with="10%">Top</th>
+                                            <th with="30%" >Image</th>
+                                            <th with="20%" >Name</th>
+                                            <th width="15%">Sale</th>
+                                            <th with="10%">Amount</th>
+                                            <th with="15%">Total price</th>
+                                            
                                         </tr>
-                                    }
+                                    </thead>
+                                    <tbody>
+                                        @for(var i= 0 ;i < 5; ++i)
+                                        {
+                                            var item = Model.CommonItems[i];
+                                            <tr>
+                                                <td>@(i+1)</td>
+                                                @{string PictureURLPath = @Url.Content("~/img/product/"+@item.PictureURL);}
+                                                <td><img class="img_aspect" src="@PictureURLPath" asp-append-version="true" /></td>
+                                                <td>@item.ItemName</td>
+                                                <td>@item.OwnerName</td>
+                                                <td>@item.Total</td>
+                                                <td>$@Math.Round(item.Total * item.UnitPrice,2)</td>
+                                                
+                                            </tr>
+                                        }   
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -116,7 +125,7 @@ $(document).ready(function(){
         var data = {  
             labels: xLabels,  
             datasets: [{  
-                label: "Revenue Chart",  
+                label: "Revenue Last 12 Months Chart",  
                 backgroundColor: [  
                     'rgba(255, 99, 132, 0.2)',  
                     'rgba(54, 162, 235, 0.2)',  

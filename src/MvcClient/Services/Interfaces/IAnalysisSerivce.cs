@@ -23,6 +23,7 @@ namespace MvcClient.Services
         // Task<int> CountDeliveredItemBySalesAsync(string salesId, DateTime? fromDate = null, DateTime? toDate = null);
         //tong doanh thu
 
+        // Task<IList<AnalysisViewModel>> CountAllProducts();
 
 
         //==============================================================

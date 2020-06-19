@@ -76,10 +76,11 @@ namespace ItemApi.Controllers
         }
         [AllowAnonymous]
         [HttpGet("sale")]
-        public async Task<IEnumerable<ItemDTO>> getItemsSale(string saleId){
+        public async Task<IEnumerable<ItemDTO>> getItemsSale(string saleId)
+        {
             var result = await _itemRepos.GetItemsSale(saleId);
             return result;
-        } 
+        }
         [HttpPost]
         public async Task<ActionResult<Item>> Create(ItemDTO ItemDTO)
         {
@@ -132,6 +133,12 @@ namespace ItemApi.Controllers
             await _itemRepos.Delete(Item);
 
             return NoContent();
+        }
+
+        [HttpGet("all")]
+        public async Task<IEnumerable<ItemDTO>> getAll()
+        {
+            return await _itemRepos.getAll();
         }
     }
 }

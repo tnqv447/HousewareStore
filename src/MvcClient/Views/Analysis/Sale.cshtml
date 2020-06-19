@@ -76,6 +76,7 @@
                 "marginRight": 8,
                 "marginTop": 10,
                 "marginBottom": 26,
+                "title": "Total Units and Total Price of all items",
                 "balloon": {
                     "adjustBorderColor": false,
                     "horizontalPadding": 10,
@@ -93,27 +94,22 @@
                     "alphaField": "alpha",
                     "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
                     "fillAlphas": 1,
-                    "fillColorsField": "color",
+                    "fillColorsField": "Color",
                     "title": "Units",
                     "type": "column",
                     "valueField": "Units",
                     "dashLengthField": "dashLengthColumn"
                 }, {
-                    "id": "graph2",
+                    
                     "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
                     "bullet": "round",
-                    "lineThickness": 3,
-                    "bulletSize": 7,
-                    "bulletBorderAlpha": 1,
-                    "bulletColor": "#FFFFFF",
-                    "lineColor": "#AA59FE",
-                    "useLineColorForBulletBorder": true,
-                    "bulletBorderThickness": 3,
-                    "fillAlphas": 0,
-                    "lineAlpha": 1,
+                    "fillColorsField": "Color",
+                    "fillAlphas": 1,
+                    
+                    "type": "column",
                     "title": "Total Price",
                     "valueField": "Total Price",
-                    "dashLengthField": "dashLengthLine"
+                    "dashLengthField": "dashLengthColumn"
                 }],
                 "categoryField": "Name",
                 "categoryAxis": {

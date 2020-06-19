@@ -29,6 +29,40 @@ namespace MvcClient.Services
             _itemService = itemService;
 
         }
+        public async Task<IEnumerable<ItemAnalysis>> CountBuyersBySalesAsync(string saleId)
+        {
+            var listOrders = await _orderService.GetOrderItemsForSales(saleId);
+            // listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
+
+            var listBuyers = await _itemService.GetItemsSale(saleId);
+            IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
+
+            if (listOrders != null && listItems != null)
+            {
+                //Đầu tiên là left join 2 bảng vừa lấy về
+                results = listItems.GroupJoin(listOrders,
+                                                item => item.Id, // key của left table
+                                                orderitems => orderitems.ItemId,// key của right table
+                                                (item, orderitems) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
+                                                new
+                                                { //new này là tạo table mới chứa 2 giá trị dưới
+                                                    item = item, //value 1
+                                                    orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))
+                                                })
+                                                .Select(
+                                                    m => new ItemAnalysis
+                                                    {
+                                                        ItemId = m.item.Id, //gán các giá trị vào
+                                                        Name = m.item.Name,
+                                                        UnitPrice = m.item.UnitPrice,
+                                                        TotalUnits = m.orderitemsUnitCount
+                                                    }
+                                                );
+            }
+
+            return results;
+        }
+
         // Thống kê hết sale
         public async Task<IList<AnalysisViewModel>> CountAllSales()
         {
@@ -37,20 +71,28 @@ namespace MvcClient.Services
             foreach (var sale in listSales)
             {
                 var count = await CountItemsBySalesAsync(sale.UserId);
+                var totalUnits = 0;
+                double totalPrices = 0;
+                foreach (var item in count)
+                {
+                    totalUnits += item.TotalUnits;
+                    totalPrices += Math.Round(item.TotalUnits * item.UnitPrice, 2);
+                }
                 if (count != null)
                 {
                     AnalysisViewModel result = new AnalysisViewModel
                     {
                         Sale = sale,
-                        Count = count
+                        Count = count,
+                        TotalPrices = totalPrices,
+                        TotalUnits = totalUnits
                     };
 
                     results.Add(result);
                 }
-
+                results.OrderByDescending(m => m.TotalPrices);
             }
 
-            Console.WriteLine("\nTEST: " + results.ElementAt(0).Sale.UserId);
             return results;
         }
         // Chi tiết từng sale
@@ -72,11 +114,11 @@ namespace MvcClient.Services
                                                 new
                                                 { //new này là tạo table mới chứa 2 giá trị dưới
                                                     item = item, //value 1
-                                                    orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))//value 2
+                                                    orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))
                                                 })
-                                                .Select(  
+                                                .Select(
                                                     m => new ItemAnalysis
-                                                    { 
+                                                    {
                                                         ItemId = m.item.Id, //gán các giá trị vào
                                                         Name = m.item.Name,
                                                         UnitPrice = m.item.UnitPrice,
@@ -87,6 +129,7 @@ namespace MvcClient.Services
 
             return results;
         }
+
 
 
 
