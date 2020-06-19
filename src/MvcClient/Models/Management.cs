@@ -5,9 +5,11 @@ namespace MvcClient.Models
 {
     public class ItemAnalysis
     {
+        public string UserId { get; set; }
         public int ItemId { get; set; }
         public string Name { get; set; }
         public double UnitPrice { get; set; }
         public int TotalUnits { get; set; }
+        public double TotalPrices { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace IdentityServer4.Quickstart.UI
         public async Task<IActionResult> Register(RegisterInputModel model, string button, string returnUrl)
         {
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
-
+            // string msg = "Error";
             //if the user clicked "cancel" button
             if (button != "register")
             {
@@ -108,6 +108,9 @@ namespace IdentityServer4.Quickstart.UI
                 //if success
                 if (result)
                 {
+                    if(returnUrl == null){
+                        returnUrl = "http:localhost:5002";
+                    }
                     var loginModel = new LoginInputModel
                     {
                         Username = model.Username,
@@ -115,9 +118,11 @@ namespace IdentityServer4.Quickstart.UI
                         RememberLogin = model.RememberMe,
                         ReturnUrl = returnUrl
                     };
-                    // return await this.Login(loginModel, "login");
-                    return RedirectToAction("Login", new RouteValueDictionary( 
-                            new { controller = "Account", action = "Login",stringUrl = "http://localhostL5002" } ) );
+                    // msg = "Success";
+                    return await this.Login(loginModel, "login");
+                    // return RedirectToAction("Login", new RouteValueDictionary( 
+                    //         new { controller = "Account", action = "Login",stringUrl = "http://localhostL5002" } ) );
+                    // LocalRedirect()
                 }
                 //if fail
                 else

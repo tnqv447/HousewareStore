@@ -1,4 +1,4 @@
-@model IEnumerable<AnalysisViewModel>
+@model AnalysisViewModel
 @using Microsoft.AspNetCore.Authorization
 @using MvcClient.Authorization
 @inject IAuthorizationService AuthorizationService
@@ -11,7 +11,7 @@
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <h4 id="change-title" class="header-title">Sales</h4>
+                    <h3 id="change-title" class="header-title" style="text-align:center">List Of Sales</h3>
                     <div class="data-tables datatable-primary">
                         <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
                             <thead class="text-capitalize">
@@ -25,19 +25,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach(var sale in Model)
+                                @foreach(var sale in Model.SalesCount)
                                 {
                                     <tr>
-                                        <td >@sale.Sale.Name</td>
-                                        <td>@sale.Sale.Address.ToString()</td>
-                                        <td>@sale.Sale.PhoneNumber</td>
+                                        <td >@sale.User.Name</td>
+                                        <td>@sale.User.Address.ToString()</td>
+                                        <td>@sale.User.PhoneNumber</td>
                                         <td>@sale.TotalUnits</td>
                                         <td>$@sale.TotalPrices.ToString("N2")</td>
                                         @{
                                             var temp = new Dictionary<string,string>
                                                 {
-                                                    {"saleName", @sale.Sale.Name},
-                                                    {"id", @sale.Sale.UserId}
+                                                    {"saleName", @sale.User.Name},
+                                                    {"id", @sale.User.UserId}
                                                     
                                                 };
                                         }
@@ -53,4 +53,46 @@
         </div>
     </div>
 }
-
+@if(User.IsInRole("Sales")){
+    <div class="row">
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h3 id="change-title" class="header-title" style="text-align:center">Your List Of Buyers</h3>
+                    <div class="data-tables datatable-primary">
+                        <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
+                            <thead class="text-capitalize">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Total Units</th>
+                                    <th>Total Price</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var buyer in Model.BuyersCount)
+                                {
+                                    <tr>
+                                        <td >@buyer.Name</td>
+                                        <td>@buyer.TotalUnits</td>
+                                        <td>$@buyer.TotalPrices.ToString("N2")</td>
+                                        @{
+                                            var temp = new Dictionary<string,string>
+                                                {
+                                                    {"buyerName", @buyer.Name},
+                                                    {"id", @buyer.UserId}
+                                                    
+                                                };
+                                        }
+                                        <td><a asp-action="Buyer" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>
+                                    </tr>
+                                }
+                                
+                            </tbody>
+                        </table>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

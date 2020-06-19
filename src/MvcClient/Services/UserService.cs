@@ -33,6 +33,11 @@ namespace MvcClient.Services
 
             return await _httpClient.GetAsync<User>(url);
         }
+        public async Task<IEnumerable<User>> GetBuyers()
+        {
+            var url = _baseUrl + "/buyers";
+            return await _httpClient.GetListAsync<User>(url);
+        }
 
         public async Task<IEnumerable<User>> GetSales()
         {
