@@ -27,6 +27,7 @@ namespace MvcClient.ViewModels
     public class LineItem
     {
         public string ItemName { get; set; }
+        public string OwnerName { get; set; }
         public int Total { get; set; }
         public string PictureURL { get; set; }
         public double UnitPrice { get; set; }

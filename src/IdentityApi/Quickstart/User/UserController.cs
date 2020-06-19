@@ -53,7 +53,7 @@ namespace IdentityApi.Quickstart.User
         [HttpGet("manage")]
         public async Task<ActionResult<List<ApplicationUserDTO>>> ManagerUser(string role = null, string name = null, string username = null, SortType sortType = SortType.Role, SortOrder sortOrder = SortOrder.Ascending)
         {
-            if (!this.ValidateRole(new string[] { "Administrators" }))
+            if (!this.ValidateRole(new string[] { "Administrators", "Managers" }))
                 return Forbid();
             IList<ApplicationUser> users = null;
             if (String.IsNullOrEmpty(role))
@@ -92,7 +92,16 @@ namespace IdentityApi.Quickstart.User
 
             return dtos;
         }
-
+        [HttpGet("sales")]
+        public async Task<ActionResult<List<ApplicationUserDTO>>> GetSales()
+        {
+            IList<ApplicationUser> users = null;
+            users = await _userRepo.GetUsersByRole("Sales");
+            var dtos = new List<ApplicationUserDTO>(toDtoRange(users));
+            foreach (var dto in dtos)
+                dto.Role = "Sales";
+            return dtos;
+        }
         [HttpPost]
         public async Task<ActionResult<ApplicationUser>> Create(ApplicationUserDTO dto)
         {

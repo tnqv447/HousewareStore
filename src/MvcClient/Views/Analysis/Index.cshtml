@@ -6,7 +6,7 @@
     ViewData["Title"] = "Analysis";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
 }
-@if(User.IsInRole("Managers")){
+@if(User.IsInRole("Managers") || User.IsInRole("Administrators")){
     <div class="row">
         <div class="col-12 mt-5">
             <div class="card">
@@ -27,18 +27,12 @@
                             <tbody>
                                 @foreach(var sale in Model)
                                 {
-                                        var totalUnit = 0;
-                                        double totalPrice = 0;
                                     <tr>
                                         <td >@sale.Sale.Name</td>
                                         <td>@sale.Sale.Address.ToString()</td>
                                         <td>@sale.Sale.PhoneNumber</td>
-                                        @foreach(var item in sale.Count ){
-                                            totalUnit += item.TotalUnits;
-                                            totalPrice += @Math.Round(item.UnitPrice * item.TotalUnits, 2);
-                                        }
-                                        <td>@totalUnit</td>
-                                        <td>$@totalPrice.ToString("N2")</td>
+                                        <td>@sale.TotalUnits</td>
+                                        <td>$@sale.TotalPrices.ToString("N2")</td>
                                         @{
                                             var temp = new Dictionary<string,string>
                                                 {

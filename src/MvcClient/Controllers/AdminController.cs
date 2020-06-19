@@ -21,33 +21,41 @@ namespace MvcClient.Controllers
         private readonly IItemService _itemService;
         private readonly IOrderService _orderService;
 
-        public AdminController(ILogger<AdminController> logger, IItemService itemService, IOrderService orderService)
+        private readonly IUserService _userService;
+
+        public AdminController(ILogger<AdminController> logger, IItemService itemService, IOrderService orderService, IUserService userService)
         {
             _logger = logger;
             _itemService = itemService;
             _orderService = orderService;
+            _userService = userService;
         }
         public async Task<IActionResult> Index()
         {
             //get Data
             List<OrderItem> list = new List<OrderItem>();
             var items = await _itemService.GetAll();
+            var sales = await _userService.GetSales();
+
             var orders = await _orderService.GetOrders();
             foreach (var order in orders)
                 foreach (var item in order.OrderItems)
                     list.Add(item);
+
             List<LineItem> commonItems = list
-                                .GroupBy(cl => cl.ItemName)
+                                .GroupBy(cl => cl.ItemId)
                                 .Select(cl => new LineItem
                                 {
                                     ItemName = cl.First().ItemName,
                                     Total = cl.Sum(c => c.Units),
                                     PictureURL = cl.First().PictureUrl,
+                                    OwnerName = (sales.Where(s => s.UserId.Equals(cl.First().OwnerId))) == null ||
+                                        (sales.Where(s => s.UserId.Equals(cl.First().OwnerId))).Count() == 0 ? "null" : (sales.Where(s => s.UserId.Equals(cl.First().OwnerId))).FirstOrDefault().Name,
                                     UnitPrice = cl.First().UnitPrice
                                 }).ToList();
-            commonItems = commonItems.OrderByDescending(c => c.Total).ToList();
+            commonItems = commonItems.OrderByDescending(c => c.Total).Take(5).ToList();
+
             DateTime nowDate = DateTime.Now;
-            Console.WriteLine("aaa " + nowDate.ToString());
             //ViewModel
             DashboardViewModel viewModel = new DashboardViewModel();
             viewModel.TotalRevenue = (from m in orders
