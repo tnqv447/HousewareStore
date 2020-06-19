@@ -120,6 +120,7 @@ namespace IdentityApi
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();
+            //app.UseMvc();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();

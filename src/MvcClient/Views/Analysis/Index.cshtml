@@ -21,6 +21,7 @@
                                     <th>Phone</th>
                                     <th>Total Units</th>
                                     <th>Total Price</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -28,8 +29,8 @@
                                 {
                                         var totalUnit = 0;
                                         double totalPrice = 0;
-                                    <tr style="cursor:pointer" class="open_table"id="@sale.Sale.UserId">
-                                        <td id="sale_name_@sale.Sale.UserId">@sale.Sale.Name</td>
+                                    <tr>
+                                        <td >@sale.Sale.Name</td>
                                         <td>@sale.Sale.Address.ToString()</td>
                                         <td>@sale.Sale.PhoneNumber</td>
                                         @foreach(var item in sale.Count ){
@@ -38,50 +39,24 @@
                                         }
                                         <td>@totalUnit</td>
                                         <td>$@totalPrice.ToString("N2")</td>
+                                        @{
+                                            var temp = new Dictionary<string,string>
+                                                {
+                                                    {"saleName", @sale.Sale.Name},
+                                                    {"id", @sale.Sale.UserId}
+                                                    
+                                                };
+                                        }
+                                        <td><a asp-action="Sale" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>
                                     </tr>
                                 }
                                 
                             </tbody>
-                        </table>
-                        @foreach(var sale in Model){
-                            <table id="sale_@sale.Sale.UserId" class="text-center" style="width:100%;font-size:15px;display:none">
-                                <thead class="text-capitalize">
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Unit Prices</th>
-                                        <th>Total Units</th>
-                                        <th>Total Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach(var item in sale.Count){
-                                        <tr>
-                                            <td>@item.Name</td>
-                                            <td>$@item.UnitPrice</td>
-                                            <td>@item.TotalUnits</td>
-                                            <td>$@Math.Round(item.UnitPrice * item.TotalUnits, 2)</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        }
-                        
+                        </table>                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
 }
-    <script>
-        $(document).ready(function(){
-            $(document).on('click','.open_table',function(){
-                var id =$(this).attr('id');
-                var sale_name = $("#sale_name_"+id).text();
-                html = '<a></a>';
-                $("#dataTable2").hide();
-                $("#sale_"+id).show(500);
-                $("#change-title").text(sale_name+" /Items");
-            })
-        });
-    </script>
 

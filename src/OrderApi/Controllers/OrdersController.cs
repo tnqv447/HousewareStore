@@ -45,10 +45,10 @@ namespace OrderApi.Controllers
 
             return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderDTO>>(orders);
         }
-    
+
         [HttpGet("salesId/{salesId}")]
         public async Task<IEnumerable<OrderItemForSalesDTO>> GetOrdersBySales(string salesId, SearchTypeOrderItem searchType = SearchTypeOrderItem.ItemName, string searchString = null,
-                                OrderItemStatus status = OrderItemStatus.Preparing, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending)
+                                OrderItemStatus status = OrderItemStatus.AllStatus, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending)
         {
             var orderItems = await _orderRepo.GetBySalesAsync(salesId);
             if (orderItems == null || orderItems.Count() == 0)
@@ -170,8 +170,6 @@ namespace OrderApi.Controllers
             // }
 
             // var Item = await _itemRepos.GetBy(id);
-            // t van chua hieu nhi, lẽ ra get item tư orderitem ID la dc r, sao phai lay itemID == itemID nữa
-            // hinh là no lay order r sau do tư order mơi lay orderItem, t di ăn cơm cai, dm nay t an thi m an di deo
             var item = (await _orderRepo.GetByAsync(orderId)).OrderItems.Where(m => m.ItemId == itemId).ElementAt(0);
 
             if (item == null)

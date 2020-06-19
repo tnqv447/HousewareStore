@@ -135,9 +135,9 @@
 
 .img_aspect {
     max-width: 100%;
-    max-height: 220px;
+    max-height: 190px;
 }
-
+table{width:100%}
 .sbar_collapsed.page-container {
     padding-left: 0;
 }
@@ -288,7 +288,10 @@
     font-weight: bold;
     color: #8631fb;
 }
-
+table tbody tr{
+    height: 150px;
+    margin: 25px 0;
+}
 .metismenu li:hover>a,
 .metismenu li.active>a {
     font-weight: bold;

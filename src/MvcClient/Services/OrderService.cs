@@ -52,7 +52,7 @@ namespace MvcClient.Services
         }
 
         public async Task<IEnumerable<OrderItemForSales>> GetOrderItemsForSales(string salesId, SearchTypeOrderItem searchType = SearchTypeOrderItem.ItemName, string searchString = null,
-                                OrderItemStatus status = OrderItemStatus.Preparing, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending)
+                                OrderItemStatus status = OrderItemStatus.AllStatus, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending)
         {
             var uri = _serviceBaseUrl + $"/salesId/{salesId}?searchType={searchType}&searchString={searchString}&status={status}&sortType={sortType}&sortOrder={sortOrder}";
 
@@ -60,7 +60,7 @@ namespace MvcClient.Services
         }
         public async Task UpdateOrderItem(int orderId, OrderItem item)
         {
-            var uri = _serviceBaseUrl + $"/orderItems?orderId={orderId}&itemId={item.ItemId}";
+            var uri = _serviceBaseUrl + $"/orderItems?orderId={orderId}&itemId={item.ItemId}&status={item.Status}";
 
             await _httpClient.PutAsync<OrderItem>(uri, item); // nãy nó viết thiếu dâu = và cái này có s
         }

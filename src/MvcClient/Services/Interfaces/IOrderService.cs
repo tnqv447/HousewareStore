@@ -9,7 +9,7 @@ namespace MvcClient.Services
         Task<IEnumerable<Order>> GetOrders();
         Task<IEnumerable<Order>> GetOrders(string userId);
         Task<IEnumerable<OrderItemForSales>> GetOrderItemsForSales(string salesId, SearchTypeOrderItem searchType = SearchTypeOrderItem.ItemName, string searchString = null,
-                                OrderItemStatus status = OrderItemStatus.Preparing, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending);
+                                OrderItemStatus status = OrderItemStatus.AllStatus, SortTypeOrderItem sortType = SortTypeOrderItem.OrderId, SortOrderOrderItem sortOrder = SortOrderOrderItem.Ascending);
         Task<int> CreateOrder(Order order);
         Task<Order> GetOrder(int id);
         Task<OrderItem> GetOrderItem(int id);

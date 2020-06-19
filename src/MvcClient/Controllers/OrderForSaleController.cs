@@ -126,7 +126,7 @@ namespace MvcClient.Controllers
                 case OrderItemStatus.Preparing: ans = "Preparing"; break;
                 case OrderItemStatus.Delivered: ans = "Delivered"; break;
             }
-            // sao m tra ve cai gi v, m biet ko neu ma tra ve bien status nhu hoi nay thì no tra ve so int
+        
             return new JsonResult(ans);
         }
         [HttpPost]

@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
+using Microsoft.AspNetCore.Routing;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -98,15 +99,6 @@ namespace IdentityServer4.Quickstart.UI
                 var result = true;
                 if (model.Password.Equals(model.ConfirmPassword) && !String.IsNullOrEmpty(model.Role))
                 {
-
-                    // Console.WriteLine("\ngg\n");
-                    // Console.WriteLine(model.Username);
-                    // Console.WriteLine(model.Password);
-                    // Console.WriteLine(returnUrl);
-                    // Console.WriteLine(model.RememberMe);
-                    // Console.WriteLine(model.UserProfile.Name);
-                    //var temp = this.CreateClaims(model.UserProfile);
-
                     result = this.CreateUser(model.Username, model.Password, model.Role, model.UserProfile);
                 }
                 else
@@ -123,7 +115,9 @@ namespace IdentityServer4.Quickstart.UI
                         RememberLogin = model.RememberMe,
                         ReturnUrl = returnUrl
                     };
-                    return await this.Login(loginModel, "login");
+                    // return await this.Login(loginModel, "login");
+                    return RedirectToAction("Login", new RouteValueDictionary( 
+                            new { controller = "Account", action = "Login",stringUrl = "http://localhostL5002" } ) );
                 }
                 //if fail
                 else
@@ -232,6 +226,7 @@ namespace IdentityServer4.Quickstart.UI
         /// Handle postback from username/password login
         /// </summary>
 
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model, string button)
