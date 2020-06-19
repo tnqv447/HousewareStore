@@ -37,7 +37,7 @@ namespace MvcClient.Controllers
                 foreach (var item in order.OrderItems)
                     list.Add(item);
             List<LineItem> commonItems = list
-                                .GroupBy(l => l.ItemName)
+                                .GroupBy(cl => cl.ItemName)
                                 .Select(cl => new LineItem
                                 {
                                     ItemName = cl.First().ItemName,
