@@ -241,6 +241,40 @@
                 })
             })
             $('#OpenImgUpload').click(function(){ $('#imgupload').trigger('click'); });
+            
+            $(document).on('change','#imgupload',function(){
+                if(this.files[0] != null){
+                    var file = this.files[0],
+                    fileName = file.name,
+                    fileSize = file.size,
+                    fileType = file.type;
+                    
+                    var pictureUrl= new FormData();
+                        pictureUrl.append('pictureUrl',file);
+                    var validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg"];
+                    if ($.inArray(fileType, validImageTypes) > 0) {
+                        $.ajax({
+                            type: "POST",
+                            processData: false,
+                            contentType: false,
+                            url: '@Url.Action("UploadPictureUser","User")',
+                            data: pictureUrl,
+                            success:function(data){
+                                var bg = "/img/user/"+data+"";
+                                $("#picture_buyer").css('background-image', 'url(' + bg + ')');
+                            },
+                            error:function(xhr){
+                                alert(xhr);
+                            }
+                        })
+                    }
+                    else{
+                        alert("Your file is not supported");
+                    }
+                }
+                
+            });
+    
             $(document).on('click','.open_edit_user',function(){
                 $(".open_edit_user").hide();
                 $('.save-change').show();

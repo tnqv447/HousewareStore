@@ -13,6 +13,7 @@ using MvcClient.Models;
 using MvcClient.Services;
 using MvcClient.ViewModels;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace MvcClient.Controllers
 {
@@ -132,9 +133,20 @@ namespace MvcClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Profile(BuyerViewModel bvm)
         {
-            string id = _identityService.Get(User).Id;
-            var user = await _service.GetUser(id);
-            Console.WriteLine(bvm.buyer.Address.Country);
+            var buyer = _identityService.Get(User);
+            var user = new User{
+                UserId = buyer.Id,
+                UserName = buyer.UserName,
+                Address = buyer.Address,
+                PhoneNumber = buyer.PhoneNumber,
+                FamilyName = buyer.FirstName,
+                GivenName = buyer.LastName,
+                Name = buyer.FirstName + " " + buyer.LastName,
+                PictureUrl = buyer.PictureUrl,
+                Website = buyer.Website,
+                Email = buyer.Email,
+                Role = "Users"
+            };
             if (user == null)
             {
                 return NotFound();
@@ -150,7 +162,7 @@ namespace MvcClient.Controllers
                 user.Email = bvm.buyer.Email;
                 user.Address = bvm.buyer.Address;
             }
-            await _service.UpdateUser(id, user);
+            await _service.UpdateUser(user.UserId, user);
             return View(bvm);
         }
         [Authorize(Roles = "Administrators")]
@@ -177,6 +189,30 @@ namespace MvcClient.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View();
+        }
+        [Authorize(Roles = "Users")]
+        [HttpPost]
+        public async Task<IActionResult> UploadPictureUser(IFormFile pictureUrl){
+
+            Console.WriteLine("\n"+pictureUrl.FileName);
+            var buyer = _identityService.Get(User);
+            var user = new User{
+                UserId = buyer.Id,
+                UserName = buyer.UserName,
+                Address = buyer.Address,
+                PhoneNumber = buyer.PhoneNumber,
+                FamilyName = buyer.FirstName,
+                Name = buyer.FirstName + " " + buyer.LastName,
+                GivenName = buyer.LastName,
+                PictureUrl = buyer.PictureUrl,
+                Website = buyer.Website,
+                Email = buyer.Email,
+                Role = "Users"
+            };
+            user.ImageURL = pictureUrl;
+            user.PictureUrl = UploadedFile(user);
+            await _service.UpdateUser(user.UserId,user);
+            return new JsonResult(user.PictureUrl);
         }
         private string UploadedFile(User user)
         {
