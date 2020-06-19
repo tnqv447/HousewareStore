@@ -1,3 +1,4 @@
+using System.Net.Http;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -38,6 +39,12 @@ namespace MvcClient.Services
             var url = _baseUrl;
 
             await _httpClient.PostAsync<User>(url, user);
+        }
+        public async Task<UserChangePassword> ChangePassword(string userId, UserChangePassword user)
+        {
+            var url = _baseUrl + $"/changepassword?userId={userId}";
+
+            return await _httpClient.GetAsync<UserChangePassword>(url);
         }
         public async Task UpdateUser(string id, User user)
         {

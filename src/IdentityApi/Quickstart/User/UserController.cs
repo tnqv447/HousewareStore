@@ -1,19 +1,17 @@
-using System.Security.Claims;
-using System.Linq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-
-
-using IdentityApi.Models;
-using IdentityApi.DTO;
 using IdentityApi.Data.Repos;
+using IdentityApi.DTO;
+using IdentityApi.Models;
 using Microsoft.AspNetCore.Authorization;
-using System;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace IdentityApi.Quickstart.User
 {
@@ -107,17 +105,36 @@ namespace IdentityApi.Quickstart.User
                 return CreatedAtAction(nameof(GetUser), new { id = dto.UserId }, dto);
             }
             return NotFound();
+        }
 
+        [HttpGet("changepassword")]
+        public async Task<ActionResult<UserChangePassword>> ChangePassword(string userId, UserChangePassword dto)
+        {
+            if (userId != dto.UserId)
+            {
+                return BadRequest();
+            }
+            var user = await _userRepo.GetUser(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var res = false;
+            try
+            {
+                res = await _userRepo.ChangePassword(user, dto.Password, dto.NewPassword);
+            }
+            catch
+            {
+                return NotFound();
+            }
+            dto.Succeed = res;
+            return dto;
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(string id, ApplicationUserDTO dto)
         {
-            if (id != dto.UserId)
-            {
-                return BadRequest();
-            }
-
             // var Item = await _itemRepos.GetBy(id);
             var isExisted = _userRepo.UserExists(id);
             if (!isExisted)
@@ -168,17 +185,23 @@ namespace IdentityApi.Quickstart.User
                         switch (sortType)
                         {
                             case (SortType.UserId):
-                                dtos = dtos.OrderByDescending(m => m.UserId).ToList(); break;
+                                dtos = dtos.OrderByDescending(m => m.UserId).ToList();
+                                break;
                             case (SortType.FullName):
-                                dtos = dtos.OrderByDescending(m => m.Name.ToLower()).ToList(); break;
+                                dtos = dtos.OrderByDescending(m => m.Name.ToLower()).ToList();
+                                break;
                             case (SortType.GivenName):
-                                dtos = dtos.OrderByDescending(m => m.GivenName.ToLower()).ToList(); break;
+                                dtos = dtos.OrderByDescending(m => m.GivenName.ToLower()).ToList();
+                                break;
                             case (SortType.FamilyName):
-                                dtos = dtos.OrderByDescending(m => m.FamilyName.ToLower()).ToList(); break;
+                                dtos = dtos.OrderByDescending(m => m.FamilyName.ToLower()).ToList();
+                                break;
                             case (SortType.Username):
-                                dtos = dtos.OrderByDescending(m => m.UserName).ToList(); break;
+                                dtos = dtos.OrderByDescending(m => m.UserName).ToList();
+                                break;
                             default:
-                                dtos = dtos.OrderByDescending(m => m.Role).ToList(); break;
+                                dtos = dtos.OrderByDescending(m => m.Role).ToList();
+                                break;
                         }
                         break;
                     }
@@ -187,17 +210,23 @@ namespace IdentityApi.Quickstart.User
                         switch (sortType)
                         {
                             case (SortType.UserId):
-                                dtos = dtos.OrderBy(m => m.UserId).ToList(); break;
+                                dtos = dtos.OrderBy(m => m.UserId).ToList();
+                                break;
                             case (SortType.FullName):
-                                dtos = dtos.OrderBy(m => m.Name.ToLower()).ToList(); break;
+                                dtos = dtos.OrderBy(m => m.Name.ToLower()).ToList();
+                                break;
                             case (SortType.GivenName):
-                                dtos = dtos.OrderBy(m => m.GivenName.ToLower()).ToList(); break;
+                                dtos = dtos.OrderBy(m => m.GivenName.ToLower()).ToList();
+                                break;
                             case (SortType.FamilyName):
-                                dtos = dtos.OrderBy(m => m.FamilyName.ToLower()).ToList(); break;
+                                dtos = dtos.OrderBy(m => m.FamilyName.ToLower()).ToList();
+                                break;
                             case (SortType.Username):
-                                dtos = dtos.OrderBy(m => m.UserName).ToList(); break;
+                                dtos = dtos.OrderBy(m => m.UserName).ToList();
+                                break;
                             default:
-                                dtos = dtos.OrderBy(m => m.Role).ToList(); break;
+                                dtos = dtos.OrderBy(m => m.Role).ToList();
+                                break;
                         }
                         break;
                     }

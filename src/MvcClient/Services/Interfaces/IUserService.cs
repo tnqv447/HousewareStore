@@ -14,5 +14,6 @@ namespace MvcClient.Services
         Task CreateUser(User item);
         Task UpdateUser(string id, User item);
         Task DeleteUser(string id);
+        Task<UserChangePassword> ChangePassword(string userId, UserChangePassword user);
     }
 }
