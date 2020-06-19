@@ -29,16 +29,13 @@ namespace MvcClient.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            //get Data
             List<OrderItem> list = new List<OrderItem>();
+            var items = await _itemService.GetAll();
             var orders = await _orderService.GetOrders();
             foreach (var order in orders)
-            {
                 foreach (var item in order.OrderItems)
-                {
                     list.Add(item);
-
-                }
-            }
             List<LineItem> commonItems = list
                                 .GroupBy(l => l.ItemName)
                                 .Select(cl => new LineItem
@@ -49,11 +46,9 @@ namespace MvcClient.Controllers
                                     UnitPrice = cl.First().UnitPrice
                                 }).ToList();
             commonItems = commonItems.OrderByDescending(c => c.Total).ToList();
-            var top = from m in list
-                      group m by m.ItemName into g
-                      select new { id = g.Key, cnt = g.Count() };
-            Console.WriteLine("aaa " + top.First().id + " " + top.First().cnt);
-            var items = await _itemService.GetAll();
+            DateTime nowDate = DateTime.Now;
+            Console.WriteLine("aaa " + nowDate.ToString());
+            //ViewModel
             DashboardViewModel viewModel = new DashboardViewModel();
             viewModel.TotalRevenue = (from m in orders
                                       select m.Total).Sum();
@@ -66,10 +61,24 @@ namespace MvcClient.Controllers
             viewModel.CountSubmitted = (from m in items
                                         where m.ItemStatus == ItemStatus.Submitted
                                         select m).Count();
-            viewModel.Data = prepareDataChart();
+            viewModel.Data = prepareDataChart(orders, nowDate);
             var catalog = await _itemService.GetCatalog(null, null, 0, 0, null);
             viewModel.CommonItems = commonItems;
             return View(viewModel);
+        }
+        private IList<DataChart> prepareDataChart(IEnumerable<Order> orders, DateTime nowDate)
+        {
+            var list = new List<DataChart>();
+            for (int i = 0; i < 12; ++i)
+            {
+                DateTime indexDate = nowDate.AddMonths(-11 + i);
+                double a = 0;
+                a = (from m in orders
+                     where m.OrderDate.Year == indexDate.Year && m.OrderDate.Month == indexDate.Month
+                     select m.Total).Sum();
+                list.Add(new DataChart(indexDate.ToString("MMM") + "-" + indexDate.Year, a));
+            }
+            return list;
         }
         public IActionResult Seo()
         {
@@ -78,23 +87,6 @@ namespace MvcClient.Controllers
         public IActionResult Ecommerce()
         {
             return View();
-        }
-        private IList<DataChart> prepareDataChart()
-        {
-            var list = new List<DataChart>();
-            list.Add(new DataChart("January", 10));
-            list.Add(new DataChart("February", 15));
-            list.Add(new DataChart("March", 18));
-            list.Add(new DataChart("April", 12));
-            list.Add(new DataChart("May", 27));
-            list.Add(new DataChart("June", 15));
-            list.Add(new DataChart("July", 30));
-            list.Add(new DataChart("August", 25));
-            list.Add(new DataChart("September", 25));
-            list.Add(new DataChart("October", 8));
-            list.Add(new DataChart("November", 55));
-            list.Add(new DataChart("December", 35));
-            return list;
         }
 
     }

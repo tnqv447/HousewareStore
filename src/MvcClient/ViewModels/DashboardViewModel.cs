@@ -16,9 +16,9 @@ namespace MvcClient.ViewModels
     public class DataChart
     {
         public string Month { get; set; }
-        public decimal Revenue { get; set; }
+        public double Revenue { get; set; }
         public DataChart() { }
-        public DataChart(string Month, decimal Revenue)
+        public DataChart(string Month, double Revenue)
         {
             this.Month = Month;
             this.Revenue = Revenue;
