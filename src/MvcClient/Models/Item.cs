@@ -16,7 +16,7 @@ namespace MvcClient.Models
         [Display(Name = "Unit Price")]
         public double UnitPrice { get; set; }
 
-        [MaxLength(200)]
+        [MaxLength(500)]
         public string Description { get; set; }
 
         [MaxLength(30)]

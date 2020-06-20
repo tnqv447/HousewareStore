@@ -5,48 +5,7 @@
     ViewData["Title"] = "Analysis";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
 }
-@if(User.IsInRole("Sales")){
-    <div class="row">
-    <div class="col-lg-6 mt-5">
-        <div class="card">
-            <div class="card-body">
-                <div id="ambarchart2"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6 mt-5">
-        <div class="card">
-            <div class="card-body">
-                <h4 id="change-title" style="text-align:center"class="header-title">Items of @Model.User.Name</h4>
-                <div class="data-tables datatable-primary">
-                    <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
-                        <thead class="text-capitalize">
-                            <tr>
-                                <th width="50%">Item Name</th>
-                                <th>Unit prices</th>
-                                <th>Total Units</th>
-                                <th>Total Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach(var item in Model.Count){
-                                <tr>
-                                    <td>@item.Name</td>
-                                    <td>$@item.UnitPrice</td>
-                                    <td>@item.TotalUnits</td>
-                                    <td>$@item.TotalPrices</td>
-                                </tr>
-                            }
-                            
-                        </tbody>
-                    </table>                        
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-}
-@if(User.IsInRole("Administrators")){
+
     <div class="row">
         <div class="col-lg-12 mt-8">
             <div class="card">
@@ -88,7 +47,7 @@
             </div>
         </div>
     </div>
-}
+
 
 
 @{
@@ -116,8 +75,8 @@
             var chart = AmCharts.makeChart("ambarchart2", {
                 "titles":[
                             {
-                                "text": "Total Price",
-                                "size": 15
+                                "text": "Total Price each Item",
+                                "size": 20
                             }],
                 "type": "serial",
                 "addClassNames": true,
