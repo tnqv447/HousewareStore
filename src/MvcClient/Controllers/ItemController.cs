@@ -9,6 +9,7 @@ using MvcClient.Services;
 using MvcClient.ViewModels;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace MvcClient.Controllers
 {
@@ -81,7 +82,7 @@ namespace MvcClient.Controllers
         {
             Item item = viewModel.Item;
             item.PublishDate = DateTime.Today;
-            item.PictureUrl = null;
+            item.PictureUrl = "default.png";
 
             if (ModelState.IsValid)
             {
@@ -94,22 +95,22 @@ namespace MvcClient.Controllers
                 }
 
                 Item upItem = await _itemService.CreateItem(item);
-                upItem.PictureUrl = UploadedFile(viewModel);
+                upItem.PictureUrl = UploadedFile(viewModel, upItem);
                 await _itemService.UpdateItem(upItem.Id, upItem);
 
                 return RedirectToAction(nameof(Index));
             }
             return View();
         }
-        private string UploadedFile(ItemCategoryViewModel model)
+        private string UploadedFile(ItemCategoryViewModel model, Item item)
         {
-            string uniqueFileName = null;
+            string uniqueFileName = "default.png";
 
             if (model.ImageURL != null)
             {
-                Console.WriteLine("anime " + model.ImageURL.FileName);
+                // Console.WriteLine("anime " + model.ImageURL.FileName);
                 string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "img/product/");
-                uniqueFileName = "item_" + model.Item.Id + Path.GetExtension(model.ImageURL.FileName);
+                uniqueFileName = "item_" + item.Id + Path.GetExtension(model.ImageURL.FileName);
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -137,7 +138,7 @@ namespace MvcClient.Controllers
             Item item = viewModel.Item;
             if (viewModel.ImageURL != null)
             {
-                string uniqueFileName = UploadedFile(viewModel);
+                string uniqueFileName = UploadedFile(viewModel, item);
                 item.PictureUrl = uniqueFileName;
             }
 

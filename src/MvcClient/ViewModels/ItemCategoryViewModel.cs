@@ -10,6 +10,7 @@ namespace MvcClient.ViewModels
         public IEnumerable<Category> Categories { get; set; }
 
         [Display(Name = "Item Picutre")]
+        [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.gif)$", ErrorMessage = "Only Image files allowed.")]
         public IFormFile ImageURL { get; set; }
     }
 }

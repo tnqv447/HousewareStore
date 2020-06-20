@@ -134,7 +134,8 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> Profile(BuyerViewModel bvm)
         {
             var buyer = _identityService.Get(User);
-            var user = new User{
+            var user = new User
+            {
                 UserId = buyer.Id,
                 UserName = buyer.UserName,
                 Address = buyer.Address,
@@ -192,11 +193,13 @@ namespace MvcClient.Controllers
         }
         [Authorize(Roles = "Users")]
         [HttpPost]
-        public async Task<IActionResult> UploadPictureUser(IFormFile pictureUrl){
+        public async Task<IActionResult> UploadPictureUser(IFormFile pictureUrl)
+        {
 
-            Console.WriteLine("\n"+pictureUrl.FileName);
+            Console.WriteLine("\n" + pictureUrl.FileName);
             var buyer = _identityService.Get(User);
-            var user = new User{
+            var user = new User
+            {
                 UserId = buyer.Id,
                 UserName = buyer.UserName,
                 Address = buyer.Address,
@@ -211,24 +214,21 @@ namespace MvcClient.Controllers
             };
             user.ImageURL = pictureUrl;
             user.PictureUrl = UploadedFile(user);
-            await _service.UpdateUser(user.UserId,user);
+            await _service.UpdateUser(user.UserId, user);
             return new JsonResult(user.PictureUrl);
         }
         private string UploadedFile(User user)
         {
-            string uniqueFileName = null;
+            string uniqueFileName = "default_avatar.png";
 
             if (user.ImageURL != null)
             {
-                Console.WriteLine("anime " + user.ImageURL.FileName);
                 string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "img/user/");
                 uniqueFileName = user.UserName + Path.GetExtension(user.ImageURL.FileName);
-                Console.WriteLine("anime " + uniqueFileName);
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     user.ImageURL.CopyTo(fileStream);
-                    Console.WriteLine("anime Done ");
                 }
             }
 
