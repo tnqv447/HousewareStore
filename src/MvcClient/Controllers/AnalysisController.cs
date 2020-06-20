@@ -19,13 +19,16 @@ namespace MvcClient.Controllers
         private readonly IAnalysisService _analysisService;
         private readonly IIdentityService<Buyer> _identityService;
         private readonly IOrderService _orderService;
+        private readonly IUserService _userService;
         public AnalysisController(ILogger<AdminController> logger, IAnalysisService analysisService,
-                                        IIdentityService<Buyer> identityService,IOrderService orderService)
+                                        IIdentityService<Buyer> identityService,IOrderService orderService,
+                                        IUserService userService)
         {
             _logger = logger;
             _analysisService = analysisService;
             _orderService = orderService;
             _identityService = identityService;
+            _userService = userService;
         }
         [Authorize(Roles = "Administrators, Sales, Managers")]
         public async Task<IActionResult> IndexAsync()
@@ -38,6 +41,10 @@ namespace MvcClient.Controllers
                 indexView.BuyersCount = await _analysisService.CountItemsByBuyersAsync(id);
                 indexView.BuyersCount = indexView.BuyersCount.OrderByDescending(m => m.TotalPrices);
             }
+            if(User.IsInRole("Administrators")){
+                indexView.AllBuyers = await _analysisService.CountItemAllBuyers();
+                indexView.AllBuyers = indexView.AllBuyers.OrderByDescending(m => m.TotalPrices).ToList();
+            }
             
             return View(indexView);
         }
@@ -49,6 +56,25 @@ namespace MvcClient.Controllers
             ViewData["saleName"] = saleName;
             var v = await _analysisService.CountItemsBySalesAsync(id);
             return View(v);
+        }
+        [Authorize(Roles = "Administrators, Sales")]
+        public async Task<IActionResult> Buyer(string id, string buyerName){
+            if(User.IsInRole("Sales")){
+                string saleId = _identityService.Get(User).Id;
+                var listBuyer = await _userService.GetBuyers();
+                var buyer = listBuyer.Where(m => m.UserId.Equals(id)).FirstOrDefault();
+                var v = await _analysisService.CountItemInBuyer(id,saleId);
+                v.User = buyer;
+                v.Count = v.Count.OrderByDescending(m => m.TotalPrices);
+                return View(v);
+            }
+            if(User.IsInRole("Administrators")){
+                var listBuyers = await _analysisService.CountItemAllBuyers();
+                var v = listBuyers.Where(m => m.User.UserId.Equals(id)).FirstOrDefault();
+                v.Count = v.Count.OrderByDescending(m => m.TotalPrices);
+                return View(v);
+            }
+            return View();
         }
     }
 }

@@ -17,6 +17,8 @@ namespace MvcClient.Services
         //for managers ==================================================
         //
         Task<IList<AllSaleAnal>> CountAllSales();
+        Task<AllSaleAnal> CountItemInBuyer(string buyerId, string saleId);
+        Task<IList<AllSaleAnal>> CountItemAllBuyers();
         //tong so item ma sales ban
         Task<IEnumerable<ItemAnalysis>> CountItemsByBuyersAsync(string saleId);
         Task<IEnumerable<ItemAnalysis>> CountItemsBySalesAsync(string salesId);
