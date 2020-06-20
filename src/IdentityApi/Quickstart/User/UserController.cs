@@ -93,6 +93,7 @@ namespace IdentityApi.Quickstart.User
             return dtos;
         }
         [HttpGet("sales")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<ApplicationUserDTO>>> GetSales()
         {
             IList<ApplicationUser> users = null;

@@ -8,6 +8,7 @@ namespace MvcClient.ViewModels
     {
         public string SearchString { get; set; }
         public string ItemCategory { get; set; }
+        public string SaleId { get; set; }
 
         [Display(Name = "Min Price")]
         public double minPrice { get; set; }
@@ -17,8 +18,10 @@ namespace MvcClient.ViewModels
         public string SortOrder { get; set; }
         public Item item { get; set; }
         public IList<Item> LatestItems { get; set; }
+        public IList<Item> SellerItems { get; set; }
         public IEnumerable<string> Categories { get; set; }
         public PaginatedList<Item> ItemsPaging { get; set; }
+        public IEnumerable<User> Sales { get; set; }
         public bool IsSale { get; set; }
         public int PageIndex { get; set; }
         public int PageTotal { get; set; }
