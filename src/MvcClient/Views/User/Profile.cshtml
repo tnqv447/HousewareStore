@@ -72,6 +72,19 @@
                                 <span style="color:red; font-style:italic"  asp-validation-for="@Model.buyer.LastName"></span>
                             </div>
                         </div>
+
+                        <div class="row contact_buyer">
+                            <div class="col-md-4 contact__info">
+                                <span>Phone: </span>
+                                <input asp-for="@Model.buyer.PhoneNumber" disabled value="@Model.buyer.PhoneNumber" >
+                                <span style="color:red; font-style:italic"  asp-validation-for="@Model.buyer.PhoneNumber"></span>
+                            </div>
+                            <div class="col-md-8 contact__info">
+                                <span>Email: </span>
+                                <input asp-for="@Model.buyer.Email" disabled value="@Model.buyer.Email" >
+                                <span style="color:red; font-style:italic"  asp-validation-for="@Model.buyer.Email"></span>
+                            </div>
+                        </div>
                         <div class="row">
                             <div style="margin-left:20px">
                                 <h3 style="font-weight: 600">Your Address</h3>
@@ -87,6 +100,7 @@
                                 <input asp-for="@Model.buyer.Address.StreetAddress" disabled value="@Model.buyer.Address.StreetAddress" >
                             </div>
                         </div>
+                        
                         <div class="row contact_buyer">
                             <div class="col-md-4 contact__info">
                                 <span>Country: </span>

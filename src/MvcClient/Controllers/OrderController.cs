@@ -96,6 +96,7 @@ namespace MvcClient.Controllers
         public async Task<ActionResult<Order>> Details(int orderId)
         {
             var order = await _orderSvc.GetOrder(orderId);
+            // order = order.OrderBy(m => m.);
 
             return View(order);
         }

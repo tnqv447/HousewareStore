@@ -86,8 +86,9 @@
                                     <th width="20%">Order Date</th>
                                     <th width="15%">Buyer Name</th>
                                     <th width="20%">Item Name</th>
-                                    <th width="10%">Unit Price</th>
+                                    
                                     <th width="5%">Units</th>
+                                    <th width="10%">Total Price</th>
                                     <th width="10%">Status</th>
                                     <th width="15%">Actions</th>
                                 </tr>
@@ -100,8 +101,9 @@
                                         <td>@item.OrderDate</td>
                                         <td>@item.FirstName @item.LastName</td>
                                         <td>@item.ItemName</td>
-                                        <td>@item.UnitPrice</td>
+                                        
                                         <td>@item.Units</td>
+                                        <td>$@Math.Round(item.UnitPrice*item.Units,2)</td>
                                         @switch ((int)@item.Status)
                                         {
                                             case 1:
@@ -226,8 +228,9 @@
                             html += '<td>'+OrderDate+'</td>';
                             html += '<td>'+fullname+'</td>';
                             html += '<td>'+item.itemName+'</td>';
-                            html += '<td>'+item.unitPrice+'</td>';
+                            
                             html += '<td>'+item.units+'</td>';
+                            html += '<td>$'+(item.unitPrice*item.units).toFixed(2)+'</td>';
                             switch(Status){
                                 case "Shipping":
                                 html += '<td id="stt_'+item.id+'"><span class="badge badge-warning">'+Status+'</span></td>';

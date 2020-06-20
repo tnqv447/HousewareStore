@@ -38,6 +38,7 @@ namespace MvcClient.Controllers
             var sales = await _userService.GetSales();
 
             var orders = await _orderService.GetOrders();
+            orders = orders.Where(m => m.Status != OrderStatus.Rejected && m.Status != OrderStatus.Preparing);
             foreach (var order in orders)
                 foreach (var item in order.OrderItems)
                     list.Add(item);
@@ -70,7 +71,7 @@ namespace MvcClient.Controllers
                                         where m.ItemStatus == ItemStatus.Submitted
                                         select m).Count();
             viewModel.Data = prepareDataChart(orders, nowDate);
-            var catalog = await _itemService.GetCatalog(null, null, 0, 0, null);
+            var catalog = await _itemService.GetCatalog();
             viewModel.CommonItems = commonItems;
             return View(viewModel);
         }
@@ -82,8 +83,8 @@ namespace MvcClient.Controllers
                 DateTime indexDate = nowDate.AddMonths(-11 + i);
                 double a = 0;
                 a = (from m in orders
-                     where m.OrderDate.Year == indexDate.Year && m.OrderDate.Month == indexDate.Month
-                     select m.Total).Sum();
+                    where m.OrderDate.Year == indexDate.Year && m.OrderDate.Month == indexDate.Month
+                    select m.Total).Sum();
                 list.Add(new DataChart(indexDate.ToString("MMM") + "-" + indexDate.Year, a));
             }
             return list;
