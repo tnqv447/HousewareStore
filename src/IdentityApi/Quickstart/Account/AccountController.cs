@@ -108,9 +108,7 @@ namespace IdentityServer4.Quickstart.UI
                 //if success
                 if (result)
                 {
-                    if(returnUrl == null){
-                        returnUrl = "http:localhost:5002";
-                    }
+
                     var loginModel = new LoginInputModel
                     {
                         Username = model.Username,
@@ -231,7 +229,7 @@ namespace IdentityServer4.Quickstart.UI
         /// Handle postback from username/password login
         /// </summary>
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model, string button)

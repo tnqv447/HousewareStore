@@ -20,17 +20,20 @@ namespace MvcClient.Controllers
         private readonly AppSettings _settings;
         private readonly IItemService _service;
         private readonly IIdentityService<Buyer> _identityService;
+        private readonly IUserService _userService;
 
         public ShopController(IItemService service, IOptions<AppSettings> settings, ILogger<HomeController> logger,
-            IIdentityService<Buyer> identityService)
+            IIdentityService<Buyer> identityService, IUserService userService)
         {
             _settings = settings.Value;
             _service = service;
             _logger = logger;
+            _userService = userService;
             _identityService = identityService;
         }
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string sortOrder, string itemCategory, string currentFilter, string searchString, double minPrice, double maxPrice, int pageNumber = 1)
+        public async Task<IActionResult> Index(string sortOrder, string itemCategory, string currentFilter,
+        string searchString, double minPrice, double maxPrice, string saleId, int pageNumber = 1)
         {
             if (searchString != null)
             {
@@ -43,7 +46,8 @@ namespace MvcClient.Controllers
 
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
-            var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder, isAdminOrManager);
+            var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder, isAdminOrManager, saleId);
+            catalog.Sales = await _userService.GetSales();
 
             int pageSize = 6;
             if (!isAdminOrManager)
@@ -56,18 +60,19 @@ namespace MvcClient.Controllers
 
             }
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
-            
+
             DateTime oldDate = DateTime.Today.AddMonths(-3);
-            
-            catalog.LatestItems = catalog.Items.Where(m => DateTime.Compare(m.PublishDate,oldDate) > 0).ToList();
-            
+
+            catalog.LatestItems = catalog.Items.Where(m => DateTime.Compare(m.PublishDate, oldDate) > 0).ToList();
+
             ChangeUriPlaceholder(catalog.Items);
 
             return View(catalog);
         }
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> ItemPaging(string itemCategory, string searchString, string sortOrder, double minPrice, double maxPrice, string currentFilter, int pageNumber)
+        public async Task<IActionResult> ItemPaging(string itemCategory, string searchString, string sortOrder, double minPrice, double maxPrice,
+         string currentFilter, int pageNumber, string saleId)
         {
             int pageSize = 6;
             if (searchString != null)
@@ -82,7 +87,7 @@ namespace MvcClient.Controllers
 
             var isAdminOrManager = User.IsInRole(Constants.AdministratorsRole) ||
                 User.IsInRole(Constants.ManagersRole);
-            var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder, isAdminOrManager);
+            var catalog = await _service.GetCatalog(itemCategory, searchString, minPrice, maxPrice, sortOrder, isAdminOrManager, saleId);
             if (!isAdminOrManager)
             {
                 // var userId = _identityService.Get (User).Id;
@@ -104,6 +109,10 @@ namespace MvcClient.Controllers
             var catalog = await _service.GetCatalog(item.Category);
             catalog.item = item;
             catalog.Items = catalog.Items.Where(m => m.Id != item.Id).ToList();
+            catalog.Sales = await _userService.GetSales();
+            catalog.SellerItems = catalog.Items.Where(m => m.OwnerId == item.OwnerId).ToList();
+            ViewData["SaleName"] = catalog.Sales.Where(m => m.UserId.Equals(catalog.item.OwnerId)).Select(m => m.Name).FirstOrDefault();
+
             return View(catalog);
         }
         [HttpGet]

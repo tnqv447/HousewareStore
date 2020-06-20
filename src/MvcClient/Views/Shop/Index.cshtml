@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Ogani Shop";
     var selectList = new SelectList(Model.Categories);
+    var selectListSales = new SelectList(Model.Sales,"UserId","Name",1);
 }
 <section class="hero hero-normal">
         <div class="container">
@@ -83,6 +84,20 @@
                                 <li data-itemcategory = "@item" class="choose_category @category"><a>@item</a></li>
                             }
                         </ul>
+                    </div>
+                    <div class="sidebar__item">
+                        <h4>Search Seller</h4>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div style="width:100%">
+                                    <select class="select_sale_value" asp-items="@selectListSales">
+                                        <option value="">All Seller</option><span class="arrow_carrot-down"></span>
+                                    </select>  
+                                </div>
+                            </div>
+                        </div>
+                        
+                           
                     </div>
                     <div class="sidebar__item">
                         <h4>Price</h4>
@@ -216,13 +231,13 @@
             })
             $(document).ajaxComplete(function(){
             })
-            function loadItem(itemCategory,minPrice,maxPrice,sortValue,pageNumber){
+            function loadItem(itemCategory,minPrice,maxPrice,sortValue,saleId,pageNumber){
                 pageNumber = parseInt(pageNumber);
                 minPrice = parseFloat(minPrice);
                 maxPrice = parseFloat(maxPrice);
                 $.ajax({
                     type: 'GET',
-                    data: {itemCategory:itemCategory,minPrice:minPrice,maxPrice:maxPrice,sortOrder:sortValue, pageNumber: pageNumber} ,
+                    data: {itemCategory:itemCategory,minPrice:minPrice,maxPrice:maxPrice,sortOrder:sortValue, pageNumber: pageNumber, saleId: saleId} ,
                     url: '@Url.Action("ItemPaging","Shop")',
                     success:function(data){
                         count = 0;
@@ -241,7 +256,7 @@
                             html += '           <input type="hidden" value="'+data.itemsPaging[i].ownerId+'" id="item_owner_'+data.itemsPaging[i].id+'"/>';
                             html += '           <ul class="product__item__pic__hover">';
                             html += '               <li><a href="#"><i class="fa fa-heart"></i></a></li>';
-                            html += '                   <li><a href="#"><i class="fa fa-info"></i></a></li>';
+                            html += '                   <li><a href="/Shop/Details/'+data.itemsPaging[i].id+'"})><i class="fa fa-info"></i></a></li>';
                             html += '                   @if(User.Identity.IsAuthenticated){<li><a style="cursor:pointer" class="add_to_cart" id="'+data.itemsPaging[i].id+'"><i class="fa fa-shopping-cart"></i></a></li>}';
                             html += '           </ul>';
                             html += '       </div>';
@@ -311,16 +326,18 @@
                 }, 1200);
                 var pageNumber = $(this).attr("id").slice(5);
                 var selectedSort = $(".select_sort_value").children("option:selected").val();
+                var selectedSale = $(".select_sale_value").children("option:selected").val();
                 var category = $('ul#select_category').find('li.active').text();
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1)
                 html = '<div class="loader_product"></div>';
                 $(".product__pagination").html('');
                 $("#loadProductPage").addClass("preloder_product").html(html);
-                loadItem(category,minPrice,maxPrice,selectedSort,pageNumber);
+                loadItem(category,minPrice,maxPrice,selectedSort,selectedSale,pageNumber);
             })
             $(document).on('change','.select_sort_value',function(){
                 var selectedSort= $(this).children("option:selected").val();
+                var selectedSale = $(".select_sale_value").children("option:selected").val();
                 var category = $('ul#select_category').find('li.active').text();
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1);
@@ -329,13 +346,27 @@
                 html = '<div class="loader_product"></div>';
                 
                 $("#loadProductPage").addClass("preloder_product").html(html);
-                loadItem(category,minPrice,maxPrice,selectedSort,1);    
+                loadItem(category,minPrice,maxPrice,selectedSort,selectedSale,1);    
+            })
+            $(document).on('change','.select_sale_value',function(){
+                var selectedSale= $(this).children("option:selected").val();
+                var selectedSort = $(".select_sort_value").children("option:selected").val();
+                var category = $('ul#select_category').find('li.active').text();
+                var minPrice = $('#minamount').val().slice(1);
+                var maxPrice = $('#maxamount').val().slice(1);
+                var loadHtml = '';
+                $(".product__pagination").html('');
+                html = '<div class="loader_product"></div>';
+                
+                $("#loadProductPage").addClass("preloder_product").html(html);
+                loadItem(category,minPrice,maxPrice,selectedSort,selectedSale,1);    
             })
             $(document).on('click','.choose_category',function(){
                 var category = $(this).text();
                 $("ul#select_category li.active").removeClass('active');
                 $(this).addClass('active');
                 var selectedSort = $(".select_sort_value").children("option:selected").val();
+                var selectedSale = $(".select_sale_value").children("option:selected").val();
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1)
                 var loadHtml = '';
@@ -343,22 +374,12 @@
                 html = '<div class="loader_product"></div>';
                 
                 $("#loadProductPage").addClass("preloder_product").html(html);
-                loadItem(category,minPrice,maxPrice,selectedSort,1);    
+                loadItem(category,minPrice,maxPrice,selectedSort,selectedSale,1);    
             })
-            $(document).on('keyup','.price_filter',function(){
-                var selectedSort = $(".select_sort_value").children("option:selected").val();
-                var category = $('ul#select_category').find('li.active').text();
-                var minPrice = $('#minamount').val().slice(1);
-                var maxPrice = $('#maxamount').val().slice(1)
-                var loadHtml = '';
-                $(".product__pagination").html('');
-                html = '<div class="loader_product"></div>';
-                
-                $("#loadProductPage").addClass("preloder_product").html(html);
-                loadItem(category,minPrice,maxPrice,selectedSort,1);
-            })
+            
             $(document).on('mouseup','.price-range',function(){
                 var selectedSort = $(".select_sort_value").children("option:selected").val();
+                var selectedSale = $(".select_sale_value").children("option:selected").val();
                 var category = $('ul#select_category').find('li.active').text();
                 var minPrice = $('#minamount').val().slice(1);
                 var maxPrice = $('#maxamount').val().slice(1)
@@ -367,7 +388,7 @@
                 html = '<div class="loader_product"></div>';
                 
                 $("#loadProductPage").addClass("preloder_product").html(html);
-                loadItem(category,minPrice,maxPrice,selectedSort,1);
+                loadItem(category,minPrice,maxPrice,selectedSort,saleId,1);
             })
             })(jQuery);
     </script>

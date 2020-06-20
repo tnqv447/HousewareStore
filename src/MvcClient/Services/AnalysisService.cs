@@ -35,20 +35,22 @@ namespace MvcClient.Services
             // listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
             var listBuyers = await _userService.GetBuyers();
             IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
-            if( listOrders != null){
+            if (listOrders != null)
+            {
                 results = listOrders.GroupBy(m => m.BuyerId)
                                         .Select(
-                                            m =>  new ItemAnalysis{
+                                            m => new ItemAnalysis
+                                            {
                                                 Name = (listBuyers.Where(s => s.UserId.Equals(m.First().BuyerId))) == null ||
-                                                        (listBuyers.Where(s => s.UserId.Equals(m.First().BuyerId))).Count() == 0 
+                                                        (listBuyers.Where(s => s.UserId.Equals(m.First().BuyerId))).Count() == 0
                                                         ? "null" : (listBuyers.Where(s => s.UserId.Equals(m.First().BuyerId))).FirstOrDefault().Name,
                                                 UserId = m.First().BuyerId,
                                                 TotalUnits = m.Sum(o => o.Units),
-                                                TotalPrices = m.Sum(o => Math.Round(o.Units * o.UnitPrice,2))
+                                                TotalPrices = m.Sum(o => Math.Round(o.Units * o.UnitPrice, 2))
                                             }
                                         );
             }
-            
+
             // if (listOrders != null && listBuyers != null)
             // {
             //     //Đầu tiên là left join 2 bảng vừa lấy về
