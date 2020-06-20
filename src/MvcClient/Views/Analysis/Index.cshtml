@@ -52,6 +52,53 @@
             </div>
         </div>
     </div>
+    if(User.IsInRole("Administrators")){
+        <div class="row">
+            <div class="col-12 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 id="change-title" class="header-title" style="text-align:center">List Of Buyers/h3>
+                        <div class="data-tables datatable-primary">
+                            <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
+                                <thead class="text-capitalize">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Phone</th>
+                                        <th>Total Units</th>
+                                        <th>Total Price</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach(var buyer in Model.AllBuyers)
+                                    {
+                                        <tr>
+                                            <td >@buyer.User.Name</td>
+                                            <td>@buyer.User.Address.ToString()</td>
+                                            <td>@buyer.User.PhoneNumber</td>
+                                            <td>@buyer.TotalUnits</td>
+                                            <td>$@buyer.TotalPrices.ToString("N2")</td>
+                                            @{
+                                                var temp = new Dictionary<string,string>
+                                                    {
+                                                        {"buyerName", @buyer.User.Name},
+                                                        {"id", @buyer.User.UserId}
+                                                        
+                                                    };
+                                            }
+                                            <td><a asp-action="Buyer" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>
+                                        </tr>
+                                    }
+                                    
+                                </tbody>
+                            </table>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 }
 @if(User.IsInRole("Sales")){
     <div class="row">

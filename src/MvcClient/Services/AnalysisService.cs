@@ -75,7 +75,46 @@ namespace MvcClient.Services
 
             return results;
         }
-
+        public async Task<IList<AllSaleAnal>> CountItemAllBuyers(){
+            IList<AllSaleAnal> result = new List<AllSaleAnal>();
+            var listBuyers = await _userService.GetBuyers();
+            var listOrder = await _orderService.GetOrders();
+            var listItem = await _itemService.GetAll();
+            foreach(var buyer in listBuyers){
+                var listOrderOfBuyers = listOrder.where(m => m.BuyerId.Equals(buyer.UserId));
+                
+            }
+            
+            return result;
+        }
+        public async Task<AllSaleAnal> CountItemInBuyer(string buyerId, string saleId){
+            var listOrder = await _orderService.GetOrderItemsForSales(saleId);
+            var listItem = await _itemService.GetItemsSale(saleId);
+            var listOrderBuyer = listOrder.Where(m => m.BuyerId.Equals(buyerId));
+            var temp = listItem.GroupJoin(listOrderBuyer,
+                                            item => item.Id,
+                                            order => order.ItemId,
+                                            (item,orders) => new{
+                                                item = item,
+                                                orderitemsUnitCount = (orders == null || orders.Count() == 0 ? 0 : orders.Sum(o => o.Units))
+                                                
+                                            })
+                                            .Select(
+                                                m => new ItemAnalysis{
+                                                    ItemId = m.item.Id,
+                                                    Name = m.item.Name,
+                                                    UnitPrice = m.item.UnitPrice,
+                                                    TotalUnits = m.orderitemsUnitCount,
+                                                    TotalPrices = Math.Round(m.item.UnitPrice * m.orderitemsUnitCount,2)
+                                                }
+                                            );
+            AllSaleAnal result = new AllSaleAnal{
+                Count = temp,
+                TotalUnits = temp.Sum(m => m.TotalUnits),
+                TotalPrices = temp.Sum(m => m.TotalPrices)
+            };
+            return result;
+        }
         // Thống kê hết sale
         public async Task<IList<AllSaleAnal>> CountAllSales()
         {

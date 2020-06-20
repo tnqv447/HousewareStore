@@ -1,0 +1,136 @@
+@model AllSaleAnal
+@using System.Collections.Specialized
+@using System.Drawing
+@{
+    ViewData["Title"] = "Analysis";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
+}
+<div class="row">
+    <div class="col-lg-6 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <div id="ambarchart2"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 id="change-title" style="text-align:center"class="header-title">Items of @Model.User.Name</h4>
+                <div class="data-tables datatable-primary">
+                    <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
+                        <thead class="text-capitalize">
+                            <tr>
+                                <th width="50%">Item Name</th>
+                                <th>Unit prices</th>
+                                <th>Total Units</th>
+                                <th>Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var item in Model.Count){
+                                <tr>
+                                    <td>@item.Name</td>
+                                    <td>$@item.UnitPrice</td>
+                                    <td>@item.TotalUnits</td>
+                                    <td>$@item.TotalPrices</td>
+                                </tr>
+                            }
+                            
+                        </tbody>
+                    </table>                        
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    IList<ListDictionary> temp = new List<ListDictionary>();
+    
+    foreach(var item in Model.Count){
+        ListDictionary list = new ListDictionary();
+        Random randomGen = new Random();
+        KnownColor[] names = (KnownColor[]) Enum.GetValues(typeof(KnownColor));
+        KnownColor randomColorName = names[randomGen.Next(names.Length)];
+        Color randomColor = Color.FromKnownColor(randomColorName);
+        list.Add("Name",item.Name.Split(",")[0]);
+        list.Add("Units",item.TotalUnits);
+        list.Add("Total Price",Math.Round(item.TotalUnits * item.UnitPrice,2));
+        list.Add("Color",randomColor);
+        temp.Add(list);
+    }
+    
+    var data = Newtonsoft.Json.JsonConvert.SerializeObject(temp);
+}
+@section Scripts{
+
+    <script>
+        if ($('#ambarchart2').length) {
+            var chart = AmCharts.makeChart("ambarchart2", {
+                "type": "serial",
+                "addClassNames": true,
+                "theme": "light",
+                "autoMargins": false,
+                "marginLeft": 30,
+                "marginRight": 8,
+                "marginTop": 10,
+                "marginBottom": 26,
+                "title": "Total Units and Total Price of all items",
+                "balloon": {
+                    "adjustBorderColor": false,
+                    "horizontalPadding": 10,
+                    "verticalPadding": 8,
+                    "color": "#ffffff"
+                },
+
+                "dataProvider": JSON.parse('@Html.Raw(data)'),
+                "valueAxes": [{
+                    "axisAlpha": 0,
+                    "position": "left"
+                }],
+                "startDuration": 1,
+                "graphs": [{
+                    "alphaField": "alpha",
+                    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
+                    "fillAlphas": 1,
+                    "fillColorsField": "Color",
+                    "title": "Units",
+                    "type": "column",
+                    "valueField": "Units",
+                    "dashLengthField": "dashLengthColumn"
+                }, {
+                    
+                    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
+                    "bullet": "round",
+                    "fillColorsField": "Color",
+                    "fillAlphas": 1,
+                    
+                    "type": "column",
+                    "title": "Total Price",
+                    "valueField": "Total Price",
+                    "dashLengthField": "dashLengthColumn"
+                }],
+                "categoryField": "Name",
+                "categoryAxis": {
+                    "categoryAxis.dashLength":100,
+                    "categoryAxis.gridPosition": "start",
+                    "gridPosition": "start",
+                    "autoGridCount": "true",
+                    "gridPosition": "start", 
+                    "autoGridCount": "true",
+                    "ignoreAxisWidth": true,
+                    "autoWrap": true
+                },
+                "autoMargins": true,
+                "autoMarginOffset": 12,
+                "autoTransform": true,
+                "export": {
+                    "enabled": false
+                }
+            });
+        }
+</script>
+
+
+}

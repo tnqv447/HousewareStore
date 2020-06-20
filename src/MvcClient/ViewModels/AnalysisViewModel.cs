@@ -8,6 +8,8 @@ namespace MvcClient.ViewModels
     {
         // public IEnumerable<Management> CountSale { get; set; }
         public IList<AllSaleAnal> SalesCount { get; set; }
+        public IList<AllSaleAnal> AllBuyers { get; set; }
+
         public IEnumerable<ItemAnalysis> BuyersCount { get; set; }
     }
     public class AllSaleAnal
