@@ -59,9 +59,18 @@ namespace OrderApi.Controllers
             {
                 var res = _mapper.Map<IEnumerable<OrderItem>, IEnumerable<OrderItemForSalesDTO>>(orderItems);
                 await this.TranferAdditionalInfo(res);
+                foreach (var item in res)
+                {
+                    Console.WriteLine("\n Status: " + item.Status);
+                }
                 if (status != OrderItemStatus.AllStatus)
                 {
                     res = res.Where(m => m.Status == status).ToList();
+
+                }
+                foreach (var item in res)
+                {
+                    Console.WriteLine("\n Status_2: " + item.Status);
                 }
                 if (!String.IsNullOrEmpty(searchString))
                 {

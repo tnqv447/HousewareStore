@@ -55,7 +55,6 @@
         KnownColor randomColorName = names[randomGen.Next(names.Length)];
         Color randomColor = Color.FromKnownColor(randomColorName);
         list.Add("Name",item.Name.Split(",")[0]);
-        list.Add("Units",item.TotalUnits);
         list.Add("Total Price",Math.Round(item.TotalUnits * item.UnitPrice,2));
         list.Add("Color",randomColor);
         temp.Add(list);

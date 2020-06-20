@@ -32,6 +32,7 @@ namespace MvcClient.Services
         public async Task<IEnumerable<ItemAnalysis>> CountItemsByBuyersAsync(string saleId)
         {
             var listOrders = await _orderService.GetOrderItemsForSales(saleId);
+            listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
             // listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
             var listBuyers = await _userService.GetBuyers();
             IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
@@ -77,40 +78,92 @@ namespace MvcClient.Services
 
             return results;
         }
-        public async Task<IList<AllSaleAnal>> CountItemAllBuyers(){
+        public async Task<IList<AllSaleAnal>> CountItemAllBuyers()
+        {
             IList<AllSaleAnal> result = new List<AllSaleAnal>();
             var listBuyers = await _userService.GetBuyers();
             var listOrder = await _orderService.GetOrders();
-            var listItem = await _itemService.GetAll();
-            foreach(var buyer in listBuyers){
-                var listOrderOfBuyers = listOrder.where(m => m.BuyerId.Equals(buyer.UserId));
-                
+            if (listOrder == null)
+            {
+
             }
-            
+            else
+            {
+                listOrder = listOrder.Where(m => m.Status != OrderStatus.Rejected && m.Status != OrderStatus.Preparing);
+                var listItem = await _itemService.GetAll();
+                foreach (var buyer in listBuyers)
+                {
+                    var listOrderOfBuyers = listOrder.Where(m => m.BuyerId.Equals(buyer.UserId));
+                    if (listOrderOfBuyers != null)
+                    {
+                        IList<OrderItem> orderItems = new List<OrderItem>();
+                        foreach (var order in listOrderOfBuyers)
+                        {
+                            foreach (var item in order.OrderItems)
+                            {
+                                orderItems.Add(item);
+                            }
+                        }
+                        var temp = listItem.GroupJoin(orderItems,
+                                                        item => item.Id,
+                                                        order => order.ItemId,
+                                                        (item, orders) => new
+                                                        {
+                                                            item = item,
+                                                            orderitemsUnitCount = (orders == null || orders.Count() == 0 ? 0 : orders.Sum(o => o.Units))
+                                                        })
+                                                        .Select(m => new ItemAnalysis
+                                                        {
+                                                            ItemId = m.item.Id,
+                                                            Name = m.item.Name,
+                                                            UnitPrice = m.item.UnitPrice,
+                                                            TotalUnits = m.orderitemsUnitCount,
+                                                            TotalPrices = Math.Round(m.item.UnitPrice * m.orderitemsUnitCount, 2)
+                                                        });
+                        temp = temp.Where(m => m.TotalUnits > 0);
+                        AllSaleAnal result_i = new AllSaleAnal
+                        {
+                            User = buyer,
+                            Count = temp,
+                            TotalUnits = temp.Sum(m => m.TotalUnits),
+                            TotalPrices = temp.Sum(m => m.TotalPrices)
+                        };
+                        result.Add(result_i);
+                    }
+
+                }
+            }
+
+
             return result;
         }
-        public async Task<AllSaleAnal> CountItemInBuyer(string buyerId, string saleId){
+        public async Task<AllSaleAnal> CountItemInBuyer(string buyerId, string saleId)
+        {
             var listOrder = await _orderService.GetOrderItemsForSales(saleId);
+            listOrder = listOrder.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
             var listItem = await _itemService.GetItemsSale(saleId);
             var listOrderBuyer = listOrder.Where(m => m.BuyerId.Equals(buyerId));
             var temp = listItem.GroupJoin(listOrderBuyer,
                                             item => item.Id,
                                             order => order.ItemId,
-                                            (item,orders) => new{
+                                            (item, orders) => new
+                                            {
                                                 item = item,
                                                 orderitemsUnitCount = (orders == null || orders.Count() == 0 ? 0 : orders.Sum(o => o.Units))
-                                                
+
                                             })
                                             .Select(
-                                                m => new ItemAnalysis{
+                                                m => new ItemAnalysis
+                                                {
                                                     ItemId = m.item.Id,
                                                     Name = m.item.Name,
                                                     UnitPrice = m.item.UnitPrice,
                                                     TotalUnits = m.orderitemsUnitCount,
-                                                    TotalPrices = Math.Round(m.item.UnitPrice * m.orderitemsUnitCount,2)
+                                                    TotalPrices = Math.Round(m.item.UnitPrice * m.orderitemsUnitCount, 2)
                                                 }
                                             );
-            AllSaleAnal result = new AllSaleAnal{
+            AllSaleAnal result = new AllSaleAnal
+            {
                 Count = temp,
                 TotalUnits = temp.Sum(m => m.TotalUnits),
                 TotalPrices = temp.Sum(m => m.TotalPrices)
@@ -124,6 +177,7 @@ namespace MvcClient.Services
             var listSales = await _userService.GetSales();
             foreach (var sale in listSales)
             {
+                Console.WriteLine("\n sale: " + sale.Name);
                 var count = await CountItemsBySalesAsync(sale.UserId);
                 var totalUnits = 0;
                 double totalPrices = 0;
@@ -153,33 +207,44 @@ namespace MvcClient.Services
         public async Task<IEnumerable<ItemAnalysis>> CountItemsBySalesAsync(string saleId)
         {
             var listOrders = await _orderService.GetOrderItemsForSales(saleId);
-            // listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
-
-            var listItems = await _itemService.GetItemsSale(saleId);
             IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
 
-            if (listOrders != null && listItems != null)
+            if (listOrders == null)
             {
-                //Đầu tiên là left join 2 bảng vừa lấy về
-                results = listItems.GroupJoin(listOrders,
-                                                item => item.Id, // key của left table
-                                                orderitems => orderitems.ItemId,// key của right table
-                                                (item, orderitems) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
-                                                new
-                                                { //new này là tạo table mới chứa 2 giá trị dưới
-                                                    item = item, //value 1
-                                                    orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))
-                                                })
-                                                .Select(
-                                                    m => new ItemAnalysis
-                                                    {
-                                                        ItemId = m.item.Id, //gán các giá trị vào
-                                                        Name = m.item.Name,
-                                                        UnitPrice = m.item.UnitPrice,
-                                                        TotalUnits = m.orderitemsUnitCount
-                                                    }
-                                                );
+                Console.WriteLine("\nnull");
             }
+            // Console.WriteLine("\nStatus: " + listOrders.ElementAt(0).ItemName + " ");
+            else
+            {
+                listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
+
+                var listItems = await _itemService.GetItemsSale(saleId);
+
+                if (listOrders != null && listItems != null)
+                {
+                    //Đầu tiên là left join 2 bảng vừa lấy về
+                    results = listItems.GroupJoin(listOrders,
+                                                    item => item.Id, // key của left table
+                                                    orderitems => orderitems.ItemId,// key của right table
+                                                    (item, orderitems) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
+                                                    new
+                                                    { //new này là tạo table mới chứa 2 giá trị dưới
+                                                        item = item, //value 1
+                                                        orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))
+                                                    })
+                                                    .Select(
+                                                        m => new ItemAnalysis
+                                                        {
+                                                            ItemId = m.item.Id, //gán các giá trị vào
+                                                            Name = m.item.Name,
+                                                            UnitPrice = m.item.UnitPrice,
+                                                            TotalUnits = m.orderitemsUnitCount
+                                                        }
+                                                    );
+                }
+            }
+
+
 
             return results;
         }
