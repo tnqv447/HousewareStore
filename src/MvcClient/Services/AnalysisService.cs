@@ -29,45 +29,60 @@ namespace MvcClient.Services
             _itemService = itemService;
 
         }
-        public async Task<IEnumerable<ItemAnalysis>> CountBuyersBySalesAsync(string saleId)
+        public async Task<IEnumerable<ItemAnalysis>> CountItemsByBuyersAsync(string saleId)
         {
-            // var listOrders = await _orderService.GetOrderItemsForSales(saleId);
-            // // listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
+            var listOrders = await _orderService.GetOrderItemsForSales(saleId);
+            // listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
+            var listBuyers = await _userService.GetBuyers();
+            IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
+            if (listOrders != null)
+            {
+                results = listOrders.GroupBy(m => m.BuyerId)
+                                        .Select(
+                                            m => new ItemAnalysis
+                                            {
+                                                Name = (listBuyers.Where(s => s.UserId.Equals(m.First().BuyerId))) == null ||
+                                                        (listBuyers.Where(s => s.UserId.Equals(m.First().BuyerId))).Count() == 0
+                                                        ? "null" : (listBuyers.Where(s => s.UserId.Equals(m.First().BuyerId))).FirstOrDefault().Name,
+                                                UserId = m.First().BuyerId,
+                                                TotalUnits = m.Sum(o => o.Units),
+                                                TotalPrices = m.Sum(o => Math.Round(o.Units * o.UnitPrice, 2))
+                                            }
+                                        );
+            }
 
-            // var listBuyers = await _itemService.GetItemsSale(saleId);
-            // IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
-
-            // if (listOrders != null && listItems != null)
+            // if (listOrders != null && listBuyers != null)
             // {
             //     //Đầu tiên là left join 2 bảng vừa lấy về
-            //     results = listItems.GroupJoin(listOrders,
-            //                                     item => item.Id, // key của left table
-            //                                     orderitems => orderitems.ItemId,// key của right table
-            //                                     (item, orderitems) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
+            //     results = listBuyers.GroupJoin(listOrders,
+            //                                     buyer => buyer.UserId, // key của left table
+            //                                     orderitems => orderitems.BuyerId,// key của right table
+            //                                     (buyer, orderitems) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
             //                                     new
             //                                     { //new này là tạo table mới chứa 2 giá trị dưới
-            //                                         item = item, //value 1
-            //                                         orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))
+            //                                         buyer = buyer, //value 1
+            //                                         orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units)),
+            //                                         orderItemsTotal = (orderitems == null || orderitems.Count() == 0 ? 0: orderitems.Sum(o => Math.Round(o.UnitPrice * o.Units,2)))
             //                                     })
             //                                     .Select(
             //                                         m => new ItemAnalysis
             //                                         {
-            //                                             ItemId = m.item.Id, //gán các giá trị vào
-            //                                             Name = m.item.Name,
-            //                                             UnitPrice = m.item.UnitPrice,
-            //                                             TotalUnits = m.orderitemsUnitCount
+            //                                             UserId = m.buyer.UserId, //gán các giá trị vào
+            //                                             Name = m.buyer.Name,
+            //                                             TotalUnits = m.orderitemsUnitCount,
+            //                                             TotalPrices = m.orderItemsTotal
             //                                         }
             //                                     );
             // }
 
-            return null;
+            return results;
         }
 
         // Thống kê hết sale
-        public async Task<IList<AnalysisViewModel>> CountAllSales()
+        public async Task<IList<AllSaleAnal>> CountAllSales()
         {
-            IList<AnalysisViewModel> results = new List<AnalysisViewModel>();
-            var listSales = await _userService.ManageUsers("Sales");
+            IList<AllSaleAnal> results = new List<AllSaleAnal>();
+            var listSales = await _userService.GetSales();
             foreach (var sale in listSales)
             {
                 var count = await CountItemsBySalesAsync(sale.UserId);
@@ -80,9 +95,9 @@ namespace MvcClient.Services
                 }
                 if (count != null)
                 {
-                    AnalysisViewModel result = new AnalysisViewModel
+                    AllSaleAnal result = new AllSaleAnal
                     {
-                        Sale = sale,
+                        User = sale,
                         Count = count,
                         TotalPrices = totalPrices,
                         TotalUnits = totalUnits

@@ -59,13 +59,13 @@ namespace MvcClient.Controllers
             //ViewModel
             DashboardViewModel viewModel = new DashboardViewModel();
             viewModel.TotalRevenue = (from m in orders
-                                      select m.Total).Sum();
+                                    select m.Total).Sum();
             viewModel.CountApproved = (from m in items
-                                       where m.ItemStatus == ItemStatus.Approved
-                                       select m).Count();
+                                    where m.ItemStatus == ItemStatus.Approved
+                                    select m).Count();
             viewModel.CountRejected = (from m in items
-                                       where m.ItemStatus == ItemStatus.Rejected
-                                       select m).Count();
+                                    where m.ItemStatus == ItemStatus.Rejected
+                                    select m).Count();
             viewModel.CountSubmitted = (from m in items
                                         where m.ItemStatus == ItemStatus.Submitted
                                         select m).Count();

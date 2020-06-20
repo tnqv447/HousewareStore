@@ -49,7 +49,7 @@
                                     <button class="btn btn-default" name="button" value="cancel">Cancel</button>
                                 </div>
                                 <div>
-                                    <p>Not having an account? Register <a class="nav-link text-dark" asp-action="Register" asp-controller="Account">here</a></p>
+                                    <p>Not having an account? Register <a class="nav-link text-dark" asp-action="Register" asp-controller="Account" asp-route-returnUrl="@Model.ReturnUrl">here</a></p>
                                 </div>
                             </fieldset>
                         </form>

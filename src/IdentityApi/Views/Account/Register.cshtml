@@ -52,7 +52,7 @@
 
 
                                     <div class="form-group">
-                                        <button class="btn btn-primary" name="button" value="register">Register</button>
+                                        <button class="btn btn-primary" id="regis" name="button" value="register">Register</button>
                                         <button class="btn btn-default" name="button" value="cancel">Cancel</button>
                                     </div>
                                 </fieldset>
@@ -77,3 +77,21 @@
 
     </div>
 </div>
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            $(document).on('click','.regis',function(){
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("Register","Account")',
+                    success: function(data){
+                        alert(data);
+                    },
+                    error: function(xhr){
+                        alert(xhr);
+                    }
+                })
+            })
+        })
+    </script>
+}

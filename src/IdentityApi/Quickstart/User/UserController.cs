@@ -102,6 +102,16 @@ namespace IdentityApi.Quickstart.User
                 dto.Role = "Sales";
             return dtos;
         }
+        [HttpGet("buyers")]
+        public async Task<ActionResult<List<ApplicationUserDTO>>> GetBuyers()
+        {
+            IList<ApplicationUser> users = null;
+            users = await _userRepo.GetUsersByRole("Users");
+            var dtos = new List<ApplicationUserDTO>(toDtoRange(users));
+            foreach (var dto in dtos)
+                dto.Role = "Users";
+            return dtos;
+        }
         [HttpPost]
         public async Task<ActionResult<ApplicationUser>> Create(ApplicationUserDTO dto)
         {

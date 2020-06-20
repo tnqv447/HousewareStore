@@ -47,6 +47,8 @@
             </div>
             
                 <div class="col-lg-9">
+                        <partial name="_ValidationScriptsPartial" />
+
                     <form asp-action="Profile" asp-controller="User" method="POST">
                         <div class="row">
                             <div style="margin-left:20px">
@@ -60,14 +62,14 @@
                             </div>
                             <div class="col-md-4 contact__info">
                                 <input asp-for="@Model.buyer.FirstName" disabled value="@Model.buyer.FirstName" />
-                                <span asp-validation-for="@Model.buyer.FirstName"></span>
+                                <span style="color:red; font-style:italic" asp-validation-for="@Model.buyer.FirstName"></span>
                             </div>
                             <div class="col-md-2">
                                 <p>Last Name: </p>
                             </div>
                             <div class="col-md-4 contact__info">
                                 <input asp-for="@Model.buyer.LastName" disabled value="@Model.buyer.LastName" />
-                                <span asp-validation-for="@Model.buyer.LastName"></span>
+                                <span style="color:red; font-style:italic"  asp-validation-for="@Model.buyer.LastName"></span>
                             </div>
                         </div>
                         <div class="row">

@@ -17,18 +17,28 @@ namespace MvcClient.Controllers
     {
         private readonly ILogger<AdminController> _logger;
         private readonly IAnalysisService _analysisService;
+        private readonly IIdentityService<Buyer> _identityService;
         private readonly IOrderService _orderService;
-        public AnalysisController(ILogger<AdminController> logger, IAnalysisService analysisService, IOrderService orderService)
+        public AnalysisController(ILogger<AdminController> logger, IAnalysisService analysisService,
+                                        IIdentityService<Buyer> identityService,IOrderService orderService)
         {
             _logger = logger;
             _analysisService = analysisService;
             _orderService = orderService;
+            _identityService = identityService;
         }
         [Authorize(Roles = "Administrators, Sales, Managers")]
         public async Task<IActionResult> IndexAsync()
         {
-            var indexView = await _analysisService.CountAllSales();
-            indexView = indexView.OrderByDescending(m => m.TotalPrices).ToList();
+            AnalysisViewModel indexView = new AnalysisViewModel();
+            indexView.SalesCount = await _analysisService.CountAllSales();
+            indexView.SalesCount = indexView.SalesCount.OrderByDescending(m => m.TotalPrices).ToList();
+            if(User.IsInRole("Sales")){
+                string id = _identityService.Get(User).Id;
+                indexView.BuyersCount = await _analysisService.CountItemsByBuyersAsync(id);
+                indexView.BuyersCount = indexView.BuyersCount.OrderByDescending(m => m.TotalPrices);
+            }
+            
             return View(indexView);
         }
         [Authorize(Roles = "Administrators, Managers")]
