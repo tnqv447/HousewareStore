@@ -31,36 +31,36 @@ namespace MvcClient.Services
         }
         public async Task<IEnumerable<ItemAnalysis>> CountBuyersBySalesAsync(string saleId)
         {
-            var listOrders = await _orderService.GetOrderItemsForSales(saleId);
-            // listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
+            // var listOrders = await _orderService.GetOrderItemsForSales(saleId);
+            // // listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
 
-            var listBuyers = await _itemService.GetItemsSale(saleId);
-            IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
+            // var listBuyers = await _itemService.GetItemsSale(saleId);
+            // IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
 
-            if (listOrders != null && listItems != null)
-            {
-                //Đầu tiên là left join 2 bảng vừa lấy về
-                results = listItems.GroupJoin(listOrders,
-                                                item => item.Id, // key của left table
-                                                orderitems => orderitems.ItemId,// key của right table
-                                                (item, orderitems) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
-                                                new
-                                                { //new này là tạo table mới chứa 2 giá trị dưới
-                                                    item = item, //value 1
-                                                    orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))
-                                                })
-                                                .Select(
-                                                    m => new ItemAnalysis
-                                                    {
-                                                        ItemId = m.item.Id, //gán các giá trị vào
-                                                        Name = m.item.Name,
-                                                        UnitPrice = m.item.UnitPrice,
-                                                        TotalUnits = m.orderitemsUnitCount
-                                                    }
-                                                );
-            }
+            // if (listOrders != null && listItems != null)
+            // {
+            //     //Đầu tiên là left join 2 bảng vừa lấy về
+            //     results = listItems.GroupJoin(listOrders,
+            //                                     item => item.Id, // key của left table
+            //                                     orderitems => orderitems.ItemId,// key của right table
+            //                                     (item, orderitems) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
+            //                                     new
+            //                                     { //new này là tạo table mới chứa 2 giá trị dưới
+            //                                         item = item, //value 1
+            //                                         orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))
+            //                                     })
+            //                                     .Select(
+            //                                         m => new ItemAnalysis
+            //                                         {
+            //                                             ItemId = m.item.Id, //gán các giá trị vào
+            //                                             Name = m.item.Name,
+            //                                             UnitPrice = m.item.UnitPrice,
+            //                                             TotalUnits = m.orderitemsUnitCount
+            //                                         }
+            //                                     );
+            // }
 
-            return results;
+            return null;
         }
 
         // Thống kê hết sale
