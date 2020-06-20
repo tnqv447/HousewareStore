@@ -102,7 +102,25 @@
                                         <td>@item.ItemName</td>
                                         <td>@item.UnitPrice</td>
                                         <td>@item.Units</td>
-                                        <td id="stt_@item.Id">@item.Status</td>
+                                        @switch ((int)@item.Status)
+                                        {
+                                            case 1:
+                                            <td id="stt_@item.Id"><span class="badge badge-warning">@item.Status</span></td>
+                                            break;
+                                            case 2:
+                                            <td id="stt_@item.Id"><span class="badge badge-success">@item.Status</span></td>
+                                            break;
+                                            case 3:
+                                            <td id="stt_@item.Id"><span class="badge badge-primary">@item.Status</span></td>
+                                            break;
+                                            case 4:
+                                            <td id="stt_@item.Id"><span class="badge badge-danger">@item.Status</span></td>
+                                            break;
+                                            default:
+                                            <td id="stt_@item.Id"><span class="badge badge-secondary">@item.Status</span></td>
+                                            break;
+                                        }
+                                        
                                         <td> 
                                             @{var id_update= "update_"+item.Status+"_"+item.Id;
                                             var id_rejected = "rejected_"+item.Status+"_"+item.Id;} 
@@ -191,10 +209,11 @@
                         {
                             var item = data.orderItemsPaging[i];
                             var fullname= item.firstName + " " + item.lastName;
+                            var css = "";
                             // Status
                             var Status= "";
                             if(item.status == 0 ) Status ="Preparing";
-                            else if(item.status == 1 ) Status ="Shipped";
+                            else if(item.status == 1 ) Status ="Shipping" ;
                             else if(item.status == 2 ) Status ="Delivered";
                             else if(item.status == 3 ) Status ="Accepted";
                             else if(item.status == 4 ) Status ="Rejected";
@@ -209,7 +228,24 @@
                             html += '<td>'+item.itemName+'</td>';
                             html += '<td>'+item.unitPrice+'</td>';
                             html += '<td>'+item.units+'</td>';
-                            html += '<td id="stt_'+item.id+'">'+Status+'</td>';
+                            switch(Status){
+                                case "Shipping":
+                                html += '<td id="stt_'+item.id+'"><span class="badge badge-warning">'+Status+'</span></td>';
+                                break;
+                                case "Accepted":
+                                html += '<td id="stt_'+item.id+'"><span class="badge badge-primary">'+Status+'</span></td>';
+                                break;
+                                case "Preparing":
+                                html += '<td id="stt_'+item.id+'"><span class="badge badge-secondary">'+Status+'</span></td>';
+                                break;
+                                case "Rejected":
+                                html += '<td id="stt_'+item.id+'"><span class="badge badge-danger">'+Status+'</span></td>';
+                                break;
+                                default:
+                                html += '<td id="stt_'+item.id+'"><span class="badge badge-success">'+Status+'</span></td>';
+                                break;
+                            }
+                            
                             html +='<td>';
 
                             var id_update= "update_"+Status+"_"+item.id;
@@ -293,13 +329,17 @@
                 $("#item_body").html(html);
             }
             function uploadStt(id_orderItem,status,action){
+                var sortOrder= $("#sortOrder").children("option:selected").val();
+                var sortType= $("#sortType").children("option:selected").val();
+                var searchType= $("#searchType").children("option:selected").val();
+                var searchString = $("#searchString").val();
+                var status_select = $("#itemStatus").children("option:selected").val();
                 $.ajax({
                 method: 'POST',
                 url: '@Url.Action("UpdateStatus","OrderForSale")',
                 data: {id:id_orderItem,itemStatus: status, action:action},
-                success:function(data){ setTimeout(function(){
-                    $("#stt_" + id_orderItem).text(data);
-                },delay_time)
+                success:function(data){ 
+                    loadPage(1,searchType,searchString,status_select,sortType,sortOrder);
                     
                 },
                 error: function(xhr){
@@ -313,28 +353,33 @@
                 var action = split_str[0];
                 var id_orderItem =parseInt(split_str[2]);
                 var status = split_str[1];
-                var sortOrder= $("#sortOrder").children("option:selected").val();
-                var sortType= $("#sortType").children("option:selected").val();
-                var searchType= $("#searchType").children("option:selected").val();
-                var searchString = $("#searchString").val();
+                
                 if(action == "rejected"){
                     if (confirm('Do you want to rejected')) {
-                        uploadStt(id_orderItem,status,action);
-                        var searchItemName = $("#SearchItemName").val();
-                        var status = $("#ItemStatus").children("option:selected").val();
+                        
                         var pageNumber = $(this).attr("id").slice(8);
-                        loadPage(1,searchType,searchString,status,sortType,sortOrder);
+                        
+                        
+                        uploadStt(id_orderItem,status,action);
+                        WaitingSearch();
+                        
+                       
+                        
                     } else {
                         return false;
                     }
                 }
                 else{
                     if (confirm('Do your want to update?')) {
-                        uploadStt(id_orderItem,status,action);
-                        var searchItemName = $("#SearchItemName").val();
-                        var status = $("#ItemStatus").children("option:selected").val();
+                        
                         var pageNumber = $(this).attr("id").slice(8);
-                        loadPage(1,searchType,searchString,status,sortType,sortOrder);
+                        
+                        
+                        uploadStt(id_orderItem,status,action);
+                        WaitingSearch();
+                        
+                        
+                        
                     } else {
                         return false;
                     }
