@@ -300,7 +300,7 @@ namespace MvcClient.Services
                                         .Select(m => new ItemAnalysis{
                                             PictureUrl = m.item.PictureUrl,
                                             ItemId = m.item.Id,
-                                            Name = m.item.OwnerId,
+                                            Name = m.item.Name,
                                             TotalUnits = m.orderitemsUnitCount,
                                             TotalPrices = Math.Round(m.orderitemsUnitCount * m.item.UnitPrice,2)
                                         });
