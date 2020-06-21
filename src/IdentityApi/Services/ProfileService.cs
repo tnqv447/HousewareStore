@@ -25,7 +25,7 @@ namespace IdentityApi.Services
             var user = await _userManager.GetUserAsync(context.Subject);
             //var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
-
+            Console.WriteLine(user.PictureUrl);
             var claims = new List<Claim>
             {
                 new Claim("name", user.UserName),
@@ -36,8 +36,9 @@ namespace IdentityApi.Services
                 new Claim("lastname", user.FamilyName),
                 new Claim("fullname", user.Name),
                 new Claim("email", user.Email),
-                new Claim("phonenumber", user.PhoneNumber),
-                new Claim("pictureurl", user.PictureUrl),
+                new Claim("phonenumber", user.PhoneNumber), 
+                
+                new Claim("pictureurl", user.PictureUrl),    
                 new Claim("website", user.Website),
                 new Claim("address", JsonConvert.SerializeObject(user.Address))
             };

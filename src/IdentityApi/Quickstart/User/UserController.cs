@@ -37,8 +37,8 @@ namespace IdentityApi.Quickstart.User
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationUserDTO>> GetUser(string id)
         {
-            if (!this.ValidateRole(new string[] { "Administrators" }))
-                return Forbid();
+            // if (!this.ValidateRole(new string[] { "Administrators", "Users" }))
+            //     return Forbid();
             var user = await _userRepo.GetUser(id);
 
             if (user == null)

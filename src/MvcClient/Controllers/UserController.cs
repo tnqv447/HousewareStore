@@ -126,6 +126,7 @@ namespace MvcClient.Controllers
             BuyerViewModel bvm = new BuyerViewModel();
 
             var buyer = _identityService.Get(User);
+            
             bvm.buyer = buyer;
             return View(bvm);
         }
@@ -195,8 +196,6 @@ namespace MvcClient.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadPictureUser(IFormFile pictureUrl)
         {
-
-            Console.WriteLine("\n" + pictureUrl.FileName);
             var buyer = _identityService.Get(User);
             var user = new User
             {
@@ -212,6 +211,7 @@ namespace MvcClient.Controllers
                 Email = buyer.Email,
                 Role = "Users"
             };
+
             user.ImageURL = pictureUrl;
             user.PictureUrl = UploadedFile(user);
             await _service.UpdateUser(user.UserId, user);

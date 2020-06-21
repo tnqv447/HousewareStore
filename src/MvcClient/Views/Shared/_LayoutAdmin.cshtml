@@ -298,7 +298,7 @@
                                 }
                                 @if(urlString.Count() > 1){
                                     @for(var i = 1;i< count - 1;i++){
-                                        <li><a asp-controller="Admin" asp-action="Index">@urlString[i]</a></li>
+                                        <li><a asp-controller="@urlString[i]" asp-action="Index">@urlString[i]</a></li>
                                     }
                                     if(check){
                                         <li><span>@urlString[count - 1]</span></li>
