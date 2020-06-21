@@ -8,7 +8,7 @@
 }
 @if(User.IsInRole("Managers") || User.IsInRole("Administrators")){
     <div class="row">
-        <div class="col-12 mt-5">
+        <div class="col-6 mt-5">
             <div class="card">
                 <div class="card-body">
                     <h3 id="change-title" class="header-title" style="text-align:center">List Of Sales</h3>
@@ -16,21 +16,20 @@
                         <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
                             <thead class="text-capitalize">
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Address</th>
-                                    <th>Phone</th>
-                                    <th>Total Units</th>
-                                    <th>Total Price</th>
-                                    <th>Action</th>
+                                    <td width="20%">Top</td>
+                                    <th width="20%">Name</th>
+                                    <th width="20%">Total Units</th>
+                                    <th width="35%">Total Price</th>
+                                    <th width="5%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @{ var top = 1;}
                                 @foreach(var sale in Model.SalesCount)
                                 {
                                     <tr>
+                                        <td>@top</td>
                                         <td >@sale.User.Name</td>
-                                        <td>@sale.User.Address.ToString()</td>
-                                        <td>@sale.User.PhoneNumber</td>
                                         <td>@sale.TotalUnits</td>
                                         <td>$@sale.TotalPrices.ToString("N2")</td>
                                         @{
@@ -43,6 +42,7 @@
                                         }
                                         <td><a asp-action="Sale" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>
                                     </tr>
+                                    top+=1;
                                 }
                                 
                             </tbody>
@@ -54,7 +54,7 @@
     </div>
     if(User.IsInRole("Administrators")){
         <div class="row">
-            <div class="col-12 mt-5">
+            <div class="col-6 mt-5">
                 <div class="card">
                     <div class="card-body">
                         <h3 id="change-title" class="header-title" style="text-align:center">List Of Buyers</h3>
@@ -62,21 +62,23 @@
                             <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
                                 <thead class="text-capitalize">
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Address</th>
-                                        <th>Phone</th>
-                                        <th>Total Units</th>
-                                        <th>Total Price</th>
-                                        <th>Action</th>
+                                        <td width="20%">Top</td>
+                                        <th width="20%">Name</th>
+                                        <th width="20%">Total Units</th>
+                                        <th width="35%">Total Price</th>
+                                        <th width="5%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @{
+                                        var index = 1;
+                                    }
                                     @foreach(var buyer in Model.AllBuyers)
                                     {
                                         <tr>
+                                            <td>@index</td>
                                             <td >@buyer.User.Name</td>
-                                            <td>@buyer.User.Address.ToString()</td>
-                                            <td>@buyer.User.PhoneNumber</td>
+
                                             <td>@buyer.TotalUnits</td>
                                             <td>$@buyer.TotalPrices.ToString("N2")</td>
                                             @{
@@ -87,8 +89,56 @@
                                                         
                                                     };
                                             }
-                                            <td><a asp-action="Buyer" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>
+                                            <td><a asp-action="Buyer" class="href_location" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>
                                         </tr>
+                                        index+=1;
+                                    }
+                                    
+                                </tbody>
+                            </table>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 id="change-title" class="header-title" style="text-align:center">List Of Items</h3>
+                        <div class="data-tables datatable-primary">
+                            <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
+                                <thead class="text-capitalize">
+                                    <tr>
+                                        <td width="10%">Top</td>
+                                        <td width="20%">Image</td>
+                                        <th width="30%">Name</th>
+                                        <th width="15%">Total Units</th>
+                                        <th width="20%">Total Price</th>
+                                        <th width="5%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{var i = 1;}
+                                    @foreach(var item in Model.AllItems)
+                                    {
+                                        <tr>
+                                            <td>@i</td>
+                                            <td class="item"><img class="img_aspect" src="/img/product/@item.PictureUrl" /></td>
+                                            <td >@item.Name</td>
+                                            <td>@item.TotalUnits</td>
+                                            <td>$@item.TotalPrices.ToString("N2")</td>
+                                            @{
+                                                var temp = new Dictionary<string,string>
+                                                    {
+                                                        {"itemName", @item.Name},
+                                                        {"id", @item.UserId}
+                                                        
+                                                    };
+                                            }
+                                            <td><a  class="href_location" asp-action="Item" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>
+                                        </tr>
+                                        i += 1;
                                     }
                                     
                                 </tbody>
@@ -101,8 +151,9 @@
     }
 }
 @if(User.IsInRole("Sales")){
+
     <div class="row">
-        <div class="col-12 mt-5">
+        <div class="col-6 mt-5">
             <div class="card">
                 <div class="card-body">
                     <h3 id="change-title" class="header-title" style="text-align:center">Your List Of Buyers</h3>
@@ -110,16 +161,19 @@
                         <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
                             <thead class="text-capitalize">
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Total Units</th>
-                                    <th>Total Price</th>
-                                    <th>Action</th>
+                                    <td width="20%">Top</td>
+                                    <th width="20%">Name</th>
+                                    <th width="20%">Total Units</th>
+                                    <th width="35%">Total Price</th>
+                                    <th width="5%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @{var index = 1;}
                                 @foreach(var buyer in Model.BuyersCount)
                                 {
                                     <tr>
+                                        <td>@index</td>
                                         <td >@buyer.Name</td>
                                         <td>@buyer.TotalUnits</td>
                                         <td>$@buyer.TotalPrices.ToString("N2")</td>
@@ -131,8 +185,57 @@
                                                     
                                                 };
                                         }
-                                        <td><a asp-action="Buyer" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>
+                                        <td><a  class="href_location" asp-action="Buyer" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>
                                     </tr>
+                                    index+=1;
+                                }
+                                
+                            </tbody>
+                        </table>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h3 id="change-title" class="header-title" style="text-align:center">Your List Of Items</h3>
+                    <div class="data-tables datatable-primary">
+                        <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
+                            <thead class="text-capitalize">
+                                <tr>
+                                    <td width="10%">Top</td>
+                                    <td width="20%">Image</td>
+                                    <th width="30%">Name</th>
+                                    <th width="15%">Total Units</th>
+                                    <th width="20%">Total Price</th>
+                                    <th width="5%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{var i = 1;}
+                                @foreach(var item in Model.AllItems)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td class="item"><img class="img_aspect" src="/img/product/@item.PictureUrl" /></td>
+                                        <td >@item.Name</td>
+                                        <td>@item.TotalUnits</td>
+                                        <td>$@item.TotalPrices.ToString("N2")</td>
+                                        @{
+                                            var temp = new Dictionary<string,string>
+                                                {
+                                                    {"itemName", @item.Name},
+                                                    {"id", @item.UserId}
+                                                    
+                                                };
+                                        }
+                                        <td><a  class="href_location" asp-action="Item" asp-controller="Analysis" asp-all-route-data="@temp"><i style="font-size:25" class="fa fa-info"></i></a></td>
+                                    </tr>
+                                    i += 1;
                                 }
                                 
                             </tbody>
@@ -142,4 +245,9 @@
             </div>
         </div>
     </div>
+    <script>
+        
+    </script>
+
 }
+

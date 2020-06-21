@@ -7,12 +7,12 @@ namespace MvcClient.ViewModels
     public class AnalysisViewModel
     {
         // public IEnumerable<Management> CountSale { get; set; }
-        public IList<AllSaleAnal> SalesCount { get; set; }
-        public IList<AllSaleAnal> AllBuyers { get; set; }
-
+        public IList<BaseAnalysis> SalesCount { get; set; }
+        public IList<BaseAnalysis> AllBuyers { get; set; }
+        public IEnumerable<ItemAnalysis> AllItems { get; set; }
         public IEnumerable<ItemAnalysis> BuyersCount { get; set; }
     }
-    public class AllSaleAnal
+    public class BaseAnalysis
     {
         public User User { get; set; }
         public IEnumerable<ItemAnalysis> Count { get; set; }

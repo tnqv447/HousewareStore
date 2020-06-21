@@ -59,6 +59,7 @@ namespace MvcClient.Controllers
 
 
             }
+            catalog.Items = catalog.Items.OrderBy(m => m.Name.ToLower()).ToList();
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
 
             DateTime oldDate = DateTime.Today.AddMonths(-3);
@@ -66,7 +67,7 @@ namespace MvcClient.Controllers
             catalog.LatestItems = catalog.Items.Where(m => DateTime.Compare(m.PublishDate, oldDate) > 0).ToList();
 
             ChangeUriPlaceholder(catalog.Items);
-
+            
             return View(catalog);
         }
         [AllowAnonymous]
@@ -95,8 +96,9 @@ namespace MvcClient.Controllers
                     .Where(m => m.ItemStatus == ItemStatus.Approved)
                     .ToList();
             }
+            catalog.Items = catalog.Items.OrderBy(m => m.Name.ToLower()).ToList();
             catalog.ItemsPaging = PaginatedList<Item>.Create(catalog.Items, pageNumber, pageSize);
-
+            
             ChangeUriPlaceholder(catalog.Items);
             catalog.PageTotal = catalog.ItemsPaging.TotalPages;
             catalog.PageIndex = pageNumber;

@@ -40,10 +40,14 @@ namespace MvcClient.Controllers
                 string id = _identityService.Get(User).Id;
                 indexView.BuyersCount = await _analysisService.CountItemsByBuyersAsync(id);
                 indexView.BuyersCount = indexView.BuyersCount.OrderByDescending(m => m.TotalPrices);
+                indexView.AllItems = await _analysisService.CountAllProducts(id);
+                indexView.AllItems = indexView.AllItems.OrderByDescending(m => m.TotalPrices);
             }
             if(User.IsInRole("Administrators")){
                 indexView.AllBuyers = await _analysisService.CountItemAllBuyers();
                 indexView.AllBuyers = indexView.AllBuyers.OrderByDescending(m => m.TotalPrices).ToList();
+                indexView.AllItems = await _analysisService.CountAllProducts();
+                indexView.AllItems = indexView.AllItems.OrderByDescending(m => m.TotalPrices);
             }
             
             return View(indexView);
