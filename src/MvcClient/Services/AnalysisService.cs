@@ -229,13 +229,13 @@ namespace MvcClient.Services
 
                 if (listOrders != null && listItems != null)
                 {
-                    //Đầu tiên là left join 2 bảng vừa lấy về
+                    
                     results = listItems.GroupJoin(listOrders,
                                                     item => item.Id, // key của left table
                                                     orderitems => orderitems.ItemId,// key của right table
                                                     (item, orderitems) => //(Cái (a,b) này nó là table mới với 2 giá trị a,b)
                                                     new
-                                                    { //new này là tạo table mới chứa 2 giá trị dưới
+                                                    {
                                                         item = item, //value 1
                                                         orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))
                                                     })
@@ -263,7 +263,9 @@ namespace MvcClient.Services
 
             if(!String.IsNullOrEmpty(saleId)){
                 listItems = await _itemService.GetItemsSale(saleId);
+                
                 var listOrderitems = await _orderService.GetOrderItemsForSales(saleId);
+                listOrderitems = listOrderitems.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
                 results = listItems.GroupJoin(listOrderitems,
                                         item => item.Id,
                                         order => order.ItemId,
@@ -282,6 +284,7 @@ namespace MvcClient.Services
             else{
                 listItems = await _itemService.GetAll();
                 var listOrders = await _orderService.GetOrders();
+                listOrders = listOrders.Where(m => m.Status != OrderStatus.Rejected && m.Status != OrderStatus.Preparing);
                 foreach(var order in listOrders){
                     foreach(var item in order.OrderItems){
                         listOrderItems.Add(item);
