@@ -6,35 +6,47 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml"; 
 }
 <div class="row">
-    <div class="col-lg-6 mt-5">
+    <div class="col-lg-12 mt-8">
         <div class="card">
             <div class="card-body">
                 <div id="ambarchart2"></div>
             </div>
         </div>
     </div>
-    <div class="col-lg-6 mt-5">
+    
+</div>
+<div class="row">
+    <div class="col-lg-12 mt-8">
         <div class="card">
             <div class="card-body">
                 <h4 id="change-title" style="text-align:center"class="header-title">Items of @ViewData["saleName"]</h4>
-                <div class="data-tables datatable-primary">
-                    <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
-                        <thead class="text-capitalize">
-                            <tr>
-                                <th width="50%">Item Name</th>
-                                <th>Unit prices</th>
-                                <th>Total Units</th>
-                                <th>Total Price</th>
-                            </tr>
-                        </thead>
+                <div class=" datatable-primary">
+                    <div class="table-responsive">
+                        <table  class="table text-center" style="width:100%;font-size:15px">
+                            <thead class="text-uppercase bg-dark">
+                                <tr class="text-white">
+                                    <th scope="col" width="5">Top</th>
+                                    <th scope="col" width="15%">Image</th>
+                                    <th scope="col" width="20%">Name</th>
+                                    <th scope="col" width="20%">Unit Price</th>
+                                    <th scope="col" width="20%">Total Units</th>
+                                    <th scope="col" width="20%">Total Price</th>
+                                </tr>
+                            </thead>
                         <tbody>
+                            @{
+                                var idx = 1;
+                            }
                             @foreach(var item in Model){
                                 <tr>
+                                    <td scope="row">@idx</td>
+                                    <td class="item"><img class="img_aspect" src="/img/product/@item.PictureUrl" /></td>
                                     <td>@item.Name</td>
                                     <td>$@item.UnitPrice</td>
                                     <td>@item.TotalUnits</td>
                                     <td>$@Math.Round(item.UnitPrice * item.TotalUnits,2)</td>
                                 </tr>
+                                idx+=1;
                             }
                             
                         </tbody>
@@ -75,7 +87,7 @@
                 "marginRight": 8,
                 "marginTop": 10,
                 "marginBottom": 26,
-                "title": "Total Units and Total Price of all items",
+                "title": "Total Price of all items",
                 "balloon": {
                     "adjustBorderColor": false,
                     "horizontalPadding": 10,

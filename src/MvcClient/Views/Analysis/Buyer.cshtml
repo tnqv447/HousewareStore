@@ -20,24 +20,30 @@
             <div class="card">
                 <div class="card-body">
                     <h4 id="change-title" style="text-align:center"class="header-title">Items of @Model.User.Name</h4>
-                    <div class="data-tables datatable-primary">
-                        <table id="dataTable2" class="text-center" style="width:100%;font-size:15px">
-                            <thead class="text-capitalize">
-                                <tr>
-                                    <th width="50%">Item Name</th>
-                                    <th>Unit prices</th>
-                                    <th>Total Units</th>
-                                    <th>Total Price</th>
+                    <div class="datatable-primar">
+                        <table  class="table text-center" style="width:100%;font-size:15px">
+                            <thead class="text-uppercase bg-dark">
+                                <tr class="text-white">
+                                    <th scope="col" width="5">Top</th>
+                                    <th scope="col" width="15%">Image</th>
+                                    <th scope="col" width="20%">Name</th>
+                                    <th scope="col" width="20%">Unit Price</th>
+                                    <th scope="col" width="20%">Total Units</th>
+                                    <th scope="col" width="20%">Total Price</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                        <tbody>
+                            @{var idx = 1;}
                                 @foreach(var item in Model.Count){
                                     <tr>
-                                        <td>@item.Name</td>
-                                        <td>$@item.UnitPrice</td>
-                                        <td>@item.TotalUnits</td>
-                                        <td>$@item.TotalPrices</td>
-                                    </tr>
+                                    <td scope="row">@idx</td>
+                                    <td class="item"><img class="img_aspect" src="/img/product/@item.PictureUrl" /></td>
+                                    <td>@item.Name</td>
+                                    <td>$@item.UnitPrice</td>
+                                    <td>@item.TotalUnits</td>
+                                    <td>$@Math.Round(item.UnitPrice * item.TotalUnits,2)</td>
+                                </tr>
+                                idx +=1;
                                 }
                                 
                             </tbody>

@@ -1,0 +1,154 @@
+@model IEnumerable<ItemAnalysis>
+@using Microsoft.AspNetCore.Authorization
+@using MvcClient.Authorization
+@using System.Collections.Specialized
+@using System.Drawing
+@inject IAuthorizationService AuthorizationService
+@if(User.IsInRole("Sales")){
+    <div class="row">
+        <div class="col-lg-12 mt-8">
+            <div class="card">
+                <div class="card-body">
+                    <div id="ambarchart2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h3 id="change-title" class="header-title" style="text-align:center">Your Items</h3>
+                    <div class="table-responsive">
+                        <table  class="table text-center" style="width:100%;font-size:15px">
+                            <thead class="text-uppercase bg-dark">
+                                <tr  class="text-white">
+                                    <th scope="col" width="10%">Top</th>
+                                    <th scope="col" width="20%">Image</th>
+                                    <th scope="col" width="30%">Name</th>
+                                    <th scope="col" width="15%">Total Units</th>
+                                    <th scope="col" width="20%">Total Price</th>
+                                    <th scope="col" width="5%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{var i = 1;}
+                                @foreach(var item in Model)
+                                {
+                                    <tr>
+                                        <td scope="row">@i</td>
+                                        <td class="item"><img class="img_aspect" src="/img/product/@item.PictureUrl" /></td>
+                                        <td >@item.Name</td>
+                                        <td>@item.TotalUnits</td>
+                                        <td>$@item.TotalPrices.ToString("N2")</td>
+                                        @{
+                                            var a = new Dictionary<string,string>
+                                                {
+                                                    {"itemName", @item.Name},
+                                                    {"id", @item.UserId}
+                                                    
+                                                };
+                                        }
+                                        <td><a  class="href_location" asp-action="Item" asp-controller="Analysis" asp-all-route-data="@a"><i style="font-size:25" class="fa fa-info"></i></a></td>
+                                    </tr>
+                                    i += 1;
+                                }
+                                
+                            </tbody>
+                        </table>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@{
+    IList<ListDictionary> temp = new List<ListDictionary>();
+    
+    foreach(var item in Model){
+        ListDictionary list = new ListDictionary();
+        Random randomGen = new Random();
+        KnownColor[] names = (KnownColor[]) Enum.GetValues(typeof(KnownColor));
+        KnownColor randomColorName = names[randomGen.Next(names.Length)];
+        Color randomColor = Color.FromKnownColor(randomColorName);
+        list.Add("Name",item.Name.Split(",")[0]);
+        list.Add("Total Price",Math.Round(item.TotalUnits * item.UnitPrice,2));
+        list.Add("Color",randomColor);
+        temp.Add(list);
+    }
+    
+    var data = Newtonsoft.Json.JsonConvert.SerializeObject(temp);
+}
+@section Scripts{
+
+    <script>
+        if ($('#ambarchart2').length) {
+            var chart = AmCharts.makeChart("ambarchart2", {
+                "type": "serial",
+                "addClassNames": true,
+                "theme": "light",
+                "autoMargins": false,
+                "marginLeft": 30,
+                "marginRight": 8,
+                "marginTop": 10,
+                "marginBottom": 26,
+                "title": "Total Units and Total Price of all items",
+                "balloon": {
+                    "adjustBorderColor": false,
+                    "horizontalPadding": 10,
+                    "verticalPadding": 8,
+                    "color": "#ffffff"
+                },
+
+                "dataProvider": JSON.parse('@Html.Raw(data)'),
+                "valueAxes": [{
+                    "axisAlpha": 0,
+                    "position": "left"
+                }],
+                "startDuration": 1,
+                "graphs": [{
+                    "alphaField": "alpha",
+                    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
+                    "fillAlphas": 1,
+                    "fillColorsField": "Color",
+                    "title": "Units",
+                    "type": "column",
+                    "valueField": "Units",
+                    "dashLengthField": "dashLengthColumn"
+                }, {
+                    
+                    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
+                    "bullet": "round",
+                    "fillColorsField": "Color",
+                    "fillAlphas": 1,
+                    
+                    "type": "column",
+                    "title": "Total Price",
+                    "valueField": "Total Price",
+                    "dashLengthField": "dashLengthColumn"
+                }],
+                "categoryField": "Name",
+                "categoryAxis": {
+                    "categoryAxis.dashLength":100,
+                    "categoryAxis.gridPosition": "start",
+                    "gridPosition": "start",
+                    "autoGridCount": "true",
+                    "gridPosition": "start", 
+                    "autoGridCount": "true",
+                    "ignoreAxisWidth": true,
+                    "autoWrap": true
+                },
+                "autoMargins": true,
+                "autoMarginOffset": 12,
+                "autoTransform": true,
+                "export": {
+                    "enabled": false
+                }
+            });
+        }
+</script>
+
+
+}
+

@@ -34,8 +34,13 @@ namespace MvcClient.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             AnalysisViewModel indexView = new AnalysisViewModel();
+            var listOrder = await _orderService.GetOrders();
+            var listOrderDate = listOrder.Select(x => x.OrderDate).Distinct();
             indexView.SalesCount = await _analysisService.CountAllSales();
             indexView.SalesCount = indexView.SalesCount.OrderByDescending(m => m.TotalPrices).ToList();
+            
+        
+            
             if(User.IsInRole("Sales")){
                 string id = _identityService.Get(User).Id;
                 indexView.BuyersCount = await _analysisService.CountItemsByBuyersAsync(id);
@@ -80,5 +85,21 @@ namespace MvcClient.Controllers
             }
             return View();
         }
+        [Authorize(Roles = "Administrators, Sales")]
+        public async Task<IActionResult> Item(string id, string itemName){
+            if(User.IsInRole("Sales")){
+                string saleId = _identityService.Get(User).Id;
+                var v = await _analysisService.CountAllProducts(saleId);
+                v = v.OrderByDescending(m=>m.TotalPrices);
+                return View(v);
+            }
+            if(User.IsInRole("Administrators")){
+            
+                var v = await _analysisService.CountAllProducts();
+                v =  v.OrderByDescending(m => m.TotalPrices);
+                return View(v);
+            }
+            return View();
+            }
     }
 }

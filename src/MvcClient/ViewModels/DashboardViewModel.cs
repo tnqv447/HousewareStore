@@ -2,6 +2,8 @@ using MvcClient.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using System;
+
 namespace MvcClient.ViewModels
 {
     public class DashboardViewModel
@@ -15,8 +17,10 @@ namespace MvcClient.ViewModels
     }
     public class DataChart
     {
+        public DateTime Date { get; set; }
         public string Month { get; set; }
         public double Revenue { get; set; }
+        public string Name { get; set; }
         public DataChart() { }
         public DataChart(string Month, double Revenue)
         {

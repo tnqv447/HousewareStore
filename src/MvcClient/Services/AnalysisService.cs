@@ -87,6 +87,7 @@ namespace MvcClient.Services
                                                         })
                                                         .Select(m => new ItemAnalysis
                                                         {
+                                                            PictureUrl = m.item.PictureUrl,
                                                             ItemId = m.item.Id,
                                                             Name = m.item.Name,
                                                             UnitPrice = m.item.UnitPrice,
@@ -128,6 +129,7 @@ namespace MvcClient.Services
                                             .Select(
                                                 m => new ItemAnalysis
                                                 {
+                                                    PictureUrl = m.item.PictureUrl,
                                                     ItemId = m.item.Id,
                                                     Name = m.item.Name,
                                                     UnitPrice = m.item.UnitPrice,
@@ -152,6 +154,38 @@ namespace MvcClient.Services
             {
                 Console.WriteLine("\n sale: " + sale.Name);
                 var count = await CountItemsBySalesAsync(sale.UserId);
+                var totalUnits = 0;
+                double totalPrices = 0;
+                foreach (var item in count)
+                {
+                    totalUnits += item.TotalUnits;
+                    totalPrices += Math.Round(item.TotalUnits * item.UnitPrice, 2);
+                }
+                if (count != null)
+                {
+                    BaseAnalysis result = new BaseAnalysis
+                    {
+                        User = sale,
+                        Count = count,
+                        TotalPrices = totalPrices,
+                        TotalUnits = totalUnits
+                    };
+
+                    results.Add(result);
+                }
+                results.OrderByDescending(m => m.TotalPrices);
+            }
+
+            return results;
+        }
+        public async Task<IList<BaseAnalysis>> AllSales(DateTime date)
+        {
+            IList<BaseAnalysis> results = new List<BaseAnalysis>();
+            var listSales = await _userService.GetSales();
+            foreach (var sale in listSales)
+            {
+                Console.WriteLine("\n sale: " + sale.Name);
+                var count = await SaleAsync(sale.UserId,date);
                 var totalUnits = 0;
                 double totalPrices = 0;
                 foreach (var item in count)
@@ -208,6 +242,7 @@ namespace MvcClient.Services
                                                     .Select(
                                                         m => new ItemAnalysis
                                                         {
+                                                            PictureUrl = m.item.PictureUrl,
                                                             ItemId = m.item.Id, //gán các giá trị vào
                                                             Name = m.item.Name,
                                                             UnitPrice = m.item.UnitPrice,
@@ -262,7 +297,7 @@ namespace MvcClient.Services
                                         .Select(m => new ItemAnalysis{
                                             PictureUrl = m.item.PictureUrl,
                                             ItemId = m.item.Id,
-                                            Name = m.item.Name,
+                                            Name = m.item.OwnerId,
                                             TotalUnits = m.orderitemsUnitCount,
                                             TotalPrices = Math.Round(m.orderitemsUnitCount * m.item.UnitPrice,2)
                                         });
@@ -271,9 +306,51 @@ namespace MvcClient.Services
             
             return results;
         }
+        public async Task<IEnumerable<ItemAnalysis>> SaleAsync(string saleId,DateTime date){
+            var listOrders = await _orderService.GetOrderItemsForSales(saleId);
+            listOrders = listOrders.Where(m => DateTime.Compare(m.OrderDate,date) == 0);
+            IEnumerable<ItemAnalysis> results = Enumerable.Empty<ItemAnalysis>();
+
+            if (listOrders == null)
+            {
+                Console.WriteLine("\nnull");
+            }
+            // Console.WriteLine("\nStatus: " + listOrders.ElementAt(0).ItemName + " ");
+            else
+            {
+                listOrders = listOrders.Where(m => m.Status != OrderItemStatus.Rejected && m.Status != OrderItemStatus.Preparing);
+
+                var listItems = await _itemService.GetItemsSale(saleId);
+
+                if (listOrders != null && listItems != null)
+                {
+                    
+                    results = listItems.GroupJoin(listOrders,
+                                                    item => item.Id, 
+                                                    orderitems => orderitems.ItemId,
+                                                    (item, orderitems) => 
+                                                    new
+                                                    { 
+                                                        item = item, //value 1
+                                                        orderitemsUnitCount = (orderitems == null || orderitems.Count() == 0 ? 0 : orderitems.Sum(o => o.Units))
+                                                    })
+                                                    .Select(
+                                                        m => new ItemAnalysis
+                                                        {
+                                                            ItemId = m.item.Id, 
+                                                            Name = m.item.Name,
+                                                            UnitPrice = m.item.UnitPrice,
+                                                            TotalUnits = m.orderitemsUnitCount
+                                                        }
+                                                    );
+                }
+            }
+
+
+
+            return results;
+        }
         
-
-
 
     }
 }

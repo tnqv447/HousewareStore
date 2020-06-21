@@ -1,6 +1,7 @@
 using MvcClient.Models;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace MvcClient.ViewModels
 {
@@ -11,6 +12,11 @@ namespace MvcClient.ViewModels
         public IList<BaseAnalysis> AllBuyers { get; set; }
         public IEnumerable<ItemAnalysis> AllItems { get; set; }
         public IEnumerable<ItemAnalysis> BuyersCount { get; set; }
+        public IList<SaleData> SalesChart { get; set; }
+    }
+    public class SaleData{
+        public DateTime Date { get; set; }
+        public IList<BaseAnalysis> Sales { get; set; }
     }
     public class BaseAnalysis
     {
