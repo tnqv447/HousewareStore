@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
     <PackageReference Include="automapper.extensions.microsoft.dependencyinjection" Version="7.0.0" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.1.3" />
 
